@@ -35,7 +35,8 @@ public final class ChessBoardState {
     
     private byte[][] state = new byte[N][N];
     private byte[] promotionCounters = new byte[8];
-    private byte pawnInitialFlags = (byte) 0xff;
+    private byte whitePawnInitialFlags = (byte) 0xff;
+    private byte blackPawnInitialFlags = (byte) 0xff;
      
     private static final int PROMOTION_COUNTER_INDEX_WHITE_QUEEN  = 0;
     private static final int PROMOTION_COUNTER_INDEX_WHITE_ROOK   = 1;
@@ -91,7 +92,8 @@ public final class ChessBoardState {
             System.arraycopy(copy.state[y], 0, this.state[y], 0, N);
         }
         
-        this.pawnInitialFlags = copy.pawnInitialFlags;
+        this.whitePawnInitialFlags = copy.whitePawnInitialFlags;
+        this.blackPawnInitialFlags = copy.blackPawnInitialFlags;
         this.promotionCounters = Arrays.copyOf(copy.promotionCounters, copy.promotionCounters.length);
     }
     
@@ -183,6 +185,9 @@ public final class ChessBoardState {
                 expandImplWhitePawn(children, x, y);
                 break;
                 
+            case BLACK_PAWN:
+                expandImplBlackPawn(children, x, y);
+                
             default:
                 throw new IllegalStateException("Should not get here.");
         }
@@ -192,18 +197,16 @@ public final class ChessBoardState {
                                      final int x,
                                      final int y) {
         
-        final boolean pawnHasInitialMove = checkInitialMovePawn(x);
-        
-        if (pawnHasInitialMove && state[y - 2][x] == EMPTY &&
-                                  state[y - 1][x] == EMPTY) {
+        if (y == 1 && checkWhiteInitialMovePawn(x)
+                   && state[5][x] == EMPTY 
+                   && state[4][x] == EMPTY) {
            
             // Once here, can move the white pawn two moves forward:
-            unsetInitialMovePawn(x);
-
             final ChessBoardState child = new ChessBoardState(this);
 
-            child.state[y][x] = EMPTY; 
-            child.state[y - 2][x] = WHITE_PAWN;
+            child.unsetWhiteInitialMovePawn(x);
+            child.state[6][x] = EMPTY; 
+            child.state[4][x] = WHITE_PAWN;
             
             children.add(child);
         }
@@ -219,17 +222,16 @@ public final class ChessBoardState {
             
             if (y == 1) {
                 // Once here, can do promotion:
-                if (canPromoteWhite()) {
-                    child.state[y - 1][x] = EMPTY;
-                    
-                    addWhitePromotions(children,
-                                       child,
-                                       x);
-                }
+                addWhitePromotion(children,
+                                  this,
+                                  x);
             }
         }
         
-        if (x > 0 && y > 0 && getCellColor(x - 1, y - 1) == CELL_COLOR_BLACK) {
+        if (x > 0 
+                && y > 0 
+                && getCellColor(x - 1, y - 1) == CELL_COLOR_BLACK) {
+            
             // Once here, can eat to the left board:
             final ChessBoardState child = new ChessBoardState(this);
             child.state[y][x] = EMPTY;
@@ -237,8 +239,10 @@ public final class ChessBoardState {
             children.add(child);
         }
         
-        if (x < N - 1 && y > 0 
-                      && getCellColor(x + 1, y - 1) == CELL_COLOR_BLACK) {
+        if (x < N - 1 
+                && y > 0
+                && getCellColor(x + 1, y - 1) == CELL_COLOR_BLACK) {
+            
             // Once here, can eat to the right board:
             final ChessBoardState child = new ChessBoardState(this);
             child.state[y][x] = EMPTY;
@@ -247,111 +251,91 @@ public final class ChessBoardState {
         }
     }
     
-    private void addWhitePromotions(
+    private void expandImplBlackPawn(final List<ChessBoardState> children,
+                                     final int x,
+                                     final int y) {
+        
+        if (y == 6 && checkBlackInitialMovePawn(x)
+                   && state[2][x] == EMPTY 
+                   && state[3][x] == EMPTY) {
+            
+            // Once here, can move the black pawn two moves forward:
+            final ChessBoardState child = new ChessBoardState(this);
+            
+            child.unsetBlackInitialMovePawn(x);
+            child.state[2][x] = EMPTY;
+            child.state[4][x] = BLACK_PAWN;
+        }
+        
+    }
+    
+    private void addWhitePromotion(
             final List<ChessBoardState> children,
-            final ChessBoardState child,
+            final ChessBoardState state,
             final int x) {
         
-        for (int index  = PROMOTION_COUNTER_INDEX_WHITE_QUEEN; 
-                 index <= PROMOTION_COUNTER_INDEX_WHITE_KNIGHT;
-                 index++) {
-            
-            byte promotionCount = child.promotionCounters[index]; 
-            
-            if (promotionCount == 0) {
-                continue;
-            }
-            
-            final ChessBoardState nextChild = new ChessBoardState(child);
-            
-            nextChild.state[0][x] = convertPromotionIndexToPieceCode(index);
-                    
-            child.promotionCounters[index]--;
-            
-            children.add(nextChild);
-        }
+        final ChessBoardState child = new ChessBoardState(state);
+        child.state[0][x] = WHITE_QUEEN;
+        children.add(child);
     }
     
-    private static byte convertPromotionIndexToPieceCode(final int index) {
-        switch (index) {
-            
-            case PROMOTION_COUNTER_INDEX_WHITE_QUEEN :
-                return WHITE_QUEEN;
-                
-            case PROMOTION_COUNTER_INDEX_WHITE_ROOK  :
-                return WHITE_ROOK;
-                
-            case PROMOTION_COUNTER_INDEX_WHITE_BISHOP:
-                return WHITE_BISHOP;
-                
-            case PROMOTION_COUNTER_INDEX_WHITE_KNIGHT:
-                return WHITE_KNIGHT;
-                
-            case PROMOTION_COUNTER_INDEX_BLACK_QUEEN :
-                return BLACK_QUEEN;
-                
-            case PROMOTION_COUNTER_INDEX_BLACK_ROOK  :
-                return BLACK_ROOK;
-                
-            case PROMOTION_COUNTER_INDEX_BLACK_BISHOP:
-                return BLACK_BISHOP;
-                
-            case PROMOTION_COUNTER_INDEX_BLACK_KNIGHT:
-                return BLACK_KNIGHT;
-                
-            default: 
-                throw new IllegalStateException();
-        }
+    private void addBlackPromotion(final List<ChessBoardState> children,
+                                   final ChessBoardState state,
+                                   final int x) {
+        
+        final ChessBoardState child = new ChessBoardState(state);
+        child.state[7][x] = BLACK_QUEEN;
+        children.add(child);
     }
     
-    private boolean canPromoteWhite() {
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_WHITE_BISHOP] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_WHITE_KNIGHT] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_WHITE_ROOK] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_WHITE_QUEEN] != 0) {
-            return true;
-        }
-        
-        return false;
+    /**
+     * Checks that the white pawn on (x + 1)st file can make two moves forward.
+     * 
+     * @param x the file index of the requested white pawn.
+     * 
+     * @return {@code true} iff the white pawn in question has not moved yet.
+     */
+    private boolean checkWhiteInitialMovePawn(final int x) {
+        return (whitePawnInitialFlags & (1 << x)) != 0;
     }
     
-    private boolean canPromoteBlack() {
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_BLACK_BISHOP] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_BLACK_KNIGHT] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_BLACK_ROOK] != 0) {
-            return true;
-        }
-        
-        if (promotionCounters[PROMOTION_COUNTER_INDEX_BLACK_QUEEN] != 0) {
-            return true;
-        }
-        
-        return false;
+    /**
+     * Marks that the white pawn at file (x + 1) has moved at least once.
+     * 
+     * @param x the file index of the white pawn.
+     */
+    private void unsetWhiteInitialMovePawn(final int x) {
+        whitePawnInitialFlags &= ~(1 << x);
     }
     
-    private boolean checkInitialMovePawn(final int x) {
-        return (pawnInitialFlags & (1 << x)) != 0;
+    /**
+     * Checks that the black pawn on (x + 1)st file can make two moves forward.
+     * 
+     * @param x the file index of the requested black pawn.
+     * 
+     * @return {@code true} iff the black pawn in question has not moved yet.
+     */
+    private boolean checkBlackInitialMovePawn(final int x) {
+        return (blackPawnInitialFlags & (1 << x)) != 0;
     }
     
-    private void unsetInitialMovePawn(final int x) {
-        pawnInitialFlags &= ~(1 << x);
+    /**
+     * Marks that the black pawn at file (x + 1) has moved at least once.
+     * 
+     * @param x the file index of the black pawn.
+     */
+    private void unsetBlackInitialMovePawn(final int x) {
+        blackPawnInitialFlags &= ~(1 << x);
     }
     
+    /**
+     * Converts the piece code to its textual representation. Used in
+     * {@link #toString()}.
+     * 
+     * @param piece the piece code.
+     * 
+     * @return textual representation of the input piece code.
+     */
     private static char pieceToChar(final byte piece) {
         switch (piece) {
             case EMPTY -> {
@@ -410,6 +394,17 @@ public final class ChessBoardState {
         }
     }
     
+    /**
+     * Returns the color of the cell at file {@code (x + 1)} and rank 
+     * {@code 8 - y}.
+     * 
+     * @param x tje file index.
+     * @param y the rank index.
+     * 
+     * @return {@link #CELL_COLOR_NONE} if the requested cell is empty,
+     *         {@link #CELL_COLOR_WHITE} if the requested cell is white, and,
+     *         {@link #CELL_COLOR_BLACK} if the requested cell is black.
+     */
     private int getCellColor(final int x, final int y) {
         final byte cell = state[y][x];
         
