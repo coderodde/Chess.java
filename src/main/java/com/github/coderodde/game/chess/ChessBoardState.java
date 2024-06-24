@@ -14,20 +14,20 @@ public final class ChessBoardState {
     
     private static final int N = 8;
     
-    private static final byte EMPTY        = 0;
-    private static final byte WHITE_PAWN   = 1;
-    private static final byte WHITE_BISHOP = 2;
-    private static final byte WHITE_KNIGHT = 3;
-    private static final byte WHITE_ROOK   = 4;
-    private static final byte WHITE_QUEEN  = 5;
-    private static final byte WHITE_KING   = 6;
-    
-    private static final byte BLACK_PAWN   = 9;
-    private static final byte BLACK_BISHOP = 10;
-    private static final byte BLACK_KNIGHT = 11;
-    private static final byte BLACK_ROOK   = 12;
-    private static final byte BLACK_QUEEN  = 13;
-    private static final byte BLACK_KING   = 14;
+    public static final byte EMPTY        = 0;
+    public static final byte WHITE_PAWN   = 1;
+    public static final byte WHITE_BISHOP = 2;
+    public static final byte WHITE_KNIGHT = 3;
+    public static final byte WHITE_ROOK   = 4;
+    public static final byte WHITE_QUEEN  = 5;
+    public static final byte WHITE_KING   = 6;
+ 
+    public static final byte BLACK_PAWN   = 9;
+    public static final byte BLACK_BISHOP = 10;
+    public static final byte BLACK_KNIGHT = 11;
+    public static final byte BLACK_ROOK   = 12;
+    public static final byte BLACK_QUEEN  = 13;
+    public static final byte BLACK_KING   = 14;
     
     private static final int CELL_COLOR_NONE = 0;
     private static final int CELL_COLOR_WHITE = 1;
@@ -94,7 +94,27 @@ public final class ChessBoardState {
         
         this.whitePawnInitialFlags = copy.whitePawnInitialFlags;
         this.blackPawnInitialFlags = copy.blackPawnInitialFlags;
-        this.promotionCounters = Arrays.copyOf(copy.promotionCounters, copy.promotionCounters.length);
+        this.promotionCounters = Arrays.copyOf(copy.promotionCounters, 
+                                               copy.promotionCounters.length);
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        
+        if (o == null) {
+            return false;
+        }
+        
+        if (!getClass().equals(o.getClass())) {
+            return false;
+        }
+        
+        final ChessBoardState other = (ChessBoardState) o;
+        
+        return Arrays.deepEquals(state, other.state);
     }
     
     /**
@@ -197,7 +217,7 @@ public final class ChessBoardState {
                                      final int x,
                                      final int y) {
         
-        if (y == 1 && checkWhiteInitialMovePawn(x)
+        if (y == 6 && checkWhiteInitialMovePawn(x)
                    && state[5][x] == EMPTY 
                    && state[4][x] == EMPTY) {
            
