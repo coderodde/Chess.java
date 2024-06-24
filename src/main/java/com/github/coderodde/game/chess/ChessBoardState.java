@@ -117,6 +117,11 @@ public final class ChessBoardState {
         return Arrays.deepEquals(state, other.state);
     }
     
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(state);
+    }
+    
     /**
      * Clears the entire board. Used in unit testing.
      */
@@ -278,42 +283,42 @@ public final class ChessBoardState {
             children.add(child);
         }
         
-        if (state[y - 1][x] == EMPTY) {
-            // Once here, just move one step forward:
-            if (y == 1) {
-                // Once here, can do promotion:
-                addWhitePromotion(children,
-                                  this,
-                                  x);
-            } else {
-                final ChessBoardState child = new ChessBoardState(this);
-
-                // Move
-                child.state[y][x] = EMPTY;
-                child.state[y - 1][x] = WHITE_PAWN;
-                children.add(child);
-            }
+        if (state[y - 1][x] == EMPTY && y == 1) {
+            // Once here, can do promotion:
+            addWhitePromotion(children,
+                              this,
+                              x);
+            return;
         }
         
-        if (x > 0 
-                && y > 0 
-                && getCellColor(x - 1, y - 1) == CELL_COLOR_BLACK) {
-            
-            // Once here, can eat to the left board:
-            final ChessBoardState child = new ChessBoardState(this);
+        // Move forward:
+        if (y > 0 && getCellColor(x, y - 1) == CELL_COLOR_NONE) {
+            // Once here, can move forward:
+            ChessBoardState child = new ChessBoardState(this);
+
             child.state[y][x] = EMPTY;
-            child.state[y - 1][x - 1] = WHITE_PAWN;
+            child.state[y - 1][x] = WHITE_PAWN;
             children.add(child);
         }
         
-        if (x < N - 1 
-                && y > 0
-                && getCellColor(x + 1, y - 1) == CELL_COLOR_BLACK) {
-            
-            // Once here, can eat to the right board:
+        if (x > 0 && y > 0 && getCellColor(x - 1, y - 1) == CELL_COLOR_BLACK) {
+            // Once here, can capture to the left:
             final ChessBoardState child = new ChessBoardState(this);
+            
+            child.state[y][x] = EMPTY;
+            child.state[y - 1][x - 1] = WHITE_PAWN;
+            
+            children.add(child);
+        }
+        
+        if (x < N - 1 && y > 0 
+                      && getCellColor(x + 1, y - 1) == CELL_COLOR_BLACK) {
+            // Once here, can capture to the right:
+            final ChessBoardState child = new ChessBoardState(this);
+            
             child.state[y][x] = EMPTY;
             child.state[y - 1][x + 1] = WHITE_PAWN;
+            
             children.add(child);
         }
     }
@@ -346,13 +351,15 @@ public final class ChessBoardState {
         child.state[1][x] = EMPTY;
         children.add(child);
         
-        if (x > 0) {
+        if (x > 0 && getCellColor(x - 1, 0) == CELL_COLOR_BLACK) {
             // Can capture/promote to the left:
             child = new ChessBoardState(state);
             child.state[0][x - 1] = WHITE_QUEEN;
             child.state[1][x] = EMPTY;
             children.add(child);
-        } else if (x < N - 1) {
+        }
+        
+        if (x < N - 1 && getCellColor(x + 1, 0) == CELL_COLOR_BLACK) {
             // Can capture/promote to the right:
             child = new ChessBoardState(state);
             child.state[0][x + 1] = WHITE_QUEEN;

@@ -1,6 +1,8 @@
 package com.github.coderodde.game.chess;
 
+import static com.github.coderodde.game.chess.ChessBoardState.BLACK_BISHOP;
 import static com.github.coderodde.game.chess.ChessBoardState.BLACK_KNIGHT;
+import static com.github.coderodde.game.chess.ChessBoardState.BLACK_PAWN;
 import static com.github.coderodde.game.chess.ChessBoardState.BLACK_ROOK;
 import static com.github.coderodde.game.chess.ChessBoardState.WHITE_BISHOP;
 import static com.github.coderodde.game.chess.ChessBoardState.WHITE_PAWN;
@@ -129,5 +131,49 @@ public final class ChessBoardStateTest {
         move.set(3, 0, WHITE_QUEEN);
         
         assertEquals(move, children.get(0));
+    }
+    
+    @Test
+    public void whitePawnPromotionCaptureBoth() {
+        state.set(5, 1, WHITE_PAWN);
+        state.set(4, 0, BLACK_BISHOP);
+        state.set(6, 0, BLACK_PAWN);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(3, children.size());
+        
+        final ChessBoardState move1 = new ChessBoardState();
+        final ChessBoardState move2 = new ChessBoardState();
+        final ChessBoardState move3 = new ChessBoardState();
+        
+        move1.clear();
+        move2.clear();
+        move3.clear();
+        
+        // Queen forward:
+        move1.set(4, 0, BLACK_BISHOP);
+        move1.set(5, 0, WHITE_QUEEN);
+        move1.set(6, 0, BLACK_PAWN);
+        
+        // Queen left:
+        move2.set(4, 0, WHITE_QUEEN);
+        move2.set(6, 0, BLACK_PAWN);
+        
+        // Queen right:
+        move3.set(6, 0, WHITE_QUEEN);
+        move3.set(4, 0, BLACK_BISHOP);
+        
+        assertTrue(children.contains(move1));
+        assertTrue(children.contains(move2));
+        assertTrue(children.contains(move3));
+        
+        final Set<Integer> indexSet = new HashSet<>();
+        
+        indexSet.add(children.indexOf(move1));
+        indexSet.add(children.indexOf(move2));
+        indexSet.add(children.indexOf(move3));
+        
+        assertEquals(3, indexSet.size());
     }
 }
