@@ -4,6 +4,7 @@ import static com.github.coderodde.game.chess.ChessBoardState.BLACK_KNIGHT;
 import static com.github.coderodde.game.chess.ChessBoardState.BLACK_ROOK;
 import static com.github.coderodde.game.chess.ChessBoardState.WHITE_BISHOP;
 import static com.github.coderodde.game.chess.ChessBoardState.WHITE_PAWN;
+import static com.github.coderodde.game.chess.ChessBoardState.WHITE_QUEEN;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -113,5 +114,20 @@ public final class ChessBoardStateTest {
         state.set(4, 5, BLACK_ROOK);
         
         assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
+    }
+    
+    @Test
+    public void whitePawnPromotion() {
+        state.set(3, 1, WHITE_PAWN);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        final ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(3, 0, WHITE_QUEEN);
+        
+        assertEquals(move, children.get(0));
     }
 }
