@@ -172,7 +172,8 @@ public final class ChessBoardState {
                 if (x == -1) {
                     stringBuilder.append(rankNumber--).append(' ');
                 } else {
-                    stringBuilder.append(pieceToChar(state[y][x]));
+                    stringBuilder.append(
+                            convertPieceCodeToUnicodeCharacter(x, y));
                 }
             }
             
@@ -504,5 +505,65 @@ public final class ChessBoardState {
         return 0 < cell && cell < 7 ? 
                     CELL_COLOR_WHITE : 
                     CELL_COLOR_BLACK;
+    }
+    
+    private char convertPieceCodeToUnicodeCharacter(final int x, final int y) {
+        final byte pieceCode = state[y][x];
+        
+        switch (pieceCode) {
+            case EMPTY -> {
+                return (x + y) % 2 == 0 ? '.' : '#';
+            }
+                
+            case WHITE_PAWN -> {
+                return 'P';
+            }
+                
+            case WHITE_KNIGHT -> {
+                return 'K';
+            }
+                
+            case WHITE_BISHOP -> {
+                return 'B';
+            }
+                
+            case WHITE_ROOK -> {
+                return 'R';
+            }
+                
+            case WHITE_QUEEN -> {
+                return 'Q';
+            }
+                
+            case WHITE_KING -> {
+                return 'X';
+            }
+                
+            case BLACK_PAWN -> {
+                return 'p';
+            }
+                
+            case BLACK_KNIGHT -> {
+                return 'k';
+            }
+                
+            case BLACK_BISHOP -> {
+                return 'b';
+            }
+                
+            case BLACK_ROOK -> {
+                return 'r';
+            }
+                
+            case BLACK_QUEEN -> {
+                return 'q';
+            }
+                
+            case BLACK_KING -> {
+                return 'x';
+            }
+                
+            default -> throw new IllegalStateException("Should not get here.");
+        }
     }
 }
