@@ -178,19 +178,34 @@ public final class ChessBoardState {
         return stringBuilder.toString();
     }
     
-    public List<ChessBoardState> expand() {
+    public List<ChessBoardState> expand(final PlayerTurn playerTurn) {
+        
         final List<ChessBoardState> children = new ArrayList<>();
         
-        for (int y = 0; y < N; y++) {
-            for (int x = 0; x < N; x++) {
-                final byte cell = state[y][x];
-                
-                if (cell == EMPTY) {
-                    continue;
+        if (playerTurn == PlayerTurn.WHITE) {
+            for (int y = 0; y < N; y++) {
+                for (int x = 0; x < N; x++) {
+                    final int cellColor = getCellColor(x, y);
+
+                    if (cellColor != CELL_COLOR_WHITE) {
+                        continue;
+                    }
+
+                    expandImpl(children, x, y);
                 }
-                
-                expandImpl(children, x, y, cell);
             }
+        } else { // playerTurn == PlayerTurn.BLACK
+            for (int y = 0; y < N; y++) {
+                for (int x = 0; x < N; x++) {
+                    final int cellColor = getCellColor(x, y);
+
+                    if (cellColor != CELL_COLOR_BLACK) {
+                        continue;
+                    }
+
+                    expandImpl(children, x, y);
+                }
+            }    
         }
         
         return children;
@@ -198,8 +213,10 @@ public final class ChessBoardState {
     
     private void expandImpl(final List<ChessBoardState> children,
                             final int x,
-                            final int y,
-                            final byte cell) {
+                            final int y) {
+        
+        final byte cell = state[y][x];
+        
         switch (cell) {
             case WHITE_PAWN:
                 expandImplWhitePawn(children, x, y);
@@ -207,6 +224,36 @@ public final class ChessBoardState {
                 
             case BLACK_PAWN:
                 expandImplBlackPawn(children, x, y);
+                break;
+                
+            case WHITE_KING:
+                break;
+                
+            case BLACK_KING:
+                break;
+                
+            case WHITE_QUEEN:
+                break;
+                
+            case BLACK_QUEEN:
+                
+            case WHITE_ROOK:
+                break;
+                
+            case BLACK_ROOK:
+                break;
+                
+            case WHITE_BISHOP:
+                break;
+                
+            case BLACK_BISHOP:
+                break;
+                
+            case WHITE_KNIGHT:
+                break;
+                
+            case BLACK_KNIGHT:
+                break;
                 
             default:
                 throw new IllegalStateException("Should not get here.");
