@@ -51,37 +51,57 @@ public final class ChessBoardState {
     public ChessBoardState() {
         
         // Black pieces:
-        state[0][0] =
-        state[0][7] = BLACK_ROOK;
+        set(0, 0, BLACK_ROOK);
+        set(7, 0, BLACK_ROOK);
+//        state[0][0] =
+//        state[0][7] = BLACK_ROOK;
   
-        state[0][1] = 
-        state[0][6] = BLACK_KNIGHT;
+        set(1, 0, BLACK_KNIGHT);
+        set(6, 0, BLACK_KNIGHT);
+//        state[0][1] = 
+//        state[0][6] = BLACK_KNIGHT;
   
-        state[0][2] = 
-        state[0][5] = BLACK_BISHOP;
+        set(2, 0, BLACK_BISHOP);
+        set(5, 0, BLACK_BISHOP);
+        
+//        state[0][2] = 
+//        state[0][5] = BLACK_BISHOP;
   
-        state[0][3] = BLACK_QUEEN;
-        state[0][4] = BLACK_KING;
+        set(3, 0, BLACK_QUEEN);
+        set(4, 0, BLACK_KING);
+//        state[0][3] = BLACK_QUEEN;
+//        state[0][4] = BLACK_KING;
         
         for (int x = 0; x < N; x++) {
-            state[1][x] = BLACK_PAWN;
+            set(x, 1, BLACK_PAWN);
+//            state[1][x] = BLACK_PAWN;
         }
         
         // White pieces:
-        state[7][0] =
-        state[7][7] = WHITE_ROOK;
+        set(0, 7, WHITE_ROOK);
+        set(7, 7, WHITE_ROOK);
+//        state[7][0] =
+//        state[7][7] = WHITE_ROOK;
   
-        state[7][1] = 
-        state[7][6] = WHITE_KNIGHT;
+        set(1, 7, WHITE_KNIGHT);
+        set(6, 7, WHITE_KNIGHT);
+//        state[7][1] = 
+//        state[7][6] = WHITE_KNIGHT;
+        
+        set(2, 7, WHITE_BISHOP);
+        set(5, 7, WHITE_BISHOP);
+//        state[7][2] = 
+//        state[7][5] = WHITE_BISHOP;
   
-        state[7][2] = 
-        state[7][5] = WHITE_BISHOP;
-  
-        state[7][3] = WHITE_QUEEN;
-        state[7][4] = WHITE_KING;
+        set(3, 7, WHITE_QUEEN);
+        set(4, 7, WHITE_KING);
+        
+//        state[7][3] = WHITE_QUEEN;
+//        state[7][4] = WHITE_KING;
         
         for (int x = 0; x < N; x++) {
-            state[6][x] = WHITE_PAWN;
+            set(x, 6, WHITE_PAWN);
+//            state[6][x] = WHITE_PAWN;
         }
     }
     
@@ -153,6 +173,16 @@ public final class ChessBoardState {
      */
     public void set(final int x, final int y, final byte piece) {
         state[y][x] = piece;
+    }
+    
+    /**
+     * Clears the position at rank {@code y} and file {@code x}.
+     * 
+     * @param x the file of the requested piece.
+     * @param y the rank of the requested piece.
+     */
+    public void clear(final int x, final int y) {
+        state[y][x] = EMPTY;
     }
     
     /**
