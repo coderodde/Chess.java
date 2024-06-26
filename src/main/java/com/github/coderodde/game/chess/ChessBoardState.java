@@ -219,11 +219,33 @@ public final class ChessBoardState {
         return children;
     }
     
+    /**
+     * Marks that the white pawn at file {@code x} made an initial double move.
+     * Used for unit testing.
+     * 
+     * @param x the file number of the target white pawn. 
+     */
+    public void markWhitePawnInitialDoubleMove(final int x) {
+        this.whiteIsPreviouslyDoubleMoved[x] = true;
+    }
+    
+    /**
+     * Marks that the black pawn at file {@code x} made an initial double move.
+     * Used for unit testing.
+     * 
+     * @param x the file number of the target white pawn. 
+     */
+    public void markBlackPawnInitialDoubleMove(final int x) {
+        this.blackIsPreviouslyDoubleMoved[x] = true;
+    }
+    
     private void expandImpl(final List<ChessBoardState> children,
                             final int x,
                             final int y) {
         
         final int cell = state[y][x];
+        
+        unmarkAllInitialWhiteDoubleMoveFlags();
         
         switch (cell) {
             case WHITE_PAWN:
@@ -290,12 +312,12 @@ public final class ChessBoardState {
             // Try en passant, white pawn can capture a black onen?
             if (x > 0) {
                 // Try en passant to the left:
-                enPassantWhitePawn(x - 1, children);
+                enPassantWhitePawnToLeft(x, children);
             }
             
             if (x < N - 1) {
                 // Try en passant to the right:
-                enPassantWhitePawn(x + 1, children);
+                enPassantWhitePawnToRight(x, children);
             }
         }
         
@@ -350,15 +372,40 @@ public final class ChessBoardState {
             final int x, 
             final List<ChessBoardState> children) {
         
-        if (!blackIsPreviouslyDoubleMoved[x]) {
+        if (!blackIsPreviouslyDoubleMoved[x - 1]) {
             return;
         }
         
         final ChessBoardState child = new ChessBoardState(this);
         
-        child.clear(x, x);
+        child.clear(x, 3);
+        child.clear(x - 1, 3);
+        child.set(x - 1, 2, WHITE_PAWN);
         
         children.add(child);
+    }
+    
+    private void enPassantWhitePawnToRight(
+            final int x,
+            final List<ChessBoardState> children) {
+        
+        if (!blackIsPreviouslyDoubleMoved[x + 1]) {
+            return;
+        }
+        
+        final ChessBoardState child = new ChessBoardState(this);
+        
+        child.clear(x, 3);
+        child.clear(x + 1, 3);
+        child.set(x + 1, 2, WHITE_PAWN);
+        
+        children.add(child);
+    }
+    
+    private void unmarkAllInitialWhiteDoubleMoveFlags() {
+        for (int i = 0; i < N; i++) {
+            this.whiteIsPreviouslyDoubleMoved[i] = false;
+        }
     }
     
     private void expandImplBlackPawn(final List<ChessBoardState> children,

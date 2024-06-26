@@ -176,4 +176,44 @@ public final class ChessBoardStateTest {
         
         assertEquals(3, indexSet.size());
     }
+    
+    @Test
+    public void whitePawnEnPassantToLeft() {
+        state.set(0, 3, BLACK_PAWN);
+        state.set(1, 2, BLACK_ROOK);
+        state.set(1, 3, WHITE_PAWN);
+        state.markBlackPawnInitialDoubleMove(0);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        final ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(1, 2, BLACK_ROOK);
+        move.set(0, 2, WHITE_PAWN);
+        
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void whitePawnEnPassantToRight() {
+        state.set(7, 3, BLACK_PAWN);
+        state.set(6, 2, BLACK_ROOK);
+        state.set(6, 3, WHITE_PAWN);
+        state.markBlackPawnInitialDoubleMove(7);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        final ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(6, 2, BLACK_ROOK);
+        move.set(7, 2, WHITE_PAWN);
+        
+        assertTrue(children.contains(move));
+    }
 }
