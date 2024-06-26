@@ -271,7 +271,57 @@ public final class ChessBoardState {
     private void expandBlackMovesImpl(final List<ChessBoardState> children,
                                       final int x,
                                       final int y) {
-        throw new UnsupportedOperationException();
+        if (y == 1 && state[2][x] == EMPTY
+                   && state[3][x] == EMPTY) {
+            
+            // Once here, can move the black pawn two moves forward:
+            final ChessBoardState child = new ChessBoardState(this);
+            
+            child.markBlackPawnInitialDoubleMove(x);
+            
+            child.state[1][x] = EMPTY;
+            child.state[3][x] = BLACK_PAWN;
+            
+            children.add(child);
+         
+            markBlackPawnInitialDoubleMove(x);
+        }
+        
+        if (y == 4) {
+            // Black en passants here:
+        }
+        
+        // Move forward:
+        if (y < N - 1 && getCellColor(x, y + 1) == CELL_COLOR_NONE) {
+            // Once here, can move forward:
+            final ChessBoardState child = new ChessBoardState(this);
+            
+            child.state[y][x] = EMPTY;
+            child.state[y + 1][x] = BLACK_PAWN;
+            children.add(child);
+        }
+        
+//        if (state[])
+
+        if (x > 0 && y < N - 1 
+                  && getCellColor(x - 1, y + 1) == CELL_COLOR_WHITE) {
+            // Once here, can capture to the left:
+            final ChessBoardState child = new ChessBoardState(this);
+            
+            child.state[y][x] = EMPTY;
+            child.state[y + 1][x - 1] = BLACK_PAWN;
+            children.add(child);
+        }
+        
+        if (x < N - 1 && y < N - 1 
+                      && getCellColor(x + 1, y + 1) == CELL_COLOR_WHITE) {
+            // Once here, can capture to the right:
+            final ChessBoardState child = new ChessBoardState(this);
+            
+            child.state[y][x] = EMPTY;
+            child.state[y + 1][x + 1] = BLACK_PAWN;
+            children.add(child);
+        }
     }
     
     private void expandImplWhitePawn(final List<ChessBoardState> children,
@@ -291,7 +341,7 @@ public final class ChessBoardState {
             
             children.add(child);
             
-            this.markWhitePawnInitialDoubleMove(x);
+            markWhitePawnInitialDoubleMove(x);
         }
         
         if (y == 3) {
@@ -307,7 +357,7 @@ public final class ChessBoardState {
             }
         }
         
-        if (state[y - 1][x] == EMPTY && y == 1) {
+        if (state[0][x] == EMPTY && y == 1) {
             // Once here, can do promotion:
             addWhitePromotion(children,
                               this,
@@ -318,7 +368,7 @@ public final class ChessBoardState {
         // Move forward:
         if (y > 0 && getCellColor(x, y - 1) == CELL_COLOR_NONE) {
             // Once here, can move forward:
-            ChessBoardState child = new ChessBoardState(this);
+            final ChessBoardState child = new ChessBoardState(this);
 
             child.state[y][x] = EMPTY;
             child.state[y - 1][x] = WHITE_PAWN;
