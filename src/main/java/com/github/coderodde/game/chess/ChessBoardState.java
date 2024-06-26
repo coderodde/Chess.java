@@ -34,8 +34,6 @@ public final class ChessBoardState {
     private static final int CELL_COLOR_BLACK = -1;
     
     private int[][] state = new int[N][N];
-    private boolean[] whitePawnInitialFlags = new boolean[N];
-    private boolean[] blackPawnInitialFlags = new boolean[N];
     private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
     private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
     
@@ -83,8 +81,6 @@ public final class ChessBoardState {
             System.arraycopy(copy.state[y], 0, this.state[y], 0, N);
         }
         
-        this.whitePawnInitialFlags = copy.whitePawnInitialFlags;
-        this.blackPawnInitialFlags = copy.blackPawnInitialFlags;
         this.whiteIsPreviouslyDoubleMoved = copy.whiteIsPreviouslyDoubleMoved;
         this.blackIsPreviouslyDoubleMoved = copy.blackIsPreviouslyDoubleMoved;
     }
@@ -199,7 +195,7 @@ public final class ChessBoardState {
                         continue;
                     }
 
-                    expandImpl(children, x, y);
+                    expandWhiteMovesImpl(children, x, y);
                 }
             }
         } else { // playerTurn == PlayerTurn.BLACK
@@ -211,7 +207,7 @@ public final class ChessBoardState {
                         continue;
                     }
 
-                    expandImpl(children, x, y);
+                    expandBlackMovesImpl(children, x, y);
                 }
             }    
         }
@@ -239,50 +235,32 @@ public final class ChessBoardState {
         this.blackIsPreviouslyDoubleMoved[x] = true;
     }
     
-    private void expandImpl(final List<ChessBoardState> children,
-                            final int x,
-                            final int y) {
-        
-        final int cell = state[y][x];
+    private void expandWhiteMovesImpl(final List<ChessBoardState> children,
+                                      final int x,
+                                      final int y) {
         
         unmarkAllInitialWhiteDoubleMoveFlags();
+        
+        final int cell = state[y][x];
         
         switch (cell) {
             case WHITE_PAWN:
                 expandImplWhitePawn(children, x, y);
                 break;
                 
-            case BLACK_PAWN:
-                expandImplBlackPawn(children, x, y);
-                break;
-                
-            case WHITE_KING:
-                break;
-                
-            case BLACK_KING:
-                break;
-                
-            case WHITE_QUEEN:
-                break;
-                
-            case BLACK_QUEEN:
-                
             case WHITE_ROOK:
-                break;
-                
-            case BLACK_ROOK:
                 break;
                 
             case WHITE_BISHOP:
                 break;
                 
-            case BLACK_BISHOP:
-                break;
-                
             case WHITE_KNIGHT:
                 break;
                 
-            case BLACK_KNIGHT:
+            case WHITE_QUEEN:
+                break;
+                
+            case WHITE_KING:
                 break;
                 
             default:
@@ -290,22 +268,30 @@ public final class ChessBoardState {
         }
     }
     
+    private void expandBlackMovesImpl(final List<ChessBoardState> children,
+                                      final int x,
+                                      final int y) {
+        throw new UnsupportedOperationException();
+    }
+    
     private void expandImplWhitePawn(final List<ChessBoardState> children,
                                      final int x,
                                      final int y) {
         
-        if (y == 6 && checkWhiteInitialMovePawn(x)
-                   && state[5][x] == EMPTY 
+        if (y == 6 && state[5][x] == EMPTY 
                    && state[4][x] == EMPTY) {
            
             // Once here, can move the white pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
 
-            child.markWhiteInitialMovePawn(x);
+            child.markWhitePawnInitialDoubleMove(x);
+            
             child.state[6][x] = EMPTY; 
             child.state[4][x] = WHITE_PAWN;
             
             children.add(child);
+            
+            this.markWhitePawnInitialDoubleMove(x);
         }
         
         if (y == 3) {
@@ -412,14 +398,13 @@ public final class ChessBoardState {
                                      final int x,
                                      final int y) {
         
-        if (y == 6 && checkBlackInitialMovePawn(x)
-                   && state[2][x] == EMPTY 
+        if (y == 6 && state[2][x] == EMPTY 
                    && state[3][x] == EMPTY) {
             
             // Once here, can move the black pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
-            
-            child.unsetBlackInitialMovePawn(x);
+//            
+//            child.unsetBlackInitialMovePawn(x);
             child.state[2][x] = EMPTY;
             child.state[4][x] = BLACK_PAWN;
         }
@@ -460,46 +445,6 @@ public final class ChessBoardState {
         final ChessBoardState child = new ChessBoardState(state);
         child.state[7][x] = BLACK_QUEEN;
         children.add(child);
-    }
-    
-    /**
-     * Checks that the white pawn on (x + 1)st file can make two moves forward.
-     * 
-     * @param x the file index of the requested white pawn.
-     * 
-     * @return {@code true} iff the white pawn in question has not moved yet.
-     */
-    private boolean checkWhiteInitialMovePawn(final int x) {
-        return whitePawnInitialFlags[x] == false;
-    }
-    
-    /**
-     * Marks that the white pawn at file (x + 1) has moved at least once.
-     * 
-     * @param x the file index of the white pawn.
-     */
-    private void markWhiteInitialMovePawn(final int x) {
-        whitePawnInitialFlags[x] = true;
-    }
-    
-    /**
-     * Checks that the black pawn on (x + 1)st file can make two moves forward.
-     * 
-     * @param x the file index of the requested black pawn.
-     * 
-     * @return {@code true} iff the black pawn in question has not moved yet.
-     */
-    private boolean checkBlackInitialMovePawn(final int x) {
-        return blackPawnInitialFlags[x] == false;
-    }
-    
-    /**
-     * Marks that the black pawn at file (x + 1) has moved at least once.
-     * 
-     * @param x the file index of the black pawn.
-     */
-    private void unsetBlackInitialMovePawn(final int x) {
-        blackPawnInitialFlags[x] = true;
     }
     
     /**
