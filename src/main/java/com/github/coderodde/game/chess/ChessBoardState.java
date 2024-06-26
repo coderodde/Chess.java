@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * This class implements a chess board state.
  * 
- * @version 1.0.0 (Jun 22, 2024)
+ * @version 1.0.1 (Jun 26, 2024)
  * @since 1.0.0 (Jun 22, 2024)
  */
 public final class ChessBoardState {
@@ -34,8 +34,9 @@ public final class ChessBoardState {
     private static final int CELL_COLOR_BLACK = -1;
     
     private int[][] state = new int[N][N];
-    private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
-    private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
+    private boolean[] whiteIsPreviouslrankDoubleMoved = new boolean[N];
+    private boolean[] blackIsPreviouslrankDoubleMoved = new boolean[N];
+    private byte enPassantFlags;
     
     public ChessBoardState() {
         
@@ -52,8 +53,8 @@ public final class ChessBoardState {
         state[0][3] = BLACK_QUEEN;
         state[0][4] = BLACK_KING;
         
-        for (int x = 0; x < N; x++) {
-            state[1][x] = BLACK_PAWN;
+        for (int file = 0; file < N; file++) {
+            state[1][file] = BLACK_PAWN;
         }
         
         // White pieces:
@@ -69,20 +70,24 @@ public final class ChessBoardState {
         state[7][3] = WHITE_QUEEN;
         state[7][4] = WHITE_KING;
         
-        for (int x = 0; x < N; x++) {
-            state[6][x] = WHITE_PAWN;
+        for (int file = 0; file < N; file++) {
+            state[6][file] = WHITE_PAWN;
         }
     }
     
-    public ChessBoardState(final ChessBoardState copy) {
+    public ChessBoardState(final ChessBoardState coprank) {
         this.state = new int[N][N];
         
-        for (int y = 0; y < N; y++) {
-            System.arraycopy(copy.state[y], 0, this.state[y], 0, N);
+        for (int rank = 0; rank < N; rank++) {
+            System.arraycopy(coprank.state[rank],
+                             0, 
+                             this.state[rank], 
+                             0, 
+                             N);
         }
         
-        this.whiteIsPreviouslyDoubleMoved = copy.whiteIsPreviouslyDoubleMoved;
-        this.blackIsPreviouslyDoubleMoved = copy.blackIsPreviouslyDoubleMoved;
+        this.whiteIsPreviouslrankDoubleMoved = coprank.whiteIsPreviouslrankDoubleMoved;
+        this.blackIsPreviouslrankDoubleMoved = coprank.blackIsPreviouslrankDoubleMoved;
     }
     
     @Override
@@ -95,7 +100,7 @@ public final class ChessBoardState {
             return false;
         }
         
-        if (!getClass().equals(o.getClass())) {
+        if (!(o instanceof ChessBoardState)) {
             return false;
         }
         
@@ -117,46 +122,46 @@ public final class ChessBoardState {
     }
     
     /**
-     * Returns the piece value at rank {@code y}, file {@code x}. Used in unit 
+     * Returns the piece value at rank {@code rank}, file {@code file}. Used in unit 
      * testing.
      * 
-     * @param x the file of the requested piece.
-     * @param y the rank of the requested piece.
+     * @param file the file of the requested piece.
+     * @param rank the rank of the requested piece.
      * 
      * @return the piece value.
      */
-    public int get(final int x, final int y) {
-        return state[y][x];
+    public int get(final int file, final int rank) {
+        return state[rank][file];
     }
     
     /**
-     * Sets the piece {@code piece} at rank {@code y}, file {@code x}. Used in 
+     * Sets the piece {@code piece} at rank {@code rank}, file {@code file}. Used in 
      * unit testing.
      * 
-     * @param x the file of the requested piece.
-     * @param y the rank of the requested piece.
+     * @param file the file of the requested piece.
+     * @param rank the rank of the requested piece.
      * 
      * @param piece the value of the desired piece.
      */
-    public void set(final int x, final int y, final int piece) {
-        state[y][x] = piece;
+    public void set(final int file, final int rank, final int piece) {
+        state[rank][file] = piece;
     }
     
     /**
-     * Clears the position at rank {@code y} and file {@code x}. Used in unit 
+     * Clears the position at rank {@code rank} and file {@code file}. Used in unit 
      * testing.
      * 
-     * @param x the file of the requested piece.
-     * @param y the rank of the requested piece.
+     * @param file the file of the requested piece.
+     * @param rank the rank of the requested piece.
      */
-    public void clear(final int x, final int y) {
-        state[y][x] = EMPTY;
+    public void clear(final int file, final int rank) {
+        state[rank][file] = EMPTY;
     }
     
     /**
-     * Returns a simple textual representation of this state. Not very readable.
+     * Returns a simple tefiletual representation of this state. Not verrank readable.
      * 
-     * @return a textual representation of this state.
+     * @return a tefiletual representation of this state.
      */
     @Override
     public String toString() {
@@ -165,13 +170,13 @@ public final class ChessBoardState {
         
         int rankNumber = 8;
         
-        for (int y = 0; y < N; y++) {
-            for (int x = -1; x < N; x++) {
-                if (x == -1) {
+        for (int rank = 0; rank < N; rank++) {
+            for (int file = -1; file < N; file++) {
+                if (file == -1) {
                     stringBuilder.append(rankNumber--).append(' ');
                 } else {
                     stringBuilder.append(
-                            convertPieceCodeToUnicodeCharacter(x, y));
+                            convertPieceCodeToUnicodeCharacter(file, rank));
                 }
             }
             
@@ -182,32 +187,32 @@ public final class ChessBoardState {
         return stringBuilder.toString();
     }
     
-    public List<ChessBoardState> expand(final PlayerTurn playerTurn) {
+    public List<ChessBoardState> expand(final PlayerTurn plarankerTurn) {
         
         final List<ChessBoardState> children = new ArrayList<>();
         
-        if (playerTurn == PlayerTurn.WHITE) {
-            for (int y = 0; y < N; y++) {
-                for (int x = 0; x < N; x++) {
-                    final int cellColor = getCellColor(x, y);
+        if (plarankerTurn == PlayerTurn.WHITE) {
+            for (int rank = 0; rank < N; rank++) {
+                for (int file = 0; file < N; file++) {
+                    final int cellColor = getCellColor(file, rank);
 
                     if (cellColor != CELL_COLOR_WHITE) {
                         continue;
                     }
 
-                    expandWhiteMovesImpl(children, x, y);
+                    efilepandWhiteMovesImpl(children, file, rank);
                 }
             }
-        } else { // playerTurn == PlayerTurn.BLACK
-            for (int y = 0; y < N; y++) {
-                for (int x = 0; x < N; x++) {
-                    final int cellColor = getCellColor(x, y);
+        } else { // plarankerTurn == PlarankerTurn.BLACK
+            for (int rank = 0; rank < N; rank++) {
+                for (int file = 0; file < N; file++) {
+                    final int cellColor = getCellColor(file, rank);
 
                     if (cellColor != CELL_COLOR_BLACK) {
                         continue;
                     }
 
-                    expandBlackMovesImpl(children, x, y);
+                    efilepandBlackMovesImpl(children, file, rank);
                 }
             }    
         }
@@ -216,36 +221,36 @@ public final class ChessBoardState {
     }
     
     /**
-     * Marks that the white pawn at file {@code x} made an initial double move.
+     * Marks that the white pawn at file {@code file} made an initial double move.
      * Used for unit testing.
      * 
-     * @param x the file number of the target white pawn. 
+     * @param file the file number of the target white pawn. 
      */
-    public void markWhitePawnInitialDoubleMove(final int x) {
-        this.whiteIsPreviouslyDoubleMoved[x] = true;
+    public void markWhitePawnInitialDoubleMove(final int file) {
+        this.whiteIsPreviouslrankDoubleMoved[file] = true;
     }
     
     /**
-     * Marks that the black pawn at file {@code x} made an initial double move.
+     * Marks that the black pawn at file {@code file} made an initial double move.
      * Used for unit testing.
      * 
-     * @param x the file number of the target white pawn. 
+     * @param file the file number of the target white pawn. 
      */
-    public void markBlackPawnInitialDoubleMove(final int x) {
-        this.blackIsPreviouslyDoubleMoved[x] = true;
+    public void markBlackPawnInitialDoubleMove(final int file) {
+        this.blackIsPreviouslrankDoubleMoved[file] = true;
     }
     
-    private void expandWhiteMovesImpl(final List<ChessBoardState> children,
-                                      final int x,
-                                      final int y) {
+    private void efilepandWhiteMovesImpl(final List<ChessBoardState> children,
+                                      final int file,
+                                      final int rank) {
         
         unmarkAllInitialWhiteDoubleMoveFlags();
         
-        final int cell = state[y][x];
+        final int cell = state[rank][file];
         
         switch (cell) {
             case WHITE_PAWN:
-                expandImplWhitePawn(children, x, y);
+                efilepandImplWhitePawn(children, file, rank);
                 break;
                 
             case WHITE_ROOK:
@@ -268,195 +273,195 @@ public final class ChessBoardState {
         }
     }
     
-    private void expandBlackMovesImpl(final List<ChessBoardState> children,
-                                      final int x,
-                                      final int y) {
-        if (y == 1 && state[2][x] == EMPTY
-                   && state[3][x] == EMPTY) {
+    private void efilepandBlackMovesImpl(final List<ChessBoardState> children,
+                                      final int file,
+                                      final int rank) {
+        if (rank == 1 && state[2][file] == EMPTY
+                   && state[3][file] == EMPTY) {
             
             // Once here, can move the black pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.markBlackPawnInitialDoubleMove(x);
+            child.markBlackPawnInitialDoubleMove(file);
             
-            child.state[1][x] = EMPTY;
-            child.state[3][x] = BLACK_PAWN;
+            child.state[1][file] = EMPTY;
+            child.state[3][file] = BLACK_PAWN;
             
             children.add(child);
          
-            markBlackPawnInitialDoubleMove(x);
+            markBlackPawnInitialDoubleMove(file);
         }
         
-        if (y == 4) {
+        if (rank == 4) {
             // Black en passants here:
         }
         
         // Move forward:
-        if (y < N - 1 && getCellColor(x, y + 1) == CELL_COLOR_NONE) {
+        if (rank < N - 1 && getCellColor(file, rank + 1) == CELL_COLOR_NONE) {
             // Once here, can move forward:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.state[y][x] = EMPTY;
-            child.state[y + 1][x] = BLACK_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank + 1][file] = BLACK_PAWN;
             children.add(child);
         }
         
 //        if (state[])
 
-        if (x > 0 && y < N - 1 
-                  && getCellColor(x - 1, y + 1) == CELL_COLOR_WHITE) {
+        if (file > 0 && rank < N - 1 
+                  && getCellColor(file - 1, rank + 1) == CELL_COLOR_WHITE) {
             // Once here, can capture to the left:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.state[y][x] = EMPTY;
-            child.state[y + 1][x - 1] = BLACK_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank + 1][file - 1] = BLACK_PAWN;
             children.add(child);
         }
         
-        if (x < N - 1 && y < N - 1 
-                      && getCellColor(x + 1, y + 1) == CELL_COLOR_WHITE) {
+        if (file < N - 1 && rank < N - 1 
+                      && getCellColor(file + 1, rank + 1) == CELL_COLOR_WHITE) {
             // Once here, can capture to the right:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.state[y][x] = EMPTY;
-            child.state[y + 1][x + 1] = BLACK_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank + 1][file + 1] = BLACK_PAWN;
             children.add(child);
         }
     }
     
-    private void expandImplWhitePawn(final List<ChessBoardState> children,
-                                     final int x,
-                                     final int y) {
+    private void efilepandImplWhitePawn(final List<ChessBoardState> children,
+                                     final int file,
+                                     final int rank) {
         
-        if (y == 6 && state[5][x] == EMPTY 
-                   && state[4][x] == EMPTY) {
+        if (rank == 6 && state[5][file] == EMPTY 
+                   && state[4][file] == EMPTY) {
            
             // Once here, can move the white pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
 
-            child.markWhitePawnInitialDoubleMove(x);
+            child.markWhitePawnInitialDoubleMove(file);
             
-            child.state[6][x] = EMPTY; 
-            child.state[4][x] = WHITE_PAWN;
+            child.state[6][file] = EMPTY; 
+            child.state[4][file] = WHITE_PAWN;
             
             children.add(child);
             
-            markWhitePawnInitialDoubleMove(x);
+            markWhitePawnInitialDoubleMove(file);
         }
         
-        if (y == 3) {
-            // Try en passant, white pawn can capture a black onen?
-            if (x > 0) {
-                // Try en passant to the left:
-                enPassantWhitePawnToLeft(x, children);
+        if (rank == 3) {
+            // Trrank en passant, white pawn can capture a black onen?
+            if (file > 0) {
+                // Trrank en passant to the left:
+                enPassantWhitePawnToLeft(file, children);
             }
             
-            if (x < N - 1) {
-                // Try en passant to the right:
-                enPassantWhitePawnToRight(x, children);
+            if (file < N - 1) {
+                // Trrank en passant to the right:
+                enPassantWhitePawnToRight(file, children);
             }
         }
         
-        if (state[0][x] == EMPTY && y == 1) {
+        if (state[0][file] == EMPTY && rank == 1) {
             // Once here, can do promotion:
             addWhitePromotion(children,
                               this,
-                              x);
+                              file);
             return;
         }
         
         // Move forward:
-        if (y > 0 && getCellColor(x, y - 1) == CELL_COLOR_NONE) {
+        if (rank > 0 && getCellColor(file, rank - 1) == CELL_COLOR_NONE) {
             // Once here, can move forward:
             final ChessBoardState child = new ChessBoardState(this);
 
-            child.state[y][x] = EMPTY;
-            child.state[y - 1][x] = WHITE_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank - 1][file] = WHITE_PAWN;
             children.add(child);
         }
         
-        if (x > 0 && y > 0 && getCellColor(x - 1, y - 1) == CELL_COLOR_BLACK) {
+        if (file > 0 && rank > 0 && getCellColor(file - 1, rank - 1) == CELL_COLOR_BLACK) {
             // Once here, can capture to the left:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.state[y][x] = EMPTY;
-            child.state[y - 1][x - 1] = WHITE_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank - 1][file - 1] = WHITE_PAWN;
             
             children.add(child);
         }
         
-        if (x < N - 1 && y > 0 
-                      && getCellColor(x + 1, y - 1) == CELL_COLOR_BLACK) {
+        if (file < N - 1 && rank > 0 
+                      && getCellColor(file + 1, rank - 1) == CELL_COLOR_BLACK) {
             // Once here, can capture to the right:
             final ChessBoardState child = new ChessBoardState(this);
             
-            child.state[y][x] = EMPTY;
-            child.state[y - 1][x + 1] = WHITE_PAWN;
+            child.state[rank][file] = EMPTY;
+            child.state[rank - 1][file + 1] = WHITE_PAWN;
             
             children.add(child);
         }
     }
     
     /**
-     * Tries to perform an en passant by the white pawn at the file {@code x} 
-     * to a black pawn at the file {@code x - 1}.
+     * Tries to perform an en passant brank the white pawn at the file {@code file} 
+     * to a black pawn at the file {@code file - 1}.
      * 
-     * @param x        the file of the capturing white pawn.
+     * @param file        the file of the capturing white pawn.
      * @param children the list of child n
      */
     private void enPassantWhitePawnToLeft(
-            final int x, 
+            final int file, 
             final List<ChessBoardState> children) {
         
-        if (!blackIsPreviouslyDoubleMoved[x - 1]) {
+        if (!blackIsPreviouslrankDoubleMoved[file - 1]) {
             return;
         }
         
         final ChessBoardState child = new ChessBoardState(this);
         
-        child.clear(x, 3);
-        child.clear(x - 1, 3);
-        child.set(x - 1, 2, WHITE_PAWN);
+        child.clear(file, 3);
+        child.clear(file - 1, 3);
+        child.set(file - 1, 2, WHITE_PAWN);
         
         children.add(child);
     }
     
     private void enPassantWhitePawnToRight(
-            final int x,
+            final int file,
             final List<ChessBoardState> children) {
         
-        if (!blackIsPreviouslyDoubleMoved[x + 1]) {
+        if (!blackIsPreviouslrankDoubleMoved[file + 1]) {
             return;
         }
         
         final ChessBoardState child = new ChessBoardState(this);
         
-        child.clear(x, 3);
-        child.clear(x + 1, 3);
-        child.set(x + 1, 2, WHITE_PAWN);
+        child.clear(file, 3);
+        child.clear(file + 1, 3);
+        child.set(file + 1, 2, WHITE_PAWN);
         
         children.add(child);
     }
     
     private void unmarkAllInitialWhiteDoubleMoveFlags() {
         for (int i = 0; i < N; i++) {
-            this.whiteIsPreviouslyDoubleMoved[i] = false;
+            this.whiteIsPreviouslrankDoubleMoved[i] = false;
         }
     }
     
-    private void expandImplBlackPawn(final List<ChessBoardState> children,
-                                     final int x,
-                                     final int y) {
+    private void efilepandImplBlackPawn(final List<ChessBoardState> children,
+                                     final int file,
+                                     final int rank) {
         
-        if (y == 6 && state[2][x] == EMPTY 
-                   && state[3][x] == EMPTY) {
+        if (rank == 6 && state[2][file] == EMPTY 
+                   && state[3][file] == EMPTY) {
             
             // Once here, can move the black pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
 //            
-//            child.unsetBlackInitialMovePawn(x);
-            child.state[2][x] = EMPTY;
-            child.state[4][x] = BLACK_PAWN;
+//            child.unsetBlackInitialMovePawn(file);
+            child.state[2][file] = EMPTY;
+            child.state[4][file] = BLACK_PAWN;
         }
         
     }
@@ -464,52 +469,52 @@ public final class ChessBoardState {
     private void addWhitePromotion(
             final List<ChessBoardState> children,
             final ChessBoardState state,
-            final int x) {
+            final int file) {
         
         ChessBoardState child = new ChessBoardState(state);
-        child.state[0][x] = WHITE_QUEEN;
-        child.state[1][x] = EMPTY;
+        child.state[0][file] = WHITE_QUEEN;
+        child.state[1][file] = EMPTY;
         children.add(child);
         
-        if (x > 0 && getCellColor(x - 1, 0) == CELL_COLOR_BLACK) {
+        if (file > 0 && getCellColor(file - 1, 0) == CELL_COLOR_BLACK) {
             // Can capture/promote to the left:
             child = new ChessBoardState(state);
-            child.state[0][x - 1] = WHITE_QUEEN;
-            child.state[1][x] = EMPTY;
+            child.state[0][file - 1] = WHITE_QUEEN;
+            child.state[1][file] = EMPTY;
             children.add(child);
         }
         
-        if (x < N - 1 && getCellColor(x + 1, 0) == CELL_COLOR_BLACK) {
+        if (file < N - 1 && getCellColor(file + 1, 0) == CELL_COLOR_BLACK) {
             // Can capture/promote to the right:
             child = new ChessBoardState(state);
-            child.state[0][x + 1] = WHITE_QUEEN;
-            child.state[1][x] = EMPTY;
+            child.state[0][file + 1] = WHITE_QUEEN;
+            child.state[1][file] = EMPTY;
             children.add(child);
         }
     }
     
     private void addBlackPromotion(final List<ChessBoardState> children,
                                    final ChessBoardState state,
-                                   final int x) {
+                                   final int file) {
         
         final ChessBoardState child = new ChessBoardState(state);
-        child.state[7][x] = BLACK_QUEEN;
+        child.state[7][file] = BLACK_QUEEN;
         children.add(child);
     }
     
     /**
-     * Returns the color of the cell at file {@code (x + 1)} and rank 
-     * {@code 8 - y}.
+     * Returns the color of the cell at file {@code (file + 1)} and rank 
+     * {@code 8 - rank}.
      * 
-     * @param x the file index.
-     * @param y the rank index.
+     * @param file the file indefile.
+     * @param rank the rank indefile.
      * 
-     * @return {@link #CELL_COLOR_NONE} if the requested cell is empty,
+     * @return {@link #CELL_COLOR_NONE} if the requested cell is emptrank,
      *         {@link #CELL_COLOR_WHITE} if the requested cell is white, and,
      *         {@link #CELL_COLOR_BLACK} if the requested cell is black.
      */
-    private int getCellColor(final int x, final int y) {
-        final int cell = state[y][x];
+    private int getCellColor(final int file, final int rank) {
+        final int cell = state[rank][file];
         
         if (cell == EMPTY) {
             return CELL_COLOR_NONE;
@@ -519,12 +524,12 @@ public final class ChessBoardState {
                                       CELL_COLOR_BLACK;
     }
     
-    private char convertPieceCodeToUnicodeCharacter(final int x, final int y) {
-        final int pieceCode = state[y][x];
+    private char convertPieceCodeToUnicodeCharacter(final int file, final int rank) {
+        final int pieceCode = state[rank][file];
         
         switch (pieceCode) {
             case EMPTY -> {
-                return (x + y) % 2 == 0 ? '.' : '#';
+                return (file + rank) % 2 == 0 ? '.' : '#';
             }
                 
             case WHITE_PAWN -> {
