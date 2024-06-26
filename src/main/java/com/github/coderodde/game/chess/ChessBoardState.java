@@ -187,38 +187,6 @@ public final class ChessBoardState {
         return stringBuilder.toString();
     }
     
-    public List<ChessBoardState> expand(final PlayerTurn plarankerTurn) {
-        
-        final List<ChessBoardState> children = new ArrayList<>();
-        
-        if (plarankerTurn == PlayerTurn.WHITE) {
-            for (int rank = 0; rank < N; rank++) {
-                for (int file = 0; file < N; file++) {
-                    final int cellColor = getCellColor(file, rank);
-
-                    if (cellColor != CELL_COLOR_WHITE) {
-                        continue;
-                    }
-
-                    efilepandWhiteMovesImpl(children, file, rank);
-                }
-            }
-        } else { // plarankerTurn == PlarankerTurn.BLACK
-            for (int rank = 0; rank < N; rank++) {
-                for (int file = 0; file < N; file++) {
-                    final int cellColor = getCellColor(file, rank);
-
-                    if (cellColor != CELL_COLOR_BLACK) {
-                        continue;
-                    }
-
-                    efilepandBlackMovesImpl(children, file, rank);
-                }
-            }    
-        }
-        
-        return children;
-    }
     
     /**
      * Marks that the white pawn at file {@code file} made an initial double move.
@@ -240,7 +208,7 @@ public final class ChessBoardState {
         this.blackIsPreviouslrankDoubleMoved[file] = true;
     }
     
-    private void efilepandWhiteMovesImpl(final List<ChessBoardState> children,
+    private void expandWhiteMovesImpl(final List<ChessBoardState> children,
                                       final int file,
                                       final int rank) {
         
@@ -250,7 +218,7 @@ public final class ChessBoardState {
         
         switch (cell) {
             case WHITE_PAWN:
-                efilepandImplWhitePawn(children, file, rank);
+                expandImplWhitePawn(children, file, rank);
                 break;
                 
             case WHITE_ROOK:
@@ -273,11 +241,11 @@ public final class ChessBoardState {
         }
     }
     
-    private void efilepandBlackMovesImpl(final List<ChessBoardState> children,
+    private void expandBlackMovesImpl(final List<ChessBoardState> children,
                                       final int file,
                                       final int rank) {
         if (rank == 1 && state[2][file] == EMPTY
-                   && state[3][file] == EMPTY) {
+                      && state[3][file] == EMPTY) {
             
             // Once here, can move the black pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
@@ -329,7 +297,7 @@ public final class ChessBoardState {
         }
     }
     
-    private void efilepandImplWhitePawn(final List<ChessBoardState> children,
+    private void expandImplWhitePawn(final List<ChessBoardState> children,
                                      final int file,
                                      final int rank) {
         
