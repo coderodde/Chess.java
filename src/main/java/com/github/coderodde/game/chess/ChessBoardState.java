@@ -289,6 +289,22 @@ public final class ChessBoardState {
         }
     }
     
+    public CellType getCellColor(final int file, final int rank) {
+        final Piece piece = state[rank][file];
+        
+        if (piece == null) {
+            return CellType.EMPTY;
+        }
+        
+        return (state[])
+        
+        if (state[rank][file] == null) {
+            return CellType.EMPTY;
+        }
+        
+        return (state[rank][file].getPieceCodeBits() & (PieceColor.WHITE.getPieceColorCodeBits()) != 0;
+    }
+    
     private void expandImplWhitePawn(final List<ChessBoardState> children,
                                      final int file,
                                      final int rank) {

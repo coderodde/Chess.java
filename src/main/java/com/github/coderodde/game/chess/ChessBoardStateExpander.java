@@ -13,11 +13,11 @@ public interface ChessBoardStateExpander {
     /**
      * Generates all child states of {@code root}.
      * 
-     * @param state the game state root to expand.
-     * @param piece the piece to move.
-     * 
-     * @return all children. 
+     * @param state    the game state root to expand.
+     * @param piece    the piece to move.
+     * @param children the list of child states generated so far.
      */
-    public List<ChessBoardState> expand(final ChessBoardState state,
-                                        final Piece piece);
+    public void expand(final ChessBoardState state,
+                       final Piece piece,
+                       final List<ChessBoardState> children);
 }

@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,23 +14,26 @@ public final class Piece {
     
     private static final byte EMPTY = 0;
     
-    public static final byte WHITE_PAWN = (byte) 0b01000000 | 0b00000001;
-    private static final byte BLACK_PAWN = (byte) 0b10000000 | 0b00000001;
+    private static final byte WHITE_COLOR = (byte) 0b01000000;
+    private static final byte BLACK_COLOR = (byte) 0b10000000;
     
-    private static final byte WHITE_BISHOP = (byte) 0b01000000 | 0b00000010;
-    private static final byte BLACK_BISHOP = (byte) 0b10000000 | 0b00000010;
+    public static final byte WHITE_PAWN = (byte) WHITE_COLOR | 0b00000001;
+    private static final byte BLACK_PAWN = (byte) BLACK_COLOR | 0b00000001;
     
-    private static final byte WHITE_KNIGHT = (byte) 0b01000000 | 0b00000100;
-    private static final byte BLACK_KNIGHT = (byte) 0b10000000 | 0b00000100;
+    private static final byte WHITE_BISHOP = (byte) WHITE_COLOR | 0b00000010;
+    private static final byte BLACK_BISHOP = (byte) BLACK_COLOR | 0b00000010;
     
-    private static final byte WHITE_ROOK = (byte) 0b01000000 | 0b00001000;
-    private static final byte BLACK_ROOK = (byte) 0b10000000 | 0b00001000;
+    private static final byte WHITE_KNIGHT = (byte) WHITE_COLOR | 0b00000100;
+    private static final byte BLACK_KNIGHT = (byte) BLACK_COLOR | 0b00000100;
     
-    private static final byte WHITE_QUEEN = (byte) 0b01000000 | 0b00010000;
-    private static final byte BLACK_QUEEN = (byte) 0b10000000 | 0b00010000;
+    private static final byte WHITE_ROOK = (byte) WHITE_COLOR | 0b00001000;
+    private static final byte BLACK_ROOK = (byte) BLACK_COLOR | 0b00001000;
     
-    private static final byte WHITE_KING = (byte) 0b01000000 | 0b00100000;
-    private static final byte BLACK_KING = (byte) 0b10000000 | 0b00100000;
+    private static final byte WHITE_QUEEN = (byte) WHITE_COLOR | 0b00010000;
+    private static final byte BLACK_QUEEN = (byte) BLACK_COLOR | 0b00010000;
+    
+    private static final byte WHITE_KING = (byte) WHITE_COLOR | 0b00100000;
+    private static final byte BLACK_KING = (byte) BLACK_COLOR | 0b00100000;
            
     private final PieceColor pieceColor;
     private final PieceType pieceType;
@@ -83,8 +87,18 @@ public final class Piece {
                       pieceType.getPieceTypeCodeBits());
     }
     
+    public boolean isWhite() {
+        return (byte)(pieceColor.getPieceColorCodeBits() & WHITE_COLOR) != 0;
+    }
+    
+    public boolean isBlack() {
+        return (byte)(pieceColor.getPieceColorCodeBits() & BLACK_COLOR) != 0;
+    }
+    
     public List<ChessBoardState> expand(final ChessBoardState state) {
-        return expander.expand(state, this);
+        final List<ChessBoardState> children = new ArrayList<>();
+        expander.expand(state, this, children);
+        return children;
     }
     
     public PlayerTurn getPlayerTurn() {

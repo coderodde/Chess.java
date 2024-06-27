@@ -19,14 +19,14 @@ public final class WhitePawnExpander implements ChessBoardStateExpander {
     private static final int INITIAL_WHITE_PAWN_RANK = 6;
     private static final int INITIAL_WHITE_PAWN_MOVE_1_RANK = 5;
     private static final int INITIAL_WHITE_PAWN_MOVE_2_RANK = 4;
-    private static final int EN_PASSANT_RANK = 3;
+    private static final int EN_PASSANT_SOURCE_RANK = 3;
+    private static final int EN_PASSANT_TARGET_RANK = 2;
     
     @Override
-    public List<ChessBoardState> expand(final ChessBoardState root, 
-                                        final Piece piece) {
+    public void expand(final ChessBoardState root, 
+                       final Piece piece,
+                       final List<ChessBoardState> children) {
         
-        final PlayerTurn playerTurn = piece.getPlayerTurn();
-        final List<ChessBoardState> children = new ArrayList<>();
         final int pieceFile = piece.getFile();
      
         if (piece.getRank() == INITIAL_WHITE_PAWN_RANK 
@@ -45,28 +45,53 @@ public final class WhitePawnExpander implements ChessBoardStateExpander {
             children.add(child);
         }
         
-        if (piece.getRank() == EN_PASSANT_RANK) {
+        if (piece.getRank() == EN_PASSANT_SOURCE_RANK) {
             if (pieceFile > 0) {
                 // Try en passant to the left:
-                tryEnPassantToLeft(pieceFile, children);
+                tryEnPassantToLeft(root, piece, children);
             }
             
             if (pieceFile < N - 1) {
                 // Try en passant to the right:
-                tryEnPassantToRight(pieceFile, children);
+                tryEnPassantToRight(root, piece, children);
             }
         }
         
-        return children;
+        final int pieceRank = piece.getRank();
+        
+        if (pieceRank > 1 && root.getCellColor(pieceFile, pieceRight) == )
     }
     
-    private void tryEnPassantToLeft(final int pieceFile, 
+    private void tryEnPassantToLeft(final ChessBoardState root,
+                                    final Piece piece, 
                                     final List<ChessBoardState> children) {
+        if (!root.getBlackIsPreviouslyDoubleMoved()[piece.getFile()]) {
+            return;
+        }
         
+        final ChessBoardState child = new ChessBoardState(root);
+        final int file = piece.getFile();
+        
+        child.clear(file, EN_PASSANT_SOURCE_RANK);
+        child.clear(file - 1, EN_PASSANT_SOURCE_RANK);
+        child.set(file - 1, EN_PASSANT_TARGET_RANK, piece);
+        
+        children.add(child);
     }
     
-    private void tryEnPassantToRight(final int pieceFile, 
+    private void tryEnPassantToRight(final ChessBoardState root,
+                                     final Piece piece, 
                                      final List<ChessBoardState> children) {
+        if (!root.getBlackIsPreviouslyDoubleMoved()[piece.getFile()]) {
+            return;
+        }
         
+        final ChessBoardState child = new ChessBoardState(root);
+        final int file = piece.getFile();
+        
+        child.clear(file, EN_PASSANT_SOURCE_RANK);
+        child.clear(file + 1, EN_PASSANT_SOURCE_RANK);
+        
+        children.add(child);
     }
 }
