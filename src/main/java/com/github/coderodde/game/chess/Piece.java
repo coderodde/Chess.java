@@ -1,18 +1,5 @@
 package com.github.coderodde.game.chess;
 
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_BISHOP;
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_KING;
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_KNIGHT;
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_PAWN;
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_QUEEN;
-import static com.github.coderodde.game.chess.ChessBoardState.BLACK_ROOK;
-import static com.github.coderodde.game.chess.ChessBoardState.EMPTY;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_BISHOP;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_KING;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_KNIGHT;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_PAWN;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_QUEEN;
-import static com.github.coderodde.game.chess.ChessBoardState.WHITE_ROOK;
 import java.util.List;
 
 /**
@@ -24,6 +11,26 @@ import java.util.List;
  */
 public final class Piece {
     
+    private static final byte EMPTY = 0;
+    
+    public static final byte WHITE_PAWN = (byte) 0b01000000 | 0b00000001;
+    private static final byte BLACK_PAWN = (byte) 0b10000000 | 0b00000001;
+    
+    private static final byte WHITE_BISHOP = (byte) 0b01000000 | 0b00000010;
+    private static final byte BLACK_BISHOP = (byte) 0b10000000 | 0b00000010;
+    
+    private static final byte WHITE_KNIGHT = (byte) 0b01000000 | 0b00000100;
+    private static final byte BLACK_KNIGHT = (byte) 0b10000000 | 0b00000100;
+    
+    private static final byte WHITE_ROOK = (byte) 0b01000000 | 0b00001000;
+    private static final byte BLACK_ROOK = (byte) 0b10000000 | 0b00001000;
+    
+    private static final byte WHITE_QUEEN = (byte) 0b01000000 | 0b00010000;
+    private static final byte BLACK_QUEEN = (byte) 0b10000000 | 0b00010000;
+    
+    private static final byte WHITE_KING = (byte) 0b01000000 | 0b00100000;
+    private static final byte BLACK_KING = (byte) 0b10000000 | 0b00100000;
+           
     private final PieceColor pieceColor;
     private final PieceType pieceType;
     private int rank;
@@ -40,6 +47,30 @@ public final class Piece {
         this.rank = rank;
         this.file = file;
         this.expander = expander;
+    }
+    
+    public Piece(final Piece other,
+                 final int file, 
+                 final int rank, 
+                 final ChessBoardStateExpander expander) {
+        
+        this.pieceColor = other.pieceColor;
+        this.pieceType = other.pieceType;
+        this.rank = rank;
+        this.file = file;
+        this.expander = expander;
+    }
+    
+    public int getFile() {
+        return file;
+    }
+    
+    public int getRank() {
+        return rank;
+    }
+    
+    public ChessBoardStateExpander getChessBoardStateExpander() {
+        return expander;
     }
     
     public void moveTo(final int file, final int rank) {
@@ -74,62 +105,26 @@ public final class Piece {
     
     @Override
     public String toString() {
-        final byte pieceCode = this.getPieceCodeBits();
+        final byte pieceCode = getPieceCodeBits();
         
         return switch (pieceCode) {
-            case EMPTY -> (file + rank) 
-                return (file + rank) % 2 == 0 ? '.' : '#';
-            }
+            case EMPTY        -> (file + rank) % 2 == 0 ? "." : "#";
                 
-            case WHITE_PAWN -> {
-                return 'P';
-            }
+            case WHITE_PAWN   -> "P";
+            case WHITE_KNIGHT -> "K";
+            case WHITE_BISHOP -> "B";
+            case WHITE_ROOK   -> "R";
+            case WHITE_QUEEN  -> "Q";
+            case WHITE_KING   -> "X";
                 
-            case WHITE_KNIGHT -> {
-                return 'K';
-            }
-                
-            case WHITE_BISHOP -> {
-                return 'B';
-            }
-                
-            case WHITE_ROOK -> {
-                return 'R';
-            }
-                
-            case WHITE_QUEEN -> {
-                return 'Q';
-            }
-                
-            case WHITE_KING -> {
-                return 'X';
-            }
-                
-            case BLACK_PAWN -> {
-                return 'p';
-            }
-                
-            case BLACK_KNIGHT -> {
-                return 'k';
-            }
-                
-            case BLACK_BISHOP -> {
-                return 'b';
-            }
-                
-            case BLACK_ROOK -> {
-                return 'r';
-            }
-                
-            case BLACK_QUEEN -> {
-                return 'q';
-            }
-                
-            case BLACK_KING -> {
-                return 'x';
-            }
+            case BLACK_PAWN   -> "p";
+            case BLACK_KNIGHT -> "k";
+            case BLACK_BISHOP -> "b";
+            case BLACK_ROOK   -> "r";
+            case BLACK_QUEEN  -> "q";
+            case BLACK_KING   -> "x";
                 
             default -> throw new IllegalStateException("Should not get here.");
-        }
+        };
     }
 }

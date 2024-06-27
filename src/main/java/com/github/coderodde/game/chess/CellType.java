@@ -12,5 +12,4 @@ public enum CellType {
     WHITE,
     BLACK;
     
-    
 }

@@ -1,7 +1,6 @@
 package com.github.coderodde.game.chess;
 
 import com.github.coderodde.game.chess.impl.WhitePawnExpander;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,28 +14,28 @@ public final class ChessBoardState {
     
     public static final int N = 8;
     
-    public static final int EMPTY        = 0;
-    public static final int WHITE_PAWN   = 1;
-    public static final int WHITE_BISHOP = 2;
-    public static final int WHITE_KNIGHT = 3;
-    public static final int WHITE_ROOK   = 4;
-    public static final int WHITE_QUEEN  = 5;
-    public static final int WHITE_KING   = 6;
- 
-    public static final int BLACK_PAWN   = 9;
-    public static final int BLACK_BISHOP = 10;
-    public static final int BLACK_KNIGHT = 11;
-    public static final int BLACK_ROOK   = 12;
-    public static final int BLACK_QUEEN  = 13;
-    public static final int BLACK_KING   = 14;
+//    public static final int EMPTY        = 0;
+//    public static final int WHITE_PAWN   = 1;
+//    public static final int WHITE_BISHOP = 2;
+//    public static final int WHITE_KNIGHT = 3;
+//    public static final int WHITE_ROOK   = 4;
+//    public static final int WHITE_QUEEN  = 5;
+//    public static final int WHITE_KING   = 6;
+// 
+//    public static final int BLACK_PAWN   = 9;
+//    public static final int BLACK_BISHOP = 10;
+//    public static final int BLACK_KNIGHT = 11;
+//    public static final int BLACK_ROOK   = 12;
+//    public static final int BLACK_QUEEN  = 13;
+//    public static final int BLACK_KING   = 14;
     
     private static final int CELL_COLOR_NONE  = 0;
     private static final int CELL_COLOR_WHITE = +1;
     private static final int CELL_COLOR_BLACK = -1;
     
     private Piece[][] state = new Piece[N][N];
-    private boolean[] whiteIsPreviouslrankDoubleMoved = new boolean[N];
-    private boolean[] blackIsPreviouslrankDoubleMoved = new boolean[N];
+    private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
+    private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
     private byte enPassantFlags;
     
     public ChessBoardState() {
@@ -88,18 +87,26 @@ public final class ChessBoardState {
         this.state = new Piece[N][N];
         
         for (int rank = 0; rank < N; rank++) {
-            System.arraycopy(copy.state[rank],
-                             0, 
-                             this.state[rank], 
-                             0, 
-                             N);
+            for (int file = 0; file < N; file++) {
+                if (this.state[rank][file] == null) {
+                    continue;
+                }
+                
+                this.state[rank][file] = 
+                        new Piece(
+                                copy.state[rank][file], 
+                                file, 
+                                rank, 
+                                copy.state[rank]
+                                          [file].getChessBoardStateExpander());
+            }
         }
         
-        this.whiteIsPreviouslrankDoubleMoved = 
-                copy.whiteIsPreviouslrankDoubleMoved;
+        this.whiteIsPreviouslyDoubleMoved = 
+                copy.whiteIsPreviouslyDoubleMoved;
         
-        this.blackIsPreviouslrankDoubleMoved = 
-                copy.blackIsPreviouslrankDoubleMoved;
+        this.blackIsPreviouslyDoubleMoved = 
+                copy.blackIsPreviouslyDoubleMoved;
     }
     
     @Override
@@ -169,6 +176,14 @@ public final class ChessBoardState {
         state[rank][file] = null;
     }
     
+    public boolean[] getWhiteIsPreviouslyDoubleMoved() {
+        return whiteIsPreviouslyDoubleMoved;
+    }
+    
+    public boolean[] getBlackIsPreviouslyDoubleMoved() {
+        return blackIsPreviouslyDoubleMoved;
+    }
+    
     /**
      * Returns a simple tefiletual representation of this state. Not verrank readable.
      * 
@@ -205,7 +220,7 @@ public final class ChessBoardState {
      * @param file the file number of the target white pawn. 
      */
     public void markWhitePawnInitialDoubleMove(final int file) {
-        this.whiteIsPreviouslrankDoubleMoved[file] = true;
+        this.whiteIsPreviouslyDoubleMoved[file] = true;
     }
     
     /**
@@ -215,42 +230,9 @@ public final class ChessBoardState {
      * @param file the file number of the target white pawn. 
      */
     public void markBlackPawnInitialDoubleMove(final int file) {
-        this.blackIsPreviouslrankDoubleMoved[file] = true;
+        this.blackIsPreviouslyDoubleMoved[file] = true;
     }
-    
-    private void expandWhiteMovesImpl(final List<ChessBoardState> children,
-                                      final int file,
-                                      final int rank) {
-        
-        unmarkAllInitialWhiteDoubleMoveFlags();
-        
-        final int cell = state[rank][file];
-        
-        switch (cell) {
-            case WHITE_PAWN:
-                expandImplWhitePawn(children, file, rank);
-                break;
-                
-            case WHITE_ROOK:
-                break;
-                
-            case WHITE_BISHOP:
-                break;
-                
-            case WHITE_KNIGHT:
-                break;
-                
-            case WHITE_QUEEN:
-                break;
-                
-            case WHITE_KING:
-                break;
-                
-            default:
-                throw new IllegalStateException("Should not get here.");
-        }
-    }
-    
+     
     private void expandBlackMovesImpl(final List<ChessBoardState> children,
                                       final int file,
                                       final int rank) {
@@ -311,15 +293,15 @@ public final class ChessBoardState {
                                      final int file,
                                      final int rank) {
         
-        if (rank == 6 && state[5][file] == EMPTY 
-                   && state[4][file] == EMPTY) {
+        if (rank == 6 && state[5][file] == null 
+                      && state[4][file] == null) {
            
             // Once here, can move the white pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(this);
 
             child.markWhitePawnInitialDoubleMove(file);
             
-            child.state[6][file] = EMPTY; 
+            child.state[6][file] = null; 
             child.state[4][file] = WHITE_PAWN;
             
             children.add(child);
@@ -328,7 +310,7 @@ public final class ChessBoardState {
         }
         
         if (rank == 3) {
-            // Trrank en passant, white pawn can capture a black onen?
+            // Try en passant, white pawn can capture a black onen?
             if (file > 0) {
                 // Trrank en passant to the left:
                 enPassantWhitePawnToLeft(file, children);
@@ -391,7 +373,7 @@ public final class ChessBoardState {
             final int file, 
             final List<ChessBoardState> children) {
         
-        if (!blackIsPreviouslrankDoubleMoved[file - 1]) {
+        if (!blackIsPreviouslyDoubleMoved[file - 1]) {
             return;
         }
         
@@ -408,7 +390,7 @@ public final class ChessBoardState {
             final int file,
             final List<ChessBoardState> children) {
         
-        if (!blackIsPreviouslrankDoubleMoved[file + 1]) {
+        if (!blackIsPreviouslyDoubleMoved[file + 1]) {
             return;
         }
         
@@ -503,7 +485,7 @@ public final class ChessBoardState {
     }
     
     private char convertPieceCodeToUnicodeCharacter(final int file, final int rank) {
-        final int pieceCode = state[rank][file];
+        final byte pieceCode = state[rank][file].getPieceCodeBits();
         
         switch (pieceCode) {
             case EMPTY -> {
