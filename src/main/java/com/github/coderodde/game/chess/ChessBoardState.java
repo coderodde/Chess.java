@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess;
 
+import com.github.coderodde.game.chess.impl.WhitePawnExpander;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public final class ChessBoardState {
     
-    private static final int N = 8;
+    public static final int N = 8;
     
     public static final int EMPTY        = 0;
     public static final int WHITE_PAWN   = 1;
@@ -33,7 +34,7 @@ public final class ChessBoardState {
     private static final int CELL_COLOR_WHITE = +1;
     private static final int CELL_COLOR_BLACK = -1;
     
-    private int[][] state = new int[N][N];
+    private Piece[][] state = new Piece[N][N];
     private boolean[] whiteIsPreviouslrankDoubleMoved = new boolean[N];
     private boolean[] blackIsPreviouslrankDoubleMoved = new boolean[N];
     private byte enPassantFlags;
@@ -41,53 +42,64 @@ public final class ChessBoardState {
     public ChessBoardState() {
         
         // Black pieces:
-        state[0][0] =
-        state[0][7] = BLACK_ROOK;
+        state[0][0] = new Piece(PieceColor.BLACK, PieceType.ROOK, 0, 0, null);
+        state[0][7] = new Piece(PieceColor.BLACK, PieceType.ROOK, 7, 0, null);
   
-        state[0][1] = 
-        state[0][6] = BLACK_KNIGHT;
+        state[0][1] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, 1, 0, null);
+        state[0][6] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, 6, 0, null);
         
-        state[0][2] = 
-        state[0][5] = BLACK_BISHOP;
+        state[0][2] = new Piece(PieceColor.BLACK, PieceType.BISHOP, 2, 0, null);
+        state[0][5] = new Piece(PieceColor.BLACK, PieceType.BISHOP, 5, 0, null);
   
-        state[0][3] = BLACK_QUEEN;
-        state[0][4] = BLACK_KING;
+        state[0][3] = new Piece(PieceColor.BLACK, PieceType.QUEEN, 3, 0, null);
+        state[0][4] = new Piece(PieceColor.BLACK, PieceType.KING, 4, 0, null);
         
         for (int file = 0; file < N; file++) {
-            state[1][file] = BLACK_PAWN;
+            state[1][file] = new Piece(PieceColor.BLACK,
+                                       PieceType.PAWN,
+                                       file,
+                                       1,
+                                       new WhitePawnExpander());
         }
         
         // White pieces:
-        state[7][0] =
-        state[7][7] = WHITE_ROOK;
+        state[7][0] = new Piece(PieceColor.WHITE, PieceType.ROOK, 0, 7, null);
+        state[7][7] = new Piece(PieceColor.WHITE, PieceType.ROOK, 7, 7, null);
   
-        state[7][1] = 
-        state[7][6] = WHITE_KNIGHT;
+        state[7][1] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, 1, 7, null);
+        state[7][6] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, 6, 7, null);
         
-        state[7][2] = 
-        state[7][5] = WHITE_BISHOP;
+        state[7][2] = new Piece(PieceColor.WHITE, PieceType.BISHOP, 2, 7, null);
+        state[7][5] = new Piece(PieceColor.WHITE, PieceType.BISHOP, 5, 7, null);
         
-        state[7][3] = WHITE_QUEEN;
-        state[7][4] = WHITE_KING;
+        state[7][3] = new Piece(PieceColor.WHITE, PieceType.QUEEN, 3, 7, null);
+        state[7][4] = new Piece(PieceColor.WHITE, PieceType.KING, 4, 7, null);
         
         for (int file = 0; file < N; file++) {
-            state[6][file] = WHITE_PAWN;
+            state[6][file] = new Piece(PieceColor.WHITE,
+                                       PieceType.PAWN,
+                                       file,
+                                       6,
+                                       null);
         }
     }
     
-    public ChessBoardState(final ChessBoardState coprank) {
-        this.state = new int[N][N];
+    public ChessBoardState(final ChessBoardState copy) {
+        this.state = new Piece[N][N];
         
         for (int rank = 0; rank < N; rank++) {
-            System.arraycopy(coprank.state[rank],
+            System.arraycopy(copy.state[rank],
                              0, 
                              this.state[rank], 
                              0, 
                              N);
         }
         
-        this.whiteIsPreviouslrankDoubleMoved = coprank.whiteIsPreviouslrankDoubleMoved;
-        this.blackIsPreviouslrankDoubleMoved = coprank.blackIsPreviouslrankDoubleMoved;
+        this.whiteIsPreviouslrankDoubleMoved = 
+                copy.whiteIsPreviouslrankDoubleMoved;
+        
+        this.blackIsPreviouslrankDoubleMoved = 
+                copy.blackIsPreviouslrankDoubleMoved;
     }
     
     @Override
@@ -118,19 +130,19 @@ public final class ChessBoardState {
      * Clears the entire board. Used in unit testing.
      */
     public void clear() {
-        this.state = new int[N][N];
+        this.state = new Piece[N][N];
     }
     
     /**
-     * Returns the piece value at rank {@code rank}, file {@code file}. Used in unit 
-     * testing.
+     * Returns the piece value at rank {@code rank}, file {@code file}. Used in 
+     * unit testing.
      * 
      * @param file the file of the requested piece.
      * @param rank the rank of the requested piece.
      * 
-     * @return the piece value.
+     * @return the piece.
      */
-    public int get(final int file, final int rank) {
+    public Piece get(final int file, final int rank) {
         return state[rank][file];
     }
     
@@ -140,22 +152,21 @@ public final class ChessBoardState {
      * 
      * @param file the file of the requested piece.
      * @param rank the rank of the requested piece.
-     * 
-     * @param piece the value of the desired piece.
+     * @param piece the piece to set.
      */
-    public void set(final int file, final int rank, final int piece) {
+    public void set(final int file, final int rank, final Piece piece) {
         state[rank][file] = piece;
     }
     
     /**
-     * Clears the position at rank {@code rank} and file {@code file}. Used in unit 
-     * testing.
+     * Clears the position at rank {@code rank} and file {@code file}. Used in 
+     * unit testing.
      * 
      * @param file the file of the requested piece.
      * @param rank the rank of the requested piece.
      */
     public void clear(final int file, final int rank) {
-        state[rank][file] = EMPTY;
+        state[rank][file] = null;
     }
     
     /**
@@ -175,8 +186,7 @@ public final class ChessBoardState {
                 if (file == -1) {
                     stringBuilder.append(rankNumber--).append(' ');
                 } else {
-                    stringBuilder.append(
-                            convertPieceCodeToUnicodeCharacter(file, rank));
+                    stringBuilder.append(state[rank][file]);
                 }
             }
             
