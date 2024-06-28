@@ -12,19 +12,19 @@ import java.util.List;
  */
 public final class Piece {
     
-    private static final byte EMPTY = 0;
+    public static final byte EMPTY = 0;
     
-    private static final byte WHITE_COLOR = (byte) 0b01000000;
-    private static final byte BLACK_COLOR = (byte) 0b10000000;
+    public static final byte WHITE_COLOR = (byte) 0b01000000;
+    public static final byte BLACK_COLOR = (byte) 0b10000000;
     
     public static final byte WHITE_PAWN = (byte) WHITE_COLOR | 0b00000001;
-    private static final byte BLACK_PAWN = (byte) BLACK_COLOR | 0b00000001;
+    public static final byte BLACK_PAWN = (byte) BLACK_COLOR | 0b00000001;
     
-    private static final byte WHITE_BISHOP = (byte) WHITE_COLOR | 0b00000010;
-    private static final byte BLACK_BISHOP = (byte) BLACK_COLOR | 0b00000010;
+    public static final byte WHITE_BISHOP = (byte) WHITE_COLOR | 0b00000010;
+    public static final byte BLACK_BISHOP = (byte) BLACK_COLOR | 0b00000010;
     
-    private static final byte WHITE_KNIGHT = (byte) WHITE_COLOR | 0b00000100;
-    private static final byte BLACK_KNIGHT = (byte) BLACK_COLOR | 0b00000100;
+    public static final byte WHITE_KNIGHT = (byte) WHITE_COLOR | 0b00000100;
+    public static final byte BLACK_KNIGHT = (byte) BLACK_COLOR | 0b00000100;
     
     private static final byte WHITE_ROOK = (byte) WHITE_COLOR | 0b00001000;
     private static final byte BLACK_ROOK = (byte) BLACK_COLOR | 0b00001000;
@@ -39,13 +39,13 @@ public final class Piece {
     private final PieceType pieceType;
     private int rank;
     private int file;
-    private final ChessBoardStateExpander expander;
+    private final AbstractChessBoardStateExpander expander;
     
     public Piece(final PieceColor pieceColor,
                  final PieceType pieceType,
                  final int rank,
                  final int file,
-                 final ChessBoardStateExpander expander) {
+                 final AbstractChessBoardStateExpander expander) {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
         this.rank = rank;
@@ -56,7 +56,7 @@ public final class Piece {
     public Piece(final Piece other,
                  final int file, 
                  final int rank, 
-                 final ChessBoardStateExpander expander) {
+                 final AbstractChessBoardStateExpander expander) {
         
         this.pieceColor = other.pieceColor;
         this.pieceType = other.pieceType;
@@ -73,7 +73,15 @@ public final class Piece {
         return rank;
     }
     
-    public ChessBoardStateExpander getChessBoardStateExpander() {
+    public void setFile(final int file) {
+        this.file = file;
+    }
+    
+    public void setRank(final int rank) {
+        this.rank = rank;
+    }
+    
+    public AbstractChessBoardStateExpander getChessBoardStateExpander() {
         return expander;
     }
     

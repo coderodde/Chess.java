@@ -8,7 +8,14 @@ import java.util.List;
  * @version 1.0.0 (Jun 26, 2024)
  * @since 1.0.0 (Jun 26, 2024)
  */
-public interface ChessBoardStateExpander {
+public abstract class AbstractChessBoardStateExpander {
+    
+    protected static final PieceType[] PROMOTION_PIECE_TYPES = {
+        PieceType.QUEEN,
+        PieceType.BISHOP,
+        PieceType.KNIGHT,
+        PieceType.ROOK,
+    };
    
     /**
      * Generates all child states of {@code root}.
@@ -17,7 +24,7 @@ public interface ChessBoardStateExpander {
      * @param piece    the piece to move.
      * @param children the list of child states generated so far.
      */
-    public void expand(final ChessBoardState state,
-                       final Piece piece,
-                       final List<ChessBoardState> children);
+    public abstract void expand(final ChessBoardState state,
+                                final Piece piece,
+                                final List<ChessBoardState> children);
 }
