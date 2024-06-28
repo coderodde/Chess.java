@@ -1,6 +1,7 @@
 package com.github.coderodde.game.chess;
 
 import com.github.coderodde.game.chess.impl.WhitePawnExpander;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -142,8 +143,23 @@ public final class ChessBoardState {
      * @param rank the rank of the requested piece.
      * @param piece the piece to set.
      */
-    public void set(final int file, final int rank, final Piece piece) {
+    public void set(final int file, 
+                    final int rank, 
+                    final Piece piece) {
+        
+        piece.setFile(file);
+        piece.setRank(rank);
+        
         state[rank][file] = piece;
+    }
+    
+    /**
+     * Sets the input piece at its actual location.
+     * 
+     * @param piece the piece to set.
+     */
+    public void set(final Piece piece) {
+        state[piece.getRank()][piece.getFile()] = piece;
     }
     
     /**
@@ -192,7 +208,12 @@ public final class ChessBoardState {
                 if (file == -1) {
                     stringBuilder.append(rankNumber--).append(' ');
                 } else {
-                    stringBuilder.append(state[rank][file]);
+                    final Piece piece = state[rank][file];
+                    
+                    stringBuilder.append(
+                            (piece == null ? 
+                                    ((file + rank) % 2 == 0 ? "." : "#") :
+                                    piece));
                 }
             }
             
@@ -243,13 +264,28 @@ public final class ChessBoardState {
     }
     
     public List<ChessBoardState> expand(final PlayerTurn playerTurn) {
+        
+        final List<ChessBoardState> children = new ArrayList<>();
+        
         if (playerTurn == PlayerTurn.WHITE) {
-            
+            for (int rank = 0; rank < N; rank++) {
+                for (int file = 0; file < N; file++) {
+                    final CellType cellType = getCellColor(file, rank);
+                    
+                    if (cellType == CellType.WHITE) {
+                        children.addAll(state[rank][file].expand(this));
+                    }
+                }
+            }
         } else if (playerTurn == PlayerTurn.BLACK) {
+            throw new IllegalStateException();
             
         } else {
-            throw new EnumConstantNotPresentException(PlayerTurn, constantName)
+            throw new IllegalStateException();
+//            throw new EnumConstantNotPresCentException(PlayerTurn, constantName)
         }
+        
+        return children;
     }
     
 //    private void expandImplWhitePawn(final List<ChessBoardState> children,

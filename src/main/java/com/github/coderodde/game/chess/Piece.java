@@ -26,14 +26,14 @@ public final class Piece {
     public static final byte WHITE_KNIGHT = (byte) WHITE_COLOR | 0b00000100;
     public static final byte BLACK_KNIGHT = (byte) BLACK_COLOR | 0b00000100;
     
-    private static final byte WHITE_ROOK = (byte) WHITE_COLOR | 0b00001000;
-    private static final byte BLACK_ROOK = (byte) BLACK_COLOR | 0b00001000;
+    public static final byte WHITE_ROOK = (byte) WHITE_COLOR | 0b00001000;
+    public static final byte BLACK_ROOK = (byte) BLACK_COLOR | 0b00001000;
     
-    private static final byte WHITE_QUEEN = (byte) WHITE_COLOR | 0b00010000;
-    private static final byte BLACK_QUEEN = (byte) BLACK_COLOR | 0b00010000;
+    public static final byte WHITE_QUEEN = (byte) WHITE_COLOR | 0b00010000;
+    public static final byte BLACK_QUEEN = (byte) BLACK_COLOR | 0b00010000;
     
-    private static final byte WHITE_KING = (byte) WHITE_COLOR | 0b00100000;
-    private static final byte BLACK_KING = (byte) BLACK_COLOR | 0b00100000;
+    public static final byte WHITE_KING = (byte) WHITE_COLOR | 0b00100000;
+    public static final byte BLACK_KING = (byte) BLACK_COLOR | 0b00100000;
            
     private final PieceColor pieceColor;
     private final PieceType pieceType;
@@ -43,14 +43,38 @@ public final class Piece {
     
     public Piece(final PieceColor pieceColor,
                  final PieceType pieceType,
-                 final int rank,
                  final int file,
+                 final int rank,
                  final AbstractChessBoardStateExpander expander) {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
-        this.rank = rank;
         this.file = file;
+        this.rank = rank;
         this.expander = expander;
+    }
+    
+    /**
+     * The minimal constructor for a chess piece. Defined for the sake of unit
+     * testing.
+     * 
+     * @param pieceColor the color of the piece.
+     * @param pieceType  the type of the piece.
+     */
+    public Piece(final PieceColor pieceColor,
+                 final PieceType pieceType) {
+        
+        this(pieceColor, pieceType, null);
+    }
+    
+    public Piece(final PieceColor pieceColor,
+                 final PieceType pieceType,
+                 final AbstractChessBoardStateExpander expander) {
+        
+        this(pieceColor, 
+             pieceType, 
+             0,
+             0,
+             expander);
     }
     
     public Piece(final Piece other,
@@ -60,8 +84,8 @@ public final class Piece {
         
         this.pieceColor = other.pieceColor;
         this.pieceType = other.pieceType;
-        this.rank = rank;
         this.file = file;
+        this.rank = rank;
         this.expander = expander;
     }
     
@@ -133,18 +157,18 @@ public final class Piece {
             case EMPTY        -> (file + rank) % 2 == 0 ? "." : "#";
                 
             case WHITE_PAWN   -> "P";
-            case WHITE_KNIGHT -> "K";
+            case WHITE_KNIGHT -> "N";
             case WHITE_BISHOP -> "B";
             case WHITE_ROOK   -> "R";
             case WHITE_QUEEN  -> "Q";
-            case WHITE_KING   -> "X";
+            case WHITE_KING   -> "K";
                 
             case BLACK_PAWN   -> "p";
-            case BLACK_KNIGHT -> "k";
+            case BLACK_KNIGHT -> "n";
             case BLACK_BISHOP -> "b";
             case BLACK_ROOK   -> "r";
             case BLACK_QUEEN  -> "q";
-            case BLACK_KING   -> "x";
+            case BLACK_KING   -> "k";
                 
             default -> throw new IllegalStateException("Should not get here.");
         };

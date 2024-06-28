@@ -10,7 +10,7 @@ import java.util.List;
  */
 public abstract class AbstractChessBoardStateExpander {
     
-    protected static final PieceType[] PROMOTION_PIECE_TYPES = {
+    public static final PieceType[] PROMOTION_PIECE_TYPES = {
         PieceType.QUEEN,
         PieceType.BISHOP,
         PieceType.KNIGHT,

@@ -1,7 +1,6 @@
 package com.github.coderodde.game.chess;
 
 import com.github.coderodde.game.chess.impl.WhitePawnExpander;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Chess {
@@ -21,13 +20,11 @@ public class Chess {
                                 4, 
                                 expander);
         
-        List<ChessBoardState> children = new ArrayList<>();
-        
         s.clear();
         s.set(2, 6, pawn1);
         s.set(4, 6, pawn2);
         
-        final List<ChessBoardState> children = s.expand();
+        final List<ChessBoardState> children = s.expand(PlayerTurn.WHITE);
         
         for (final ChessBoardState child : children) {
             System.out.println(child);

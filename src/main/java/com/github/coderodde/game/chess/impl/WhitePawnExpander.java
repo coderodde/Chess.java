@@ -31,6 +31,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                        final List<ChessBoardState> children) {
         
         final int pieceFile = piece.getFile();
+        final int pieceRank = piece.getRank();
      
         if (piece.getRank() == INITIAL_WHITE_PAWN_RANK 
                 && root.get(piece.getFile(), 
@@ -46,9 +47,16 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             child.set(pieceFile, INITIAL_WHITE_PAWN_RANK, null);
             child.set(pieceFile, INITIAL_WHITE_PAWN_MOVE_2_RANK, piece);
             children.add(child);
-        }
-        
-        if (piece.getRank() == EN_PASSANT_SOURCE_RANK) {
+            
+            tryBasicMoveForward(root, 
+                                children, 
+                                pieceFile, 
+                                pieceRank, 
+                                piece);
+            return;
+            
+        } else if (piece.getRank() == EN_PASSANT_SOURCE_RANK) {
+            
             if (pieceFile > 0) {
                 // Try en passant to the left:
                 tryEnPassantToLeft(root, piece, children);
@@ -58,49 +66,15 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                 // Try en passant to the right:
                 tryEnPassantToRight(root, piece, children);
             }
-        }
-        
-        // Try move forward:
-        final int pieceRank = piece.getRank();
-        
-        if (pieceRank > 1 && 
-            root.getCellColor(pieceFile, pieceRank - 1) == CellType.EMPTY) {
             
-            final ChessBoardState child = new ChessBoardState(root);
-            child.set(pieceFile, pieceRank - 1, piece);
-            child.set(pieceFile, pieceRank, null);
-            children.add(child);
-        }
-        
-        // Try capture to left:
-        if (pieceFile > 0 
-                && pieceRank > 1 
-                && root.getCellColor(pieceFile - 1, pieceRank - 1) 
-                == CellType.BLACK) {
+            tryBasicMoveForward(root,
+                                children, 
+                                pieceFile, 
+                                pieceRank, 
+                                piece);
+            return;
             
-            final ChessBoardState child = new ChessBoardState(root);
-            
-            child.set(pieceFile, pieceRank, null);
-            child.set(pieceFile - 1, pieceRank - 1, piece);
-            
-            children.add(child);
-        }
-        
-        // Try capture to right:
-        if (pieceFile < N - 1
-                && pieceRank > 1
-                && root.getCellColor(pieceFile + 1, pieceRank - 1)
-                == CellType.BLACK) {
-            
-            final ChessBoardState child = new ChessBoardState(root);
-            
-            child.set(pieceFile, pieceRank, null);
-            child.set(pieceFile + 1, pieceRank - 1, piece);
-            
-            children.add(child);
-        }
-        
-        if (pieceRank == PROMOTION_SOURCE_RANK) {
+        } else if (pieceRank == PROMOTION_SOURCE_RANK) {
             if (pieceFile > 0 && 
                 root.getCellColor(pieceFile - 1,
                                   PROMOTION_TARGET_RANK) == CellType.BLACK) {
@@ -165,6 +139,59 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                     children.add(child);
                 }
             }
+            
+            return;
+        }
+        
+        // Try move forward:
+        tryBasicMoveForward(root, 
+                            children, 
+                            pieceFile, 
+                            pieceRank, 
+                            piece);
+        
+        // Try capture to left:
+        if (pieceFile > 0 
+                && pieceRank > 1 
+                && root.getCellColor(pieceFile - 1, pieceRank - 1) 
+                == CellType.BLACK) {
+            
+            final ChessBoardState child = new ChessBoardState(root);
+            
+            child.set(pieceFile, pieceRank, null);
+            child.set(pieceFile - 1, pieceRank - 1, piece);
+            
+            children.add(child);
+        }
+        
+        // Try capture to right:
+        if (pieceFile < N - 1
+                && pieceRank > 1
+                && root.getCellColor(pieceFile + 1, pieceRank - 1)
+                == CellType.BLACK) {
+            
+            final ChessBoardState child = new ChessBoardState(root);
+            
+            child.set(pieceFile, pieceRank, null);
+            child.set(pieceFile + 1, pieceRank - 1, piece);
+            
+            children.add(child);
+        }
+    }
+    
+    private void tryBasicMoveForward(final ChessBoardState root,
+                                     final List<ChessBoardState> children,
+                                     final int pieceFile,
+                                     final int pieceRank,
+                                     final Piece piece) {
+        
+        if (pieceRank > 1 && 
+            root.getCellColor(pieceFile, pieceRank - 1) == CellType.EMPTY) {
+            
+            final ChessBoardState child = new ChessBoardState(root);
+            child.set(pieceFile, pieceRank - 1, piece);
+            child.set(pieceFile, pieceRank, null);
+            children.add(child);
         }
     }
     
