@@ -23,44 +23,40 @@ public final class ChessBoardState {
     public ChessBoardState() {
         
         // Black pieces:
-        state[0][0] = new Piece(PieceColor.BLACK, PieceType.ROOK, 0, 0, null);
-        state[0][7] = new Piece(PieceColor.BLACK, PieceType.ROOK, 7, 0, null);
+        state[0][0] = new Piece(PieceColor.BLACK, PieceType.ROOK, null);
+        state[0][7] = new Piece(PieceColor.BLACK, PieceType.ROOK, null);
   
-        state[0][1] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, 1, 0, null);
-        state[0][6] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, 6, 0, null);
+        state[0][1] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, null);
+        state[0][6] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, null);
         
-        state[0][2] = new Piece(PieceColor.BLACK, PieceType.BISHOP, 2, 0, null);
-        state[0][5] = new Piece(PieceColor.BLACK, PieceType.BISHOP, 5, 0, null);
+        state[0][2] = new Piece(PieceColor.BLACK, PieceType.BISHOP, null);
+        state[0][5] = new Piece(PieceColor.BLACK, PieceType.BISHOP, null);
   
-        state[0][3] = new Piece(PieceColor.BLACK, PieceType.QUEEN, 3, 0, null);
-        state[0][4] = new Piece(PieceColor.BLACK, PieceType.KING, 4, 0, null);
+        state[0][3] = new Piece(PieceColor.BLACK, PieceType.QUEEN, null);
+        state[0][4] = new Piece(PieceColor.BLACK, PieceType.KING, null);
         
         for (int file = 0; file < N; file++) {
             state[1][file] = new Piece(PieceColor.BLACK,
                                        PieceType.PAWN,
-                                       file,
-                                       1,
                                        new WhitePawnExpander());
         }
         
         // White pieces:
-        state[7][0] = new Piece(PieceColor.WHITE, PieceType.ROOK, 0, 7, null);
-        state[7][7] = new Piece(PieceColor.WHITE, PieceType.ROOK, 7, 7, null);
+        state[7][0] = new Piece(PieceColor.WHITE, PieceType.ROOK, null);
+        state[7][7] = new Piece(PieceColor.WHITE, PieceType.ROOK, null);
   
-        state[7][1] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, 1, 7, null);
-        state[7][6] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, 6, 7, null);
+        state[7][1] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, null);
+        state[7][6] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, null);
         
-        state[7][2] = new Piece(PieceColor.WHITE, PieceType.BISHOP, 2, 7, null);
-        state[7][5] = new Piece(PieceColor.WHITE, PieceType.BISHOP, 5, 7, null);
+        state[7][2] = new Piece(PieceColor.WHITE, PieceType.BISHOP, null);
+        state[7][5] = new Piece(PieceColor.WHITE, PieceType.BISHOP, null);
         
-        state[7][3] = new Piece(PieceColor.WHITE, PieceType.QUEEN, 3, 7, null);
-        state[7][4] = new Piece(PieceColor.WHITE, PieceType.KING, 4, 7, null);
+        state[7][3] = new Piece(PieceColor.WHITE, PieceType.QUEEN, null);
+        state[7][4] = new Piece(PieceColor.WHITE, PieceType.KING, null);
         
         for (int file = 0; file < N; file++) {
             state[6][file] = new Piece(PieceColor.WHITE,
                                        PieceType.PAWN,
-                                       file,
-                                       6,
                                        null);
         }
     }
@@ -146,20 +142,7 @@ public final class ChessBoardState {
     public void set(final int file, 
                     final int rank, 
                     final Piece piece) {
-        
-        piece.setFile(file);
-        piece.setRank(rank);
-        
         state[rank][file] = piece;
-    }
-    
-    /**
-     * Sets the input piece at its actual location.
-     * 
-     * @param piece the piece to set.
-     */
-    public void set(final Piece piece) {
-        state[piece.getRank()][piece.getFile()] = piece;
     }
     
     /**
@@ -252,11 +235,11 @@ public final class ChessBoardState {
             return CellType.EMPTY;
         }
         
-        if ((piece.getPieceCodeBits() | Piece.WHITE_COLOR) != 0) {
+        if ((piece.getPieceCodeBits() & Piece.WHITE_COLOR) != 0) {
             return CellType.WHITE;
         }
         
-        if ((piece.getPieceCodeBits() | Piece.BLACK_COLOR) != 0) {
+        if ((piece.getPieceCodeBits() & Piece.BLACK_COLOR) != 0) {
             return CellType.BLACK;
         }
         
@@ -267,21 +250,29 @@ public final class ChessBoardState {
         
         final List<ChessBoardState> children = new ArrayList<>();
         
-        if (playerTurn == PlayerTurn.WHITE) {
-            for (int rank = 0; rank < N; rank++) {
-                for (int file = 0; file < N; file++) {
-                    final CellType cellType = getCellColor(file, rank);
-                    
-                    if (cellType == CellType.WHITE) {
-                        children.addAll(state[rank][file].expand(this));
+        if (null == playerTurn) {
+            throw new IllegalStateException();
+//            throw new EnumConstantNotPresCentException(PlayerTurn, constantName)
+        } else switch (playerTurn) {
+            case WHITE:
+                for (int rank = 0; rank < N; rank++) {
+                    for (int file = 0; file < N; file++) {
+                        final CellType cellType = getCellColor(file, rank);
+                        
+                        if (cellType == CellType.WHITE) {
+                            children.addAll(
+                                    state[rank]
+                                         [file].expand(this, file, rank));
+                        }
                     }
-                }
-            }
-        } else if (playerTurn == PlayerTurn.BLACK) {
-            throw new IllegalStateException();
-            
-        } else {
-            throw new IllegalStateException();
+                }   
+                
+                break;
+                
+            case BLACK:
+                throw new IllegalStateException();
+            default:
+                throw new IllegalStateException();
 //            throw new EnumConstantNotPresCentException(PlayerTurn, constantName)
         }
         

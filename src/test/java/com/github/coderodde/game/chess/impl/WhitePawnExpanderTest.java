@@ -34,7 +34,7 @@ public final class WhitePawnExpanderTest {
     
     @Test
     public void moveWhitePawnInitialDoubleMove() {
-        state.set(new Piece(WHITE, PAWN, 0, 6, expander));
+        state.set(0, 6, new Piece(WHITE, PAWN, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -52,8 +52,8 @@ public final class WhitePawnExpanderTest {
         move1.clear();
         move2.clear();
         
-        move1.set(0, 5, new Piece(WHITE, PAWN, 0, 5, expander));
-        move2.set(0, 4, new Piece(WHITE, PAWN, 0, 4, expander));
+        move1.set(0, 5, new Piece(WHITE, PAWN, expander));
+        move2.set(0, 4, new Piece(WHITE, PAWN, expander));
         
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
@@ -61,8 +61,8 @@ public final class WhitePawnExpanderTest {
     
     @Test
     public void whitePawnCannotMoveForward() {
-        state.set(4, 5, new Piece(WHITE, PAWN, 4, 5, expander));
-        state.set(4, 4, new Piece(BLACK, ROOK, 4, 4, expander));
+        state.set(4, 5, new Piece(WHITE, PAWN, expander));
+        state.set(4, 4, new Piece(BLACK, ROOK, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -226,11 +226,13 @@ public final class WhitePawnExpanderTest {
     
     @Test
     public void whitePawnEnPassantToRight() {
-        state.set(7, 3, new Piece(BLACK, PAWN));
-        state.set(6, 2, new Piece(BLACK, ROOK));
-        state.set(6, 3, new Piece(WHITE, PAWN));
+        state.set(3, 3, new Piece(WHITE, PAWN, expander));
+        state.set(4, 3, new Piece(BLACK, PAWN));
+        state.set(3, 2, new Piece(BLACK, ROOK));
         
-        state.markBlackPawnInitialDoubleMove(7);
+        System.out.println(state);
+        
+        state.markBlackPawnInitialDoubleMove(4);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         

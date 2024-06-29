@@ -37,21 +37,19 @@ public final class Piece {
            
     private final PieceColor pieceColor;
     private final PieceType pieceType;
-    private int rank;
-    private int file;
     private final AbstractChessBoardStateExpander expander;
     
-    public Piece(final PieceColor pieceColor,
-                 final PieceType pieceType,
-                 final int file,
-                 final int rank,
-                 final AbstractChessBoardStateExpander expander) {
-        this.pieceColor = pieceColor;
-        this.pieceType = pieceType;
-        this.file = file;
-        this.rank = rank;
-        this.expander = expander;
-    }
+//    public Piece(final PieceColor pieceColor,
+//                 final PieceType pieceType,
+//                 final int file,
+//                 final int rank,
+//                 final AbstractChessBoardStateExpander expander) {
+//        this.pieceColor = pieceColor;
+//        this.pieceType = pieceType;
+//        this.file = file;
+//        this.rank = rank;
+//        this.expander = expander;
+//    }
     
     /**
      * The minimal constructor for a chess piece. Defined for the sake of unit
@@ -70,11 +68,15 @@ public final class Piece {
                  final PieceType pieceType,
                  final AbstractChessBoardStateExpander expander) {
         
-        this(pieceColor, 
-             pieceType, 
-             0,
-             0,
-             expander);
+        this.pieceColor = pieceColor;
+        this.pieceType = pieceType;
+        this.expander = expander;
+        
+//        this(pieceColor, 
+//             pieceType, 
+//             0,
+//             0,
+//             expander);
     }
     
     public Piece(final Piece other,
@@ -84,34 +86,11 @@ public final class Piece {
         
         this.pieceColor = other.pieceColor;
         this.pieceType = other.pieceType;
-        this.file = file;
-        this.rank = rank;
         this.expander = expander;
-    }
-    
-    public int getFile() {
-        return file;
-    }
-    
-    public int getRank() {
-        return rank;
-    }
-    
-    public void setFile(final int file) {
-        this.file = file;
-    }
-    
-    public void setRank(final int rank) {
-        this.rank = rank;
     }
     
     public AbstractChessBoardStateExpander getChessBoardStateExpander() {
         return expander;
-    }
-    
-    public void moveTo(final int file, final int rank) {
-        this.file = file;
-        this.rank = rank;
     }
     
     public byte getPieceCodeBits() {
@@ -127,9 +106,18 @@ public final class Piece {
         return (byte)(pieceColor.getPieceColorCodeBits() & BLACK_COLOR) != 0;
     }
     
-    public List<ChessBoardState> expand(final ChessBoardState state) {
+    public List<ChessBoardState> expand(final ChessBoardState state,
+                                        final int file, 
+                                        final int rank) {
+        
         final List<ChessBoardState> children = new ArrayList<>();
-        expander.expand(state, this, children);
+        
+        expander.expand(state, 
+                        this, 
+                        file, 
+                        rank, 
+                        children);
+        
         return children;
     }
     
@@ -154,7 +142,6 @@ public final class Piece {
         final byte pieceCode = getPieceCodeBits();
         
         return switch (pieceCode) {
-            case EMPTY        -> (file + rank) % 2 == 0 ? "." : "#";
                 
             case WHITE_PAWN   -> "P";
             case WHITE_KNIGHT -> "N";

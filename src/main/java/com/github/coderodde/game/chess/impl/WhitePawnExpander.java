@@ -28,77 +28,78 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
     @Override
     public void expand(final ChessBoardState root, 
                        final Piece piece,
+                       final int file,
+                       final int rank,
                        final List<ChessBoardState> children) {
         
-        final int pieceFile = piece.getFile();
-        final int pieceRank = piece.getRank();
-     
-        if (piece.getRank() == INITIAL_WHITE_PAWN_RANK 
-                && root.get(piece.getFile(), 
-                            INITIAL_WHITE_PAWN_MOVE_1_RANK) == null
-                && root.get(piece.getFile(), 
-                            INITIAL_WHITE_PAWN_MOVE_2_RANK) == null) {
+        if (rank == INITIAL_WHITE_PAWN_RANK 
+                && root.get(file, INITIAL_WHITE_PAWN_MOVE_1_RANK) == null
+                && root.get(file, INITIAL_WHITE_PAWN_MOVE_2_RANK) == null) {
             
             // Once here, we can move a white pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(root);
             
-            child.markWhitePawnInitialDoubleMove(pieceFile);
+            child.markWhitePawnInitialDoubleMove(file);
             
-            child.set(pieceFile, INITIAL_WHITE_PAWN_RANK, null);
-            child.set(pieceFile, INITIAL_WHITE_PAWN_MOVE_2_RANK, piece);
+            child.set(file, INITIAL_WHITE_PAWN_MOVE_1_RANK, piece);
+            child.set(file, INITIAL_WHITE_PAWN_MOVE_2_RANK, piece);
             children.add(child);
             
             tryBasicMoveForward(root, 
                                 children, 
-                                pieceFile, 
-                                pieceRank, 
+                                file, 
+                                rank, 
                                 piece);
             return;
             
-        } else if (piece.getRank() == EN_PASSANT_SOURCE_RANK) {
+        } else if (rank == EN_PASSANT_SOURCE_RANK) {
             
-            if (pieceFile > 0) {
+            if (file > 0) {
                 // Try en passant to the left:
-                tryEnPassantToLeft(root, piece, children);
+                tryEnPassantToLeft(root, 
+                                   piece, 
+                                   file, 
+                                   children);
             }
             
-            if (pieceFile < N - 1) {
+            if (file < N - 1) {
                 // Try en passant to the right:
-                tryEnPassantToRight(root, piece, children);
+                tryEnPassantToRight(root,
+                                    piece, 
+                                    file,
+                                    children);
             }
             
             tryBasicMoveForward(root,
                                 children, 
-                                pieceFile, 
-                                pieceRank, 
+                                file, 
+                                rank, 
                                 piece);
             return;
             
-        } else if (pieceRank == PROMOTION_SOURCE_RANK) {
-            if (pieceFile > 0 && 
-                root.getCellColor(pieceFile - 1,
+        } else if (rank == PROMOTION_SOURCE_RANK) {
+            if (file > 0 && 
+                root.getCellColor(file - 1,
                                   PROMOTION_TARGET_RANK) == CellType.BLACK) {
                 
                 // Once here, can capture to the left and promote:
                 for (final PieceType pieceType : PROMOTION_PIECE_TYPES) {
                     final Piece newPiece = 
                             new Piece(
-                                    PieceColor.WHITE, 
-                                    pieceType, 
-                                    pieceFile - 1, 
-                                    PROMOTION_TARGET_RANK,
+                                    PieceColor.WHITE,
+                                    pieceType,
                                     this);
                     
                     final ChessBoardState child = new ChessBoardState(root);
                     
-                    child.set(pieceFile - 1, PROMOTION_TARGET_RANK, newPiece);
-                    child.clear(pieceFile, PROMOTION_SOURCE_RANK);
+                    child.set(file - 1, PROMOTION_TARGET_RANK, newPiece);
+                    child.clear(file, PROMOTION_SOURCE_RANK);
                     children.add(child);
                 }
             }
             
-            if (pieceFile < N - 1 &&
-                root.getCellColor(pieceFile + 1,
+            if (file < N - 1 &&
+                root.getCellColor(file + 1,
                                   PROMOTION_TARGET_RANK) == CellType.BLACK) {
                 
                 // Once here, can capture to the right and promote:
@@ -107,19 +108,17 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                             new Piece(
                                     PieceColor.WHITE,
                                     pieceType,
-                                    pieceFile + 1,
-                                    PROMOTION_TARGET_RANK,
                                     this);
                     
                     final ChessBoardState child = new ChessBoardState(root);
                     
-                    child.set(pieceFile + 1, PROMOTION_TARGET_RANK, newPiece);
-                    child.clear(pieceFile, PROMOTION_SOURCE_RANK);
+                    child.set(file + 1, PROMOTION_TARGET_RANK, newPiece);
+                    child.clear(file, PROMOTION_SOURCE_RANK);
                     children.add(child);
                 }
             }
             
-            if (root.getCellColor(pieceFile, 
+            if (root.getCellColor(file, 
                                   PROMOTION_TARGET_RANK) == CellType.EMPTY) {
                 
                 // Once here, can move forward an promote:
@@ -128,14 +127,12 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                             new Piece(
                                     PieceColor.WHITE,
                                     pieceType,
-                                    pieceFile,
-                                    PROMOTION_TARGET_RANK,
                                     this);
                     
                     final ChessBoardState child = new ChessBoardState(root);
                     
-                    child.set(pieceFile, PROMOTION_TARGET_RANK, newPiece);
-                    child.clear(pieceFile, PROMOTION_SOURCE_RANK);
+                    child.set(file, PROMOTION_TARGET_RANK, newPiece);
+                    child.clear(file, PROMOTION_SOURCE_RANK);
                     children.add(child);
                 }
             }
@@ -146,34 +143,34 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         // Try move forward:
         tryBasicMoveForward(root, 
                             children, 
-                            pieceFile, 
-                            pieceRank, 
+                            file, 
+                            rank, 
                             piece);
         
         // Try capture to left:
-        if (pieceFile > 0 
-                && pieceRank > 1 
-                && root.getCellColor(pieceFile - 1, pieceRank - 1) 
+        if (file > 0 
+                && rank > 1 
+                && root.getCellColor(file - 1, rank - 1) 
                 == CellType.BLACK) {
             
             final ChessBoardState child = new ChessBoardState(root);
             
-            child.set(pieceFile, pieceRank, null);
-            child.set(pieceFile - 1, pieceRank - 1, piece);
+            child.set(file, rank, null);
+            child.set(file - 1, rank - 1, piece);
             
             children.add(child);
         }
         
         // Try capture to right:
-        if (pieceFile < N - 1
-                && pieceRank > 1
-                && root.getCellColor(pieceFile + 1, pieceRank - 1)
+        if (file < N - 1
+                && rank > 1
+                && root.getCellColor(file + 1, rank - 1)
                 == CellType.BLACK) {
             
             final ChessBoardState child = new ChessBoardState(root);
             
-            child.set(pieceFile, pieceRank, null);
-            child.set(pieceFile + 1, pieceRank - 1, piece);
+            child.set(file, rank, null);
+            child.set(file + 1, rank - 1, piece);
             
             children.add(child);
         }
@@ -197,13 +194,14 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
     
     private void tryEnPassantToLeft(final ChessBoardState root,
                                     final Piece piece, 
+                                    final int file,
                                     final List<ChessBoardState> children) {
-        if (!root.getBlackIsPreviouslyDoubleMoved()[piece.getFile()]) {
+        
+        if (!root.getBlackIsPreviouslyDoubleMoved()[file]) {
             return;
         }
         
         final ChessBoardState child = new ChessBoardState(root);
-        final int file = piece.getFile();
         
         child.clear(file, EN_PASSANT_SOURCE_RANK);
         child.clear(file - 1, EN_PASSANT_SOURCE_RANK);
@@ -214,13 +212,13 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
     
     private void tryEnPassantToRight(final ChessBoardState root,
                                      final Piece piece, 
+                                     final int file,
                                      final List<ChessBoardState> children) {
-        if (!root.getBlackIsPreviouslyDoubleMoved()[piece.getFile()]) {
+        if (!root.getBlackIsPreviouslyDoubleMoved()[file]) {
             return;
         }
         
         final ChessBoardState child = new ChessBoardState(root);
-        final int file = piece.getFile();
         
         child.clear(file, EN_PASSANT_SOURCE_RANK);
         child.clear(file + 1, EN_PASSANT_SOURCE_RANK);

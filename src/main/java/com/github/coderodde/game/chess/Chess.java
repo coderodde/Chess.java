@@ -10,14 +10,10 @@ public class Chess {
         AbstractChessBoardStateExpander expander = new WhitePawnExpander();
         Piece pawn1 = new Piece(PieceColor.WHITE,
                                 PieceType.PAWN, 
-                                6, 
-                                2, 
                                 expander);
         
         Piece pawn2 = new Piece(PieceColor.WHITE,
-                                PieceType.PAWN, 
-                                6, 
-                                4, 
+                                PieceType.PAWN,
                                 expander);
         
         s.clear();
