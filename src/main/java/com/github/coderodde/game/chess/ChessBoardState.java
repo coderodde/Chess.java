@@ -15,12 +15,13 @@ public final class ChessBoardState {
     
     public static final int N = 8;
     
-    private Piece[][] state = new Piece[N][N];
+    private Piece[][] state;
     private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
     private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
     private byte enPassantFlags;
     
     public ChessBoardState() {
+        state = new Piece[N][N];
         
         // Black pieces:
         state[0][0] = new Piece(PieceColor.BLACK, PieceType.ROOK, null);
@@ -90,20 +91,11 @@ public final class ChessBoardState {
     
     @Override
     public boolean equals(final Object o) {
-        if (o == this) {
-            return true;
-        }
-        
-        if (o == null) {
-            return false;
-        }
-        
         if (!(o instanceof ChessBoardState)) {
             return false;
         }
         
         final ChessBoardState other = (ChessBoardState) o;
-        
         return Arrays.deepEquals(state, other.state);
     }
     

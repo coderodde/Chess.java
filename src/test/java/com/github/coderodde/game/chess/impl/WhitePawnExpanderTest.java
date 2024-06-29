@@ -40,12 +40,6 @@ public final class WhitePawnExpanderTest {
         
         assertEquals(2, children.size());
         
-        final ChessBoardState child1 = children.get(0);
-        final ChessBoardState child2 = children.get(1);
-        
-        assertTrue(children.contains(child1));
-        assertTrue(children.contains(child2));
-        
         final ChessBoardState move1 = new ChessBoardState();
         final ChessBoardState move2 = new ChessBoardState();
         
@@ -108,20 +102,20 @@ public final class WhitePawnExpanderTest {
     @Test
     public void whitePawnCannotMakeFirstDoubleMoveDueToObstruction() {
         state.set(6, 6, new Piece(WHITE, PAWN, expander));
-        state.set(6, 5, new Piece(WHITE, BISHOP, expander));
+        state.set(6, 5, new Piece(BLACK, BISHOP, expander));
         
         assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
         
         state.clear();
-        state.set(4, 6, new Piece(WHITE, PAWN));
-        state.set(4, 5, new Piece(BLACK, ROOK));
+        state.set(4, 6, new Piece(WHITE, PAWN, expander));
+        state.set(4, 5, new Piece(BLACK, ROOK, expander));
         
         assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
     }
     
     @Test
     public void whitePawnPromotion() {
-        state.set(3, 1, new Piece(WHITE, PAWN));
+        state.set(3, 1, new Piece(WHITE, PAWN, expander));
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
@@ -155,7 +149,7 @@ public final class WhitePawnExpanderTest {
     
     @Test
     public void whitePawnPromotionCaptureBoth() {
-        state.set(5, 1, new Piece(WHITE, PAWN));
+        state.set(5, 1, new Piece(WHITE, PAWN, expander));
         state.set(4, 0, new Piece(BLACK, BISHOP));
         state.set(6, 0, new Piece(BLACK, PAWN));
         
@@ -207,7 +201,7 @@ public final class WhitePawnExpanderTest {
     public void whitePawnEnPassantToLeft() {
         state.set(0, 3, new Piece(BLACK, PAWN));
         state.set(1, 2, new Piece(BLACK, ROOK));
-        state.set(1, 3, new Piece(WHITE, PAWN));
+        state.set(1, 3, new Piece(WHITE, PAWN, expander));
         
         state.markBlackPawnInitialDoubleMove(0);
         
