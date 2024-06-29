@@ -214,7 +214,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                      final Piece piece, 
                                      final int file,
                                      final List<ChessBoardState> children) {
-        if (!root.getBlackIsPreviouslyDoubleMoved()[file]) {
+        if (!root.getBlackIsPreviouslyDoubleMoved()[file + 1]) {
             return;
         }
         

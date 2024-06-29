@@ -2,6 +2,7 @@ package com.github.coderodde.game.chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class implements the data type for representing a piece: piece type,
@@ -51,6 +52,12 @@ public final class Piece {
 //        this.expander = expander;
 //    }
     
+    public Piece(final Piece other) {
+        this(other.pieceColor,
+             other.pieceType,
+             null);
+    }
+    
     /**
      * The minimal constructor for a chess piece. Defined for the sake of unit
      * testing.
@@ -91,6 +98,30 @@ public final class Piece {
     
     public AbstractChessBoardStateExpander getChessBoardStateExpander() {
         return expander;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (!(o instanceof Piece)) {
+            return false;
+        }
+        
+        final Piece other = (Piece) o;
+        
+        return this.pieceColor == other.pieceColor &&
+               this.pieceType  == other.pieceType;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        
+        hash = 59 * hash 
+                  + Objects.hashCode(pieceColor.getPieceColorCodeBits());
+        
+        hash = 59 * hash 
+                  + Objects.hashCode(pieceType.getPieceTypeCodeBits());
+        return hash;
     }
     
     public byte getPieceCodeBits() {

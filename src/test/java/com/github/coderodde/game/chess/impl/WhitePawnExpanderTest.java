@@ -241,9 +241,14 @@ public final class WhitePawnExpanderTest {
         final ChessBoardState move = new ChessBoardState();
         
         move.clear();
-        move.set(6, 2, new Piece(BLACK, ROOK));
-        move.set(7, 2, new Piece(WHITE, PAWN));
         
-        assertTrue(children.contains(move));
+        move.set(3, 2, new Piece(BLACK, ROOK));
+        move.set(4, 2, new Piece(WHITE, PAWN));
+        
+        boolean pass = children.contains(move);
+        
+        System.out.println(children.get(0));
+        
+        assertTrue(pass);
     }
 }

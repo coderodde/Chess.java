@@ -66,25 +66,26 @@ public final class ChessBoardState {
         
         for (int rank = 0; rank < N; rank++) {
             for (int file = 0; file < N; file++) {
-                if (this.state[rank][file] == null) {
+                if (copy.state[rank][file] == null) {
                     continue;
                 }
                 
-                this.state[rank][file] = 
-                        new Piece(
-                                copy.state[rank][file], 
-                                file, 
-                                rank, 
-                                copy.state[rank]
-                                          [file].getChessBoardStateExpander());
+                this.state[rank][file] = new Piece(copy.state[rank][file]);
             }
         }
         
-        this.whiteIsPreviouslyDoubleMoved = 
-                copy.whiteIsPreviouslyDoubleMoved;
+        // TODO: Just set?
+        System.arraycopy(this.whiteIsPreviouslyDoubleMoved, 
+                         0, 
+                         copy.whiteIsPreviouslyDoubleMoved, 
+                         0, 
+                         N);
         
-        this.blackIsPreviouslyDoubleMoved = 
-                copy.blackIsPreviouslyDoubleMoved;
+        System.arraycopy(this.blackIsPreviouslyDoubleMoved, 
+                         0, 
+                         copy.blackIsPreviouslyDoubleMoved, 
+                         0, 
+                         N);
     }
     
     @Override
