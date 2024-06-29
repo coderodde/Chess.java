@@ -224,8 +224,6 @@ public final class WhitePawnExpanderTest {
         state.set(4, 3, new Piece(BLACK, PAWN));
         state.set(3, 2, new Piece(BLACK, ROOK));
         
-        System.out.println(state);
-        
         state.markBlackPawnInitialDoubleMove(4);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
@@ -240,8 +238,6 @@ public final class WhitePawnExpanderTest {
         move.set(4, 2, new Piece(WHITE, PAWN));
         
         boolean pass = children.contains(move);
-        
-        System.out.println(children.get(0));
         
         assertTrue(pass);
     }

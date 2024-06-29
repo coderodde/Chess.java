@@ -41,7 +41,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             
             child.markWhitePawnInitialDoubleMove(file);
             
-//            child.set(file, INITIAL_WHITE_PAWN_MOVE_1_RANK, piece);
+            child.clear(file, INITIAL_WHITE_PAWN_RANK);
             child.set(file, INITIAL_WHITE_PAWN_MOVE_2_RANK, piece);
             children.add(child);
             
@@ -196,7 +196,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                     final int file,
                                     final List<ChessBoardState> children) {
         
-        if (!root.getBlackIsPreviouslyDoubleMoved()[file]) {
+        if (!root.getBlackIsPreviouslyDoubleMoved()[file - 1]) {
             return;
         }
         
