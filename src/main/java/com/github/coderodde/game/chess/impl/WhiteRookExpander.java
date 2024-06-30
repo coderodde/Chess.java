@@ -178,7 +178,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
                                  final int rank,
                                  final List<ChessBoardState> children) {
         
-        for (int currentFile = file - 1; currentFile >= N; currentFile--) {
+        for (int currentFile = file - 1; currentFile >= 0; currentFile--) {
             
             final CellType cellType = state.getCellType(currentFile, rank);
             
