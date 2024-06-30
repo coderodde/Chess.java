@@ -17,13 +17,13 @@ import java.util.List;
  */
 public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
 
-    private static final int INITIAL_WHITE_PAWN_RANK = 6;
-    private static final int INITIAL_WHITE_PAWN_MOVE_1_RANK = 5;
-    private static final int INITIAL_WHITE_PAWN_MOVE_2_RANK = 4;
-    private static final int EN_PASSANT_SOURCE_RANK = 3;
-    private static final int EN_PASSANT_TARGET_RANK = 2;
-    private static final int PROMOTION_SOURCE_RANK = 1;
-    private static final int PROMOTION_TARGET_RANK = 0;
+    public static final int INITIAL_WHITE_PAWN_RANK = 6;
+    public static final int INITIAL_WHITE_PAWN_MOVE_1_RANK = 5;
+    public static final int INITIAL_WHITE_PAWN_MOVE_2_RANK = 4;
+    public static final int EN_PASSANT_SOURCE_RANK = 3;
+    public static final int EN_PASSANT_TARGET_RANK = 2;
+    public static final int PROMOTION_SOURCE_RANK = 1;
+    public static final int PROMOTION_TARGET_RANK = 0;
     
     @Override
     public void expand(final ChessBoardState root, 
