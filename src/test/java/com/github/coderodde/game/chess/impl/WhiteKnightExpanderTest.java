@@ -6,7 +6,10 @@ import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import com.github.coderodde.game.chess.PlayerTurn;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -76,5 +79,66 @@ public class WhiteKnightExpanderTest {
         assertTrue(children.contains(move6));
         assertTrue(children.contains(move7));
         assertTrue(children.contains(move8));
+        
+        final Set<ChessBoardState> filter = new HashSet<>();
+        
+        filter.add(move1);
+        filter.add(move2);
+        filter.add(move3);
+        filter.add(move4);
+        filter.add(move5);
+        filter.add(move6);
+        filter.add(move7);
+        filter.add(move8);
+        
+        assertEquals(8, filter.size());
+    }
+    
+    @Test
+    public void topLeftCorner() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+        
+        state.set(1, 1, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+    }
+    
+    @Test
+    public void topRightCorner() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+        
+        state.set(6, 1, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+    }
+    
+    @Test
+    public void bottomLeftCorner() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+        
+        state.set(1, 6, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+    }
+    
+    @Test
+    public void bottomRightCorner() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+        
+        state.set(6, 6, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
     }
 }
