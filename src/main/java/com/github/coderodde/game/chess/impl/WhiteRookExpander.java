@@ -107,7 +107,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             child.clear(file,
                         rank);
             
-            children.add(state);
+            children.add(child);
         }
     }
     
@@ -161,7 +161,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             child.clear(file,
                         rank);
             
-            children.add(state);
+            children.add(child);
         }
     }
     
@@ -214,7 +214,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             child.clear(file,
                         rank);
             
-            children.add(state);
+            children.add(child);
         }
     }
     
@@ -269,7 +269,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             child.clear(file,
                         rank);
             
-            children.add(state);
+            children.add(child);
         }
     }
 }

@@ -6,7 +6,6 @@ import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import com.github.coderodde.game.chess.PlayerTurn;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -89,6 +89,18 @@ public final class WhiteRookExpanderTest {
         
         assertEquals(5, children.size());
         
+        System.out.println("moves:");
+        System.out.println(move1);
+        System.out.println(move2);
+        System.out.println(move3);
+        System.out.println(move4);
+        System.out.println(move5);
+        
+        System.out.println("children:");
+        for (ChessBoardState child : children) {
+            System.out.println(child);
+        }
+        
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
         
