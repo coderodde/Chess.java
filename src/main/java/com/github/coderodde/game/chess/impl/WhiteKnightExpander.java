@@ -15,7 +15,7 @@ import java.util.List;
  * @version 1.0.0 (Jun 30, 2024)
  * @since 1.0.0 (Jun 30, 2024)
  */
-public final class WhiteKnightExapnder extends AbstractChessBoardStateExpander {
+public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
 
     @Override
     public void expand(final ChessBoardState state, 
@@ -165,7 +165,7 @@ public final class WhiteKnightExapnder extends AbstractChessBoardStateExpander {
     
     /**
      * Attempts to move a white knight at {@code (file, rank)} two moves to the 
-     * left and one move upwords.
+     * left and one move upwards.
      * 
      * @param state    the starting state.
      * @param file     the file of the white knight to move.
