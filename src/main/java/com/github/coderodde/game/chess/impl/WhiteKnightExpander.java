@@ -10,7 +10,7 @@ import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import java.util.List;
 
 /**
- * This class implements an expander for generatinga all white knight moves.
+ * This class implements an expander for generating all white knight moves.
  * 
  * @version 1.0.0 (Jun 30, 2024)
  * @since 1.0.0 (Jun 30, 2024)
@@ -58,7 +58,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file - 1, rank - 2) != CellType.WHITE) {
+        if (state.getCellType(file - 1, rank - 2) != CellType.WHITE) {
             // Once here, can move or capture:
             final ChessBoardState child = new ChessBoardState(state);
             
@@ -90,7 +90,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file + 1, rank - 2) != CellType.WHITE) {
+        if (state.getCellType(file + 1, rank - 2) != CellType.WHITE) {
             // Once here, can move or capture:
             final ChessBoardState child = new ChessBoardState(state);
             
@@ -122,7 +122,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file - 1, rank + 2) != CellType.WHITE) {
+        if (state.getCellType(file - 1, rank + 2) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
@@ -153,7 +153,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file + 1, rank + 2) != CellType.WHITE) {
+        if (state.getCellType(file + 1, rank + 2) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
@@ -184,7 +184,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file - 2, rank - 1) != CellType.WHITE) {
+        if (state.getCellType(file - 2, rank - 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
@@ -215,7 +215,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file - 2, rank + 1) != CellType.WHITE) {
+        if (state.getCellType(file - 2, rank + 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
@@ -246,7 +246,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file + 2, rank - 1) != CellType.WHITE) {
+        if (state.getCellType(file + 2, rank - 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
@@ -277,7 +277,7 @@ public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellColor(file + 2, rank + 1) != CellType.WHITE) {
+        if (state.getCellType(file + 2, rank + 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);

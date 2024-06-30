@@ -221,7 +221,7 @@ public final class ChessBoardState {
         this.blackIsPreviouslyDoubleMoved[file] = true;
     }
    
-    public CellType getCellColor(final int file, final int rank) {
+    public CellType getCellType(final int file, final int rank) {
         final Piece piece = state[rank][file];
         
         if (piece == null) {
@@ -239,6 +239,22 @@ public final class ChessBoardState {
         throw new IllegalStateException("Unknown cell color: " + piece);
     }
     
+    public boolean isValidLocationForWhiteMove(final int file, final int rank) {
+        if (file < 0 || file >= N || rank < 0 || rank >= N) {
+            return false;
+        }
+        
+        return getCellType(file, rank) != CellType.WHITE;
+    }
+    
+    public boolean isValidLocationForBlackMove(final int file, final int rank) {
+        if (file < 0 || file >= N || rank < 0 || rank >= N) {
+            return false;
+        }
+        
+        return getCellType(file, rank) != CellType.BLACK;
+    }
+  
     public List<ChessBoardState> expand(final PlayerTurn playerTurn) {
         
         final List<ChessBoardState> children = new ArrayList<>();
@@ -249,7 +265,7 @@ public final class ChessBoardState {
             case WHITE -> {
                 for (int rank = 0; rank < N; rank++) {
                     for (int file = 0; file < N; file++) {
-                        final CellType cellType = getCellColor(file, rank);
+                        final CellType cellType = getCellType(file, rank);
                         
                         if (cellType == CellType.WHITE) {
                             children.addAll(

@@ -79,7 +79,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             
         } else if (rank == PROMOTION_SOURCE_RANK) {
             if (file > 0 && 
-                root.getCellColor(file - 1,
+                root.getCellType(file - 1,
                                   PROMOTION_TARGET_RANK) == CellType.BLACK) {
                 
                 // Once here, can capture to the left and promote:
@@ -99,7 +99,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             }
             
             if (file < N - 1 &&
-                root.getCellColor(file + 1,
+                root.getCellType(file + 1,
                                   PROMOTION_TARGET_RANK) == CellType.BLACK) {
                 
                 // Once here, can capture to the right and promote:
@@ -118,7 +118,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                 }
             }
             
-            if (root.getCellColor(file, 
+            if (root.getCellType(file, 
                                   PROMOTION_TARGET_RANK) == CellType.EMPTY) {
                 
                 // Once here, can move forward an promote:
@@ -150,7 +150,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         // Try capture to left:
         if (file > 0 
                 && rank > 1 
-                && root.getCellColor(file - 1, rank - 1) 
+                && root.getCellType(file - 1, rank - 1) 
                 == CellType.BLACK) {
             
             final ChessBoardState child = new ChessBoardState(root);
@@ -164,7 +164,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         // Try capture to right:
         if (file < N - 1
                 && rank > 1
-                && root.getCellColor(file + 1, rank - 1)
+                && root.getCellType(file + 1, rank - 1)
                 == CellType.BLACK) {
             
             final ChessBoardState child = new ChessBoardState(root);
@@ -182,7 +182,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                      final int rank,
                                      final Piece piece) {
         if (rank > 1 && 
-            root.getCellColor(file, rank - 1) == CellType.EMPTY) {
+            root.getCellType(file, rank - 1) == CellType.EMPTY) {
             
             final ChessBoardState child = new ChessBoardState(root);
             child.set(file, rank - 1, piece);
