@@ -2,6 +2,7 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
+import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
@@ -104,5 +105,62 @@ public final class WhiteBishopExpanderTest {
                                     move6));
         
         assertEquals(6, filter.size());
+    }
+    
+    @Test
+    public void expandAll() {
+        ChessBoardState state = new ChessBoardState();
+        state.clear();
+        state.set(4, 5, new Piece(WHITE, BISHOP, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        int f = 3;
+        int r = 4;
+        
+        // Check north west:
+        while (f >= 0 && r >= 0) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(4, 5));
+            child.clear(4, 5);
+            
+            assertTrue(children.contains(child));
+        }
+        
+        // Check north east:
+        f = 5;
+        r = 4;
+        
+        while (f < N && r < N) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(4, 5));
+            child.clear(4, 5);
+
+            assertTrue(children.contains(child));
+        }
+        
+        // Check south west:
+        f = 3;
+        r = 6;
+        
+        while (f >= 0 && r < N) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(4, 5));
+            child.clear(f, r);
+            
+            assertTrue(children.contains(child));
+        }
+        
+        // Check south east:
+        f = 5;
+        r = 6;
+        
+        while (f < N && r < N) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(4, 5));
+            child.clear(4, 5);
+            
+            assertTrue(children.contains(child));
+        }
     }
 }
