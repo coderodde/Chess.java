@@ -83,23 +83,9 @@ public final class WhiteRookExpanderTest {
         move5.set(6, 4, new Piece(BLACK, PAWN));
         move5.set(5, 5, new Piece(BLACK, BISHOP));
         
-        System.out.println(state);
-        
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(5, children.size());
-        
-        System.out.println("moves:");
-        System.out.println(move1);
-        System.out.println(move2);
-        System.out.println(move3);
-        System.out.println(move4);
-        System.out.println(move5);
-        
-        System.out.println("children:");
-        for (ChessBoardState child : children) {
-            System.out.println(child);
-        }
         
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
