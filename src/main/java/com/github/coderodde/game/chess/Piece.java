@@ -78,12 +78,6 @@ public final class Piece {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
         this.expander = expander;
-        
-//        this(pieceColor, 
-//             pieceType, 
-//             0,
-//             0,
-//             expander);
     }
     
     public Piece(final Piece other,

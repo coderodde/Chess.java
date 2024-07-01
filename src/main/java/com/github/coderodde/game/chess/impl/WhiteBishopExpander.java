@@ -71,6 +71,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
             
             if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
+                return;
             }
             
             final ChessBoardState child = new ChessBoardState(state);
@@ -117,6 +118,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
             
             if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
+                return;
             }
             
             final ChessBoardState child = new ChessBoardState(state);
@@ -163,6 +165,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
             
             if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
+                return;
             }
             
             final ChessBoardState child = new ChessBoardState(state);
@@ -209,6 +212,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
             
             if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
+                return;
             }
             
             final ChessBoardState child = new ChessBoardState(state);
