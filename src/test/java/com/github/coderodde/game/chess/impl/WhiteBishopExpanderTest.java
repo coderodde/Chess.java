@@ -50,10 +50,6 @@ public final class WhiteBishopExpanderTest {
         state.set(2, 2, new Piece(WHITE, KING, dummyExpander));
         state.set(5, 5, new Piece(BLACK, PAWN));
         state.set(3, 5, new Piece(BLACK, KNIGHT));
-        
-        System.out.println("---");
-        System.out.println(state);
-        System.out.println("---");
        
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -115,6 +111,8 @@ public final class WhiteBishopExpanderTest {
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
+        assertEquals(11, children.size());
+        
         int f = 3;
         int r = 4;
         
@@ -125,18 +123,24 @@ public final class WhiteBishopExpanderTest {
             child.clear(4, 5);
             
             assertTrue(children.contains(child));
+            
+            f--;
+            r--;
         }
         
         // Check north east:
         f = 5;
         r = 4;
         
-        while (f < N && r < N) {
+        while (f < N && r >= 0) {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
             child.clear(4, 5);
 
             assertTrue(children.contains(child));
+        
+            f++;
+            r--;
         }
         
         // Check south west:
@@ -146,9 +150,17 @@ public final class WhiteBishopExpanderTest {
         while (f >= 0 && r < N) {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
-            child.clear(f, r);
+            child.clear(4, 5);
+            
+            System.out.println(state);
+            System.out.println(child);
+            
+            System.out.println("f = " + f + ", r = " + r);
             
             assertTrue(children.contains(child));
+        
+            f--;
+            r++;
         }
         
         // Check south east:
@@ -161,6 +173,9 @@ public final class WhiteBishopExpanderTest {
             child.clear(4, 5);
             
             assertTrue(children.contains(child));
+        
+            f++;
+            r++;
         }
     }
 }
