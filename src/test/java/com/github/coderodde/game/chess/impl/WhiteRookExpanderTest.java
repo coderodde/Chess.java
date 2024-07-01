@@ -104,9 +104,6 @@ public final class WhiteRookExpanderTest {
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
         
-//        System.out.println("yes: ");
-//        System.out.println(move3);
-        
         assertTrue(children.contains(move3));
         assertTrue(children.contains(move4));
         assertTrue(children.contains(move5));
