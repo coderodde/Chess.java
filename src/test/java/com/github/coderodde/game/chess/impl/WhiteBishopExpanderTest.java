@@ -110,6 +110,7 @@ public final class WhiteBishopExpanderTest {
         state.set(4, 5, new Piece(WHITE, BISHOP, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final Set<ChessBoardState> filter = new HashSet<>();
         
         assertEquals(11, children.size());
         
@@ -121,6 +122,7 @@ public final class WhiteBishopExpanderTest {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
             child.clear(4, 5);
+            filter.add(child);
             
             assertTrue(children.contains(child));
             
@@ -136,6 +138,7 @@ public final class WhiteBishopExpanderTest {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
             child.clear(4, 5);
+            filter.add(child);
 
             assertTrue(children.contains(child));
         
@@ -151,11 +154,7 @@ public final class WhiteBishopExpanderTest {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
             child.clear(4, 5);
-            
-            System.out.println(state);
-            System.out.println(child);
-            
-            System.out.println("f = " + f + ", r = " + r);
+            filter.add(child);
             
             assertTrue(children.contains(child));
         
@@ -171,11 +170,14 @@ public final class WhiteBishopExpanderTest {
             ChessBoardState child = new ChessBoardState(state);
             child.set(f, r, state.get(4, 5));
             child.clear(4, 5);
+            filter.add(child);
             
             assertTrue(children.contains(child));
         
             f++;
             r++;
         }
+        
+        assertEquals(11, filter.size());
     }
 }

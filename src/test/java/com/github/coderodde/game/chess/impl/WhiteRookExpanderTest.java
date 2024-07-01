@@ -2,6 +2,7 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
+import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
@@ -103,5 +104,82 @@ public final class WhiteRookExpanderTest {
         filter.add(move5);
         
         assertEquals(5, filter.size());
+    }
+    
+    @Test
+    public void expandAll() {
+        ChessBoardState state = new ChessBoardState();
+        state.clear();
+        state.set(5, 3, new Piece(WHITE, ROOK, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final Set<ChessBoardState> filter = new HashSet<>();
+        
+        assertEquals(14, children.size());
+        
+        int f;
+        int r;
+        
+        // To north:
+        f = 5;
+        r = 2;
+        
+        while (r >= 0) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(5, 3));
+            child.clear(5, 3);
+            filter.add(child);
+            
+            assertTrue(children.contains(child));
+            
+            r--;
+        }
+        
+        // To south:
+        f = 5;
+        r = 4;
+        
+        while (r < N) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(5, 3));
+            child.clear(5, 3);
+            filter.add(child);
+            
+            assertTrue(children.contains(child));
+            
+            r++;
+        }
+        
+        // To west:
+        f = 4;
+        r = 3;
+        
+        while (f >= 0) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(5, 3));
+            child.clear(5, 3);
+            filter.add(child);
+            
+            assertTrue(children.contains(child));
+            
+            f--;
+        }
+        
+        // To east:
+        f = 6;
+        r = 3;
+        
+        while (f < N) {
+            ChessBoardState child = new ChessBoardState(state);
+            child.set(f, r, state.get(5, 3));
+            child.clear(5, 3);
+            filter.add(child);
+            
+            assertTrue(children.contains(child));
+            
+            f++;
+        }
+        
+        assertEquals(14, filter.size());
     }
 }
