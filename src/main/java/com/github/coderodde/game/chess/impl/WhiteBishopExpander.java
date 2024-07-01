@@ -123,7 +123,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
             
             final ChessBoardState child = new ChessBoardState(state);
             
-            child.set(file - index, 
+            child.set(file + index, 
                       rank - index,
                       child.get(file,
                                 rank));
@@ -152,7 +152,7 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
                 final ChessBoardState child = new ChessBoardState(state);
                 
                 child.set(file - index, 
-                          rank - index, 
+                          rank + index, 
                           child.get(file,
                                     rank));
                 
@@ -198,8 +198,8 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
                 // Can capture:
                 final ChessBoardState child = new ChessBoardState(state);
                 
-                child.set(file - index, 
-                          rank - index, 
+                child.set(file + index, 
+                          rank + index, 
                           child.get(file,
                                     rank));
                 
