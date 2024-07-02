@@ -2,6 +2,7 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
+import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
@@ -35,8 +36,6 @@ public final class WhiteQueenExpanderTest {
         state.set(2, 4, new Piece(BLACK, BISHOP));
         state.set(6, 6, new Piece(WHITE, BISHOP, dummyExpander));
         state.set(4, 2, new Piece(BLACK, PAWN));
-        
-        System.out.println(state);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -96,6 +95,130 @@ public final class WhiteQueenExpanderTest {
         assertEquals(16, filter.size());
     }
     
+    @Test
+    public void expandAll() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+        
+        state.set(3, 4, new Piece(WHITE, QUEEN, expander));
+        System.out.println(state);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final Set<ChessBoardState> filter = new HashSet<>();
+        
+        assertEquals(27, children.size());
+        
+        children.forEach(System.out::println);
+        
+        int f;
+        int r;
+        
+        // To north:
+        f = 3;
+        r = 3;
+        
+        ChessBoardState child;
+        
+        while (r >= 0) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            r--;
+        }
+        
+        // To south:
+        f = 3;
+        r = 5;
+        
+        while (r < N) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            r++;
+        }
+        
+        // To west:
+        f = 2;
+        r = 4;
+        
+        while (f >= 0) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            f--;
+        }
+        
+        // To east:
+        f = 4;
+        r = 4;
+        
+        while (f < N) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            f++;
+        }
+        
+        // Check north west:
+        f = 2;
+        r = 3;
+        
+        while (f >= 0 && r >= 0) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            f--;
+            r--;
+        }
+        
+        // Check north east:
+        f = 4;
+        r = 3;
+        
+        while (f < N && r >= 0) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+
+            assertTrue(children.contains(child));
+        
+            f++;
+            r--;
+        }
+        
+        // Check south west:
+        f = 2;
+        r = 5;
+        
+        while (f >= 0 && r < N) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+        
+            f--;
+            r++;
+        }
+        
+        // Check south east:
+        f = 4;
+        r = 5;
+        
+        while (f < N && r < N) {
+            child = move2(state, f, r);
+            filter.add(child);
+            assertTrue(children.contains(child));
+            
+            f++;
+            r++;
+        }
+        
+        assertEquals(27, filter.size());
+    }
+    
     private static ChessBoardState move(final ChessBoardState state,
                                         final int file,
                                         final int rank) {
@@ -104,6 +227,18 @@ public final class WhiteQueenExpanderTest {
         
         move.set(file, rank, state.get(2, 2));
         move.clear(2, 2);
+        
+        return move;
+    }
+    
+    private static ChessBoardState move2(final ChessBoardState state,
+                                         final int file,
+                                         final int rank) {
+        
+        final ChessBoardState move = new ChessBoardState(state);
+        
+        move.set(file, rank, state.get(3, 4));
+        move.clear(3, 4);
         
         return move;
     }
