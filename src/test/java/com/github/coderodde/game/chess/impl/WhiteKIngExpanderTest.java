@@ -5,6 +5,7 @@ import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KING;
+import static com.github.coderodde.game.chess.PieceType.PAWN;
 import com.github.coderodde.game.chess.PlayerTurn;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +46,26 @@ public final class WhiteKIngExpanderTest {
         
         assertTrue(children.contains(getMove(5, 6, state)));
         assertTrue(children.contains(getMove(5, 7, state)));
+    }
+    
+    @Test
+    public void smallExpand() {
+        final ChessBoardState state = new ChessBoardState();
+        state.clear();
+    
+        state.set(7, 7, new Piece(WHITE, KING, expander));
+        state.set(6, 6, new Piece(WHITE, PAWN, dummyExpander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(2, children.size());
+        
+        ChessBoardState child = new ChessBoardState(state);
+        child.clear();
+        
+        child.set(7, 6, new Piece(WHITE, KING));
+        
+        assertTrue(children.contains(child));
     }
     
     private static ChessBoardState getMove(final int file,
