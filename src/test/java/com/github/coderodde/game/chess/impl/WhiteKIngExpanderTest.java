@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-public final class WhiteKIngExpanderTest {
+public final class WhiteKingExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
             new WhiteKingExpander();
@@ -34,18 +34,33 @@ public final class WhiteKIngExpanderTest {
         
         assertEquals(8, children.size());
         
-        ChessBoardState move = new ChessBoardState(state);
+        ChessBoardState move;
         
-        assertTrue(children.contains(getMove(5, 5, state)));
-        assertTrue(children.contains(getMove(6, 5, state)));
-        assertTrue(children.contains(getMove(7, 5, state)));
+        assertTrue(children.contains(move = getMove(5, 5, state)));
+        filter.add(move);
         
-        assertTrue(children.contains(getMove(5, 7, state)));
-        assertTrue(children.contains(getMove(6, 7, state)));
-        assertTrue(children.contains(getMove(7, 7, state)));
+        assertTrue(children.contains(move = getMove(6, 5, state)));
+        filter.add(move);
         
-        assertTrue(children.contains(getMove(5, 6, state)));
-        assertTrue(children.contains(getMove(5, 7, state)));
+        assertTrue(children.contains(move = getMove(7, 5, state)));
+        filter.add(move);
+        
+        assertTrue(children.contains(move = getMove(5, 7, state)));
+        filter.add(move);
+        
+        assertTrue(children.contains(move = getMove(6, 7, state)));
+        filter.add(move);
+        
+        assertTrue(children.contains(move = getMove(7, 7, state)));
+        filter.add(move);
+        
+        assertTrue(children.contains(move = getMove(5, 6, state)));
+        filter.add(move);
+        
+        assertTrue(children.contains(move = getMove(7, 6, state)));
+        filter.add(move);
+        
+        assertEquals(8, filter.size());
     }
     
     @Test
@@ -55,13 +70,14 @@ public final class WhiteKIngExpanderTest {
     
         state.set(7, 7, new Piece(WHITE, KING, expander));
         state.set(6, 6, new Piece(WHITE, PAWN, dummyExpander));
+        System.out.println(state);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        children.forEach(System.out::println);
+        assertEquals(3, children.size());
         
-        assertEquals(2, children.size());
-        
-        ChessBoardState child = new ChessBoardState(state);
-        child.clear();
+        ChessBoardState move = new ChessBoardState(state);
+        m
         
         child.set(7, 6, new Piece(WHITE, KING));
         
@@ -71,6 +87,17 @@ public final class WhiteKIngExpanderTest {
     private static ChessBoardState getMove(final int file,
                                            final int rank, 
                                            final ChessBoardState move) {
+        
+        final ChessBoardState child = new ChessBoardState(move);
+        child.clear(6, 6);
+        child.set(file, rank, new Piece(WHITE, KING));
+        
+        return child;
+    }
+    
+    private static ChessBoardState getMove2(final int file,
+                                            final int rank, 
+                                            final ChessBoardState move) {
         
         final ChessBoardState child = new ChessBoardState(move);
         child.clear(6, 6);
