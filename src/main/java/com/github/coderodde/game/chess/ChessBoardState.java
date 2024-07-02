@@ -270,13 +270,25 @@ public final class ChessBoardState {
                         if (cellType == CellType.WHITE) {
                             children.addAll(
                                     state[rank]
-                                            [file].expand(this, file, rank));
+                                         [file].expand(this, file, rank));
                         }
                     }
                 }   
             }
                 
-            case BLACK -> throw new UnsupportedOperationException();
+            case BLACK -> {
+                for (int rank = 0; rank < N; rank++) {
+                    for (int file = 0; file < N; file++) {
+                        final CellType cellType = getCellType(file, rank);
+                        
+                        if (cellType == CellType.BLACK) {
+                            children.addAll(
+                                    state[rank]
+                                         [file].expand(this, file, rank));
+                        }
+                    }
+                }
+            }
             
             default -> throw new EnumConstantNotPresentException(
                         PlayerTurn.class,
