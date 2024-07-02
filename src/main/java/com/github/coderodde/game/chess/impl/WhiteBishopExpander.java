@@ -41,6 +41,14 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
                              children);
     }
     
+    /**
+     * Tries to generate the next moves while moving upwards to the left.
+     * 
+     * @param state    the initial state.
+     * @param file     the file of the starting position.
+     * @param rank     the rank of the starting position.
+     * @param children the child move container.
+     */
     private void tryGenerateNorthWest(final ChessBoardState state,
                                       final int file,
                                       final int rank,
@@ -88,6 +96,14 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
         }
     }
     
+    /**
+     * Tries to generate the next moves while moving upwards to the right.
+     * 
+     * @param state    the initial state.
+     * @param file     the file of the starting position.
+     * @param rank     the rank of the starting position.
+     * @param children the child move container.
+     */
     private void tryGenerateNorthEast(final ChessBoardState state,
                                       final int file,
                                       final int rank,
@@ -135,6 +151,14 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
         }
     }
     
+    /**
+     * Tries to generate the next moves while moving downwards to the left.
+     * 
+     * @param state    the initial state.
+     * @param file     the file of the starting position.
+     * @param rank     the rank of the starting position.
+     * @param children the child move container.
+     */
     private void tryGenerateSouthWest(final ChessBoardState state,
                                       final int file,
                                       final int rank,
@@ -182,6 +206,14 @@ public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
         }
     }
     
+    /**
+     * Tries to generate the next moves while moving upwards to the right.
+     * 
+     * @param state    the initial state.
+     * @param file     the file of the starting position.
+     * @param rank     the rank of the starting position.
+     * @param children the child move container.
+     */
     private void tryGenerateSouthEast(final ChessBoardState state,
                                       final int file,
                                       final int rank,
