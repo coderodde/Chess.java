@@ -74,14 +74,19 @@ public final class WhiteKingExpanderTest {
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         children.forEach(System.out::println);
-        assertEquals(3, children.size());
+        assertEquals(2, children.size());
         
         ChessBoardState move = new ChessBoardState(state);
-        m
+        move.set(7, 6, new Piece(WHITE, KING));
+        move.clear(7, 7);
         
-        child.set(7, 6, new Piece(WHITE, KING));
+        assertTrue(children.contains(move));
         
-        assertTrue(children.contains(child));
+        move = new ChessBoardState(state);
+        move.set(6, 7, new Piece(WHITE, KING));
+        move.clear(7, 7);
+        
+        assertTrue(children.contains(move));
     }
     
     private static ChessBoardState getMove(final int file,

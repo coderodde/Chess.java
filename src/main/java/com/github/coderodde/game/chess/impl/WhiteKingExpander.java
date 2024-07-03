@@ -1,6 +1,7 @@
 package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
+import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -23,128 +24,111 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         
         if (file > 0) {
             // Once here, can move to the left:
-            if (rank > 0) {
+            if (rank > 0 && state.getCellType(file - 1, 
+                                              rank - 1) != CellType.WHITE) {
+                
                 // Once here, can move to left upwards:
-                final ChessBoardState child = new ChessBoardState(state);
-                child.set(file - 1, rank - 1, state.get(file, rank));
-                child.clear(file, rank);
-                children.add(child);
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file - 1, 
+                             rank - 1));
             }
             
-            if (rank < N - 1) {
+            if (rank < N - 1 && state.getCellType(file - 1, 
+                                                  rank + 1) != CellType.WHITE) {
+                
                 // Once here, can move to left downwards:
-                final ChessBoardState child = new ChessBoardState(state);
-                child.set(file - 1, rank + 1, state.get(file, rank));
-                child.clear(file, rank);
-                children.add(child);
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file - 1, 
+                             rank + 1));
             }
             
             // Move to the left:
-            final ChessBoardState child = new ChessBoardState(state);
-            child.set(file - 1, rank, state.get(file, rank));
-            child.clear(file, rank);
-            children.add(child);
+            if (state.getCellType(file - 1, rank) != CellType.WHITE) {
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file - 1, 
+                             rank));    
+            }
         } 
         
         if (file < N - 1) {
             // Once here, can move to the right:
-            if (rank > 0) {
+            if (rank > 0 && state.getCellType(file + 1, 
+                                              rank - 1) != CellType.WHITE) {
+                
                 // Once here, can move to right upwards:
-                final ChessBoardState child = new ChessBoardState(state);
-                child.set(file + 1, rank - 1, state.get(file, rank));
-                child.clear(file, rank);
-                children.add(child);
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file + 1, 
+                             rank - 1));    
             }
             
             if (rank < N - 1) {
                 // Once here, can move to right downwards:
-                final ChessBoardState child = new ChessBoardState(state);
-                child.set(file + 1, rank + 1, state.get(file, rank));
-                child.clear(file, rank);
-                children.add(child);
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file + 1, 
+                             rank + 1));
             }
             
             // Move to the right:
-            final ChessBoardState child = new ChessBoardState(state);
-            child.set(file + 1, rank, state.get(file, rank));
-            child.clear(file, rank);
-            children.add(child);
+            children.add(
+                    move(state, 
+                         file, 
+                         rank, 
+                         file + 1, 
+                         rank));
         }
         
         if (rank > 0) {
             // Move upwards:
-            final ChessBoardState child = new ChessBoardState(state);
-            child.set(file, rank - 1, state.get(file, rank));
-            child.clear(file, rank);
-            children.add(child);
+            children.add(
+                    move(state, 
+                         file, 
+                         rank, 
+                         file, 
+                         rank - 1));
         }
         
         if (rank < N - 1) {
             // Move downwards:
-            final ChessBoardState child = new ChessBoardState(state);
-            child.set(file, rank + 1, state.get(file, rank));
-            child.clear(file, rank);
-            children.add(child);
+            children.add(
+                    move(state, 
+                         file, 
+                         rank, 
+                         file, 
+                         rank + 1));
         }
-        
-//        if (isValidLocation(file - 1, rank - 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file - 1, rank - 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file, rank - 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file, rank - 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file + 1, rank - 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file + 1, rank - 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file + 1, rank)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file + 1, rank, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file + 1, rank + 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file + 1, rank + 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file, rank + 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file, rank + 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file - 1, rank + 1)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file - 1, rank + 1, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
-//        
-//        if (isValidLocation(file - 1, rank)) {
-//            final ChessBoardState child = new ChessBoardState(state);
-//            child.set(file - 1, rank, child.get(file, rank));
-//            child.clear(file, rank);
-//            children.add(child);
-//        }
     }
     
-    private static boolean isValidLocation(final int file, final int rank) {
-        return file >= 0 && file < N && rank >= 0 && rank < N;
+    private static ChessBoardState move(final ChessBoardState state, 
+                                        final int sourceFile,
+                                        final int sourceRank,
+                                        final int targetFile,
+                                        final int targetRank) {
+        
+        final ChessBoardState moveState = new ChessBoardState(state);
+        
+        moveState.set(targetFile, 
+                      targetRank, 
+                      state.get(sourceFile, 
+                                sourceRank));
+        
+        moveState.clear(sourceFile,
+                        sourceRank);
+        
+        return moveState;
     }
 }

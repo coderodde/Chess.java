@@ -22,7 +22,7 @@ import org.junit.Test;
 public final class BlackBishopExpanderTest {
 
     private final AbstractChessBoardStateExpander expander = 
-            new WhiteBishopExpander();
+            new BlackBishopExpander();
     
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
@@ -52,9 +52,6 @@ public final class BlackBishopExpanderTest {
         state.set(3, 5, new Piece(WHITE, KNIGHT));
        
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
-        
-        System.out.println(state);
-        children.forEach(System.out::println);
         
         assertEquals(6, children.size());
         
