@@ -70,10 +70,9 @@ public final class WhiteKingExpanderTest {
     
         state.set(7, 7, new Piece(WHITE, KING, expander));
         state.set(6, 6, new Piece(WHITE, PAWN, dummyExpander));
-        System.out.println(state);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
-        children.forEach(System.out::println);
+        
         assertEquals(2, children.size());
         
         ChessBoardState move = new ChessBoardState(state);

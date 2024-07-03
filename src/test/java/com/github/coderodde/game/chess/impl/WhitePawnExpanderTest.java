@@ -2,6 +2,7 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
+import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
@@ -33,12 +34,114 @@ public final class WhitePawnExpanderTest {
     private final AbstractChessBoardStateExpander expander = 
             new WhitePawnExpander();
     
+    private final AbstractChessBoardStateExpander dummyExpander = 
+            new TestDummyExpander();
+    
     @Before
     public void before() {
         state = new ChessBoardState();
         state.clear();
     }
     
+    @Test
+    public void doubleMoveFurtherCellOccupied() {
+        state.set(5, INITIAL_WHITE_PAWN_RANK, new Piece(WHITE, PAWN, expander));
+        state.set(5, INITIAL_WHITE_PAWN_MOVE_2_RANK, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        ChessBoardState move = new ChessBoardState(state);
+        
+        move.set(5, 
+                 INITIAL_WHITE_PAWN_MOVE_1_RANK,
+                 state.get(5, 
+                           INITIAL_WHITE_PAWN_RANK));
+        
+        move.clear(5, INITIAL_WHITE_PAWN_RANK);
+        
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void enPassantFile0() {
+        state.set(0, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN, expander));
+        state.set(0, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertTrue(children.isEmpty());
+    }
+    
+    @Test
+    public void enPassantFile7() {
+        state.set(7, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN, expander));
+        state.set(7, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertTrue(children.isEmpty());
+    }
+    
+    @Test
+    public void promotionFile0CannotCaptureToLeft() {
+        state.set(0,
+                   PROMOTION_SOURCE_RANK, 
+                   new Piece(WHITE, 
+                             PAWN, 
+                             expander));
+         
+        state.set(1, 0, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(0, 0, new Piece(WHITE, BISHOP, dummyExpander));
+         
+        assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
+    }
+    
+    @Test
+    public void promotionFile7CannotCaptureToLeft() {
+         state.set(N - 1,
+                   PROMOTION_SOURCE_RANK, 
+                   new Piece(WHITE, 
+                             PAWN, 
+                             expander));
+         
+        state.set(N - 1, 0, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(N - 2, 0, new Piece(WHITE, BISHOP, dummyExpander));
+         
+        assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
+    }
+    
+    @Test
+    public void cannotCaptureToLeft() {
+        state.set(0, 4, new Piece(WHITE, PAWN, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        ChessBoardState move = new ChessBoardState();
+        move.clear();
+        move.set(0, 3, new Piece(WHITE, PAWN));
+        
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void cannotCaptureToRight() {
+        state.set(7, 4, new Piece(WHITE, PAWN, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        ChessBoardState move = new ChessBoardState();
+        move.clear();
+        move.set(7, 3, new Piece(WHITE, PAWN));
+        
+        assertTrue(children.contains(move));
+    }
+     
     @Test
     public void moveWhitePawnInitialDoubleMove() {
         state.set(0, INITIAL_WHITE_PAWN_RANK, new Piece(WHITE, PAWN, expander));

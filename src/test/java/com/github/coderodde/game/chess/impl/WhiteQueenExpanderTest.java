@@ -101,13 +101,11 @@ public final class WhiteQueenExpanderTest {
         state.clear();
         
         state.set(3, 4, new Piece(WHITE, QUEEN, expander));
-        System.out.println(state);
+        
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         final Set<ChessBoardState> filter = new HashSet<>();
         
         assertEquals(27, children.size());
-        
-        children.forEach(System.out::println);
         
         int f;
         int r;

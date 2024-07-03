@@ -119,7 +119,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             }
             
             if (root.getCellType(file, 
-                                  PROMOTION_TARGET_RANK) == CellType.EMPTY) {
+                                 PROMOTION_TARGET_RANK) == CellType.EMPTY) {
                 
                 // Once here, can move forward an promote:
                 for (final PieceType pieceType : PROMOTION_PIECE_TYPES) {
@@ -149,7 +149,6 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         
         // Try capture to left:
         if (file > 0 
-                && rank > 1 
                 && root.getCellType(file - 1, rank - 1) 
                 == CellType.BLACK) {
             
@@ -163,7 +162,6 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         
         // Try capture to right:
         if (file < N - 1
-                && rank > 1
                 && root.getCellType(file + 1, rank - 1)
                 == CellType.BLACK) {
             
@@ -181,12 +179,12 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                      final int file,
                                      final int rank,
                                      final Piece piece) {
-        if (rank > 1 && 
-            root.getCellType(file, rank - 1) == CellType.EMPTY) {
+        
+        if (root.getCellType(file, rank - 1) == CellType.EMPTY) {
             
             final ChessBoardState child = new ChessBoardState(root);
             child.set(file, rank - 1, piece);
-            child.set(file, rank, null);
+            child.clear(file, rank);
             children.add(child);
         }
     }
