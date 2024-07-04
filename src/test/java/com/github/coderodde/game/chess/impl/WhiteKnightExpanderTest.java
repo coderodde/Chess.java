@@ -11,12 +11,20 @@ import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 
 public class WhiteKnightExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
             new WhiteKnightExpander();
+    
+    private final ChessBoardState state = new ChessBoardState();
+    
+    @Before
+    public void before() {
+        state.clear();
+    }
     
     @Test
     public void expand8() {
@@ -139,5 +147,31 @@ public class WhiteKnightExpanderTest {
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
+    }
+    
+    @Test
+    public void cannotMoveNorthLeft() {
+        state.set(0, 2, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+    }
+    
+    private static ChessBoardState 
+        move(final ChessBoardState move,
+             final int file1,
+             final int rank1, 
+             final int file2, 
+             final int rank2) {
+        move.set(file2, 
+                 rank2, 
+                 move.get(file1,
+                          rank1));
+        
+        move.clear(file1,
+                   rank1);
+        
+        return move;
     }
 }
