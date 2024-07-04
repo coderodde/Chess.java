@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 
 public final class WhiteBishopExpanderTest {
@@ -27,11 +28,15 @@ public final class WhiteBishopExpanderTest {
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
     
+    private final ChessBoardState state = new ChessBoardState();
+    
+    @Before
+    public void before() {
+        state.clear();
+    }
+    
     @Test
     public void expand1() {
-        ChessBoardState state = new ChessBoardState();
-        state.clear();
-        
         state.set(6, 6, new Piece(WHITE, BISHOP, expander));
         state.set(7, 7, new Piece(BLACK, PAWN));
         state.set(4, 4, new Piece(WHITE, PAWN, dummyExpander));
@@ -43,9 +48,6 @@ public final class WhiteBishopExpanderTest {
     
     @Test
     public void expand2() {
-        ChessBoardState state = new ChessBoardState();
-        state.clear();
-        
         state.set(4, 4, new Piece(WHITE, BISHOP, expander));
         state.set(2, 2, new Piece(WHITE, KING, dummyExpander));
         state.set(5, 5, new Piece(BLACK, PAWN));
@@ -105,8 +107,6 @@ public final class WhiteBishopExpanderTest {
     
     @Test
     public void expandAll() {
-        ChessBoardState state = new ChessBoardState();
-        state.clear();
         state.set(4, 5, new Piece(WHITE, BISHOP, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
@@ -179,5 +179,73 @@ public final class WhiteBishopExpanderTest {
         }
         
         assertEquals(11, filter.size());
+    }
+    
+    @Test
+    public void tryGenerateNorthWest() {
+        state.set(7, 7, new Piece(WHITE, BISHOP, expander));
+        state.set(5, 5, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(2, children.size());
+        
+        ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(5, 5, new Piece(BLACK, PAWN));
+        move.set(6, 6, state.get(7, 7));
+        assertTrue(children.contains(move));
+        
+        move.clear();
+        move.set(5, 5, state.get(7, 7));
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void tryGenerateSouthEast() {
+        state.set(0, 0, new Piece(WHITE, BISHOP, expander));
+        state.set(2, 2, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(2, children.size());
+        
+        ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(1, 1, state.get(0, 0));
+        move.set(2, 2, new Piece(BLACK, PAWN));
+        assertTrue(children.contains(move));
+        
+        move.clear();
+        move.set(2, 2, state.get(0, 0));
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void tryGenerateNorthEast() {
+        state.set(0, 7, new Piece(WHITE, BISHOP, expander));
+        state.set(2, 5, new Piece(BLACK, PAWN));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(2, children.size());
+        
+        ChessBoardState move = new ChessBoardState();
+        
+        move.clear();
+        move.set(1, 6, state.get(0, 7));
+        move.set(2, 5, new Piece(BLACK, PAWN));
+        assertTrue(children.contains(move));
+        
+        move.clear();
+        move.set(2, 5, state.get(0, 7));
+        assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void obstructionNorthEast() {
+        
     }
 }
