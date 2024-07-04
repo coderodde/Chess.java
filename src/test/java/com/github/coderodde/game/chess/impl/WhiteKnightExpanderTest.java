@@ -156,14 +156,22 @@ public class WhiteKnightExpanderTest {
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
+        
+        assertTrue(children.contains(getMove(state, 0, 2, 1, 0)));
+        assertTrue(children.contains(getMove(state, 0, 2, 1, 4)));
+        assertTrue(children.contains(getMove(state, 0, 2, 2, 1)));
+        assertTrue(children.contains(getMove(state, 0, 2, 2, 3)));
     }
     
     private static ChessBoardState 
-        move(final ChessBoardState move,
-             final int file1,
-             final int rank1, 
-             final int file2, 
-             final int rank2) {
+        getMove(final ChessBoardState state,
+                final int file1,
+                final int rank1, 
+                final int file2, 
+                final int rank2) {
+            
+        final ChessBoardState move = new ChessBoardState(state);
+            
         move.set(file2, 
                  rank2, 
                  move.get(file1,
