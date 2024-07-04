@@ -15,12 +15,23 @@ import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 
 public final class WhiteRookExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
             new WhiteRookExpander();
+    
+    private final AbstractChessBoardStateExpander dummyExpander = 
+            new TestDummyExpander();
+    
+    private final ChessBoardState state = new ChessBoardState();
+    
+    @Before
+    public void before() {
+        state.clear();
+    }
     
     @Test
     public void expand() {
@@ -181,5 +192,41 @@ public final class WhiteRookExpanderTest {
         }
         
         assertEquals(14, filter.size());
+    }
+    
+    @Test
+    public void obstructionAtNorth() {
+        state.set(7, 2, new Piece(WHITE, ROOK, expander));
+        state.set(7, 0, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(6, 2, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(7, 3, new Piece(WHITE, PAWN, dummyExpander));
+        
+        System.out.println(state);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        final ChessBoardState move = new ChessBoardState(state);
+        
+        move.set(7, 1, state.get(7, 2));
+        move.clear(7, 2);
+    }
+    
+    @Test
+    public void obstructionOnEast() {
+        state.set(0, 0, new Piece(WHITE, ROOK, expander));
+        state.set(0, 1, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(2, 0, new Piece(WHITE, PAWN, dummyExpander));
+
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(1, children.size());
+        
+        final ChessBoardState move = new ChessBoardState(state);
+        move.set(1, 0, state.get(0, 0));
+        move.clear(0, 0);
+        
+        assertTrue(children.contains(move));
     }
 }
