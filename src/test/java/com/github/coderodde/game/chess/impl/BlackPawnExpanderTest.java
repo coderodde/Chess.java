@@ -44,6 +44,22 @@ public final class BlackPawnExpanderTest {
     }
     
     @Test
+    public void cannotDoDoubleMoveFirstCellOccupied() {
+        state.set(1, 1, new Piece(BLACK, PAWN, expander));
+        state.set(1, 2, new Piece(WHITE, PAWN));
+        
+        assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
+    }
+    
+    @Test
+    public void file0CannotPromoteToLeft() {
+        state.set(0, PROMOTION_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(1, PROMOTION_SOURCE_RANK - 1, new Piece(WHITE, PAWN));
+        
+        assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
+    }
+    
+    @Test
     public void doubleMoveFurtherCellOccupied() {
         state.set(5, INITIAL_BLACK_PAWN_RANK, new Piece(BLACK, PAWN, expander));
         state.set(5, INITIAL_BLACK_PAWN_MOVE_2_RANK, new Piece(WHITE, PAWN));
