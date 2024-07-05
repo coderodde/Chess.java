@@ -216,7 +216,7 @@ public class WhiteKnightExpanderTest {
         state.set(2, N - 1, new Piece(WHITE, KNIGHT, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
-        System.out.println(state);
+        
         assertEquals(4, children.size());
         
         assertTrue(children.contains(getMove(state, 2, N - 1, 0, 6)));

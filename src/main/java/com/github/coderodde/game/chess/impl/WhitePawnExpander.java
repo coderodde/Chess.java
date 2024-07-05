@@ -75,6 +75,18 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                 file, 
                                 rank, 
                                 piece);
+            
+            tryCaptureLeft(root, 
+                           children, 
+                           file, 
+                           rank, 
+                           piece);
+            
+            tryCaptureRight(root, 
+                            children, 
+                            file,
+                            rank, 
+                            piece);
             return;
             
         } else if (rank == PROMOTION_SOURCE_RANK) {
@@ -148,30 +160,18 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                             piece);
         
         // Try capture to left:
-        if (file > 0 
-                && root.getCellType(file - 1, rank - 1) 
-                == CellType.BLACK) {
-            
-            final ChessBoardState child = new ChessBoardState(root);
-            
-            child.set(file, rank, null);
-            child.set(file - 1, rank - 1, piece);
-            
-            children.add(child);
-        }
+        tryCaptureLeft(root, 
+                       children, 
+                       file, 
+                       rank, 
+                       piece);
         
         // Try capture to right:
-        if (file < N - 1
-                && root.getCellType(file + 1, rank - 1)
-                == CellType.BLACK) {
-            
-            final ChessBoardState child = new ChessBoardState(root);
-            
-            child.set(file, rank, null);
-            child.set(file + 1, rank - 1, piece);
-            
-            children.add(child);
-        }
+        tryCaptureRight(root,
+                        children, 
+                        file, 
+                        rank, 
+                        piece);
     }
     
     private void tryBasicMoveForward(final ChessBoardState root,
@@ -222,5 +222,51 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         child.set(file + 1, EN_PASSANT_TARGET_RANK, piece);
         
         children.add(child);
+    }
+    
+    private void tryCaptureLeft(final ChessBoardState root,
+                                final List<ChessBoardState> children,
+                                final int file,
+                                final int rank,
+                                final Piece piece) {
+        
+        // Try capture to left:
+        if (file > 0 
+                && root.getCellType(file - 1, rank - 1) 
+                == CellType.BLACK) {
+            
+            final ChessBoardState child = new ChessBoardState(root);
+            
+            child.clear(file,
+                        rank);
+            
+            child.set(file - 1, 
+                      rank - 1, 
+                      piece);
+            
+            children.add(child);
+        }
+    }
+    
+    private void tryCaptureRight(final ChessBoardState root,
+                                 final List<ChessBoardState> children,
+                                 final int file, 
+                                 final int rank,
+                                 final Piece piece) {
+        if (file < N - 1
+                && root.getCellType(file + 1, rank - 1)
+                == CellType.BLACK) {
+            
+            final ChessBoardState child = new ChessBoardState(root);
+            
+            child.clear(file, 
+                        rank);
+            
+            child.set(file + 1, 
+                      rank - 1, 
+                      piece);
+            
+            children.add(child);
+        }
     }
 }

@@ -191,9 +191,6 @@ public final class BlackPawnExpanderTest {
         state.set(3, 5, new Piece(WHITE, KNIGHT));
         state.set(5, 5, new Piece(WHITE, ROOK));
         
-        System.out.println("yeah");
-        System.out.println(state);
-        
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(3, children.size());
@@ -215,9 +212,9 @@ public final class BlackPawnExpanderTest {
         move2.set(3, 5, new Piece(WHITE, KNIGHT));
         move2.set(5, 5, new Piece(WHITE, ROOK));
         
-        System.out.println(move1);
-        System.out.println(move2);
-        System.out.println(move3);
+//        System.out.println(move1);
+//        System.out.println(move2);
+//        System.out.println(move3);
         
         // Capture to the right:
         move3.set(5, 5, new Piece(BLACK, PAWN));
@@ -283,8 +280,6 @@ public final class BlackPawnExpanderTest {
         state.set(6, PROMOTION_TARGET_RANK, new Piece(WHITE, PAWN));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
-        
-        children.forEach(System.out::println);
         
         assertEquals(12, children.size());
         

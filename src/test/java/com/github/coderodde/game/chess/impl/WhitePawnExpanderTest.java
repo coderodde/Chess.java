@@ -215,6 +215,15 @@ public final class WhitePawnExpanderTest {
     }
     
     @Test
+    public void whitePawnEnPassantToLeffedst() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(3, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
+        
+        System.out.println("hello");
+        System.out.println(state);
+    }
+    
+    @Test
     public void whitePawnCannotMakeFirstDoubleMoveDueToObstruction() {
         state.set(6, 6, new Piece(WHITE, PAWN, expander));
         state.set(6, 5, new Piece(BLACK, BISHOP, expander));
