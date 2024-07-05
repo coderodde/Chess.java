@@ -13,13 +13,13 @@ import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.QUEEN;
 import static com.github.coderodde.game.chess.PieceType.ROOK;
 import com.github.coderodde.game.chess.PlayerTurn;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.EN_PASSANT_SOURCE_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.EN_PASSANT_TARGET_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.INITIAL_WHITE_PAWN_MOVE_1_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.INITIAL_WHITE_PAWN_MOVE_2_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.INITIAL_WHITE_PAWN_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.PROMOTION_SOURCE_RANK;
-import static com.github.coderodde.game.chess.impl.WhitePawnExpander.PROMOTION_TARGET_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.EN_PASSANT_SOURCE_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.EN_PASSANT_TARGET_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.INITIAL_BLACK_PAWN_MOVE_1_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.INITIAL_BLACK_PAWN_MOVE_2_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.INITIAL_BLACK_PAWN_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.PROMOTION_SOURCE_RANK;
+import static com.github.coderodde.game.chess.impl.BlackPawnExpander.PROMOTION_TARGET_RANK;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -28,11 +28,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public final class WhitePawnExpanderTest {
+public final class BlackPawnExpanderTest {
     
     private ChessBoardState state;
     private final AbstractChessBoardStateExpander expander = 
-            new WhitePawnExpander();
+            new BlackPawnExpander();
     
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
@@ -45,41 +45,42 @@ public final class WhitePawnExpanderTest {
     
     @Test
     public void doubleMoveFurtherCellOccupied() {
-        state.set(5, INITIAL_WHITE_PAWN_RANK, new Piece(WHITE, PAWN, expander));
-        state.set(5, INITIAL_WHITE_PAWN_MOVE_2_RANK, new Piece(BLACK, PAWN));
+        state.set(5, INITIAL_BLACK_PAWN_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(5, INITIAL_BLACK_PAWN_MOVE_2_RANK, new Piece(WHITE, PAWN));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(1, children.size());
         
         ChessBoardState move = new ChessBoardState(state);
         
         move.set(5, 
-                 INITIAL_WHITE_PAWN_MOVE_1_RANK,
+                 INITIAL_BLACK_PAWN_MOVE_1_RANK,
                  state.get(5, 
-                           INITIAL_WHITE_PAWN_RANK));
+                           INITIAL_BLACK_PAWN_RANK));
         
-        move.clear(5, INITIAL_WHITE_PAWN_RANK);
+        move.clear(5, INITIAL_BLACK_PAWN_RANK);
         
         assertTrue(children.contains(move));
+        System.out.println("yes");
     }
     
     @Test
     public void enPassantFile0() {
-        state.set(0, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN, expander));
-        state.set(0, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
+        state.set(0, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(0, EN_PASSANT_TARGET_RANK, new Piece(WHITE, PAWN));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertTrue(children.isEmpty());
     }
     
     @Test
     public void enPassantFile7() {
-        state.set(7, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN, expander));
-        state.set(7, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
+        state.set(7, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(7, EN_PASSANT_TARGET_RANK, new Piece(WHITE, PAWN));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertTrue(children.isEmpty());
     }
@@ -87,13 +88,22 @@ public final class WhitePawnExpanderTest {
     @Test
     public void promotionFile0CannotCaptureToLeft() {
         state.set(0,
-                   PROMOTION_SOURCE_RANK, 
-                   new Piece(WHITE, 
-                             PAWN, 
-                             expander));
+                  PROMOTION_SOURCE_RANK, 
+                  new Piece(BLACK, 
+                            PAWN, 
+                            expander));
          
-        state.set(1, 0, new Piece(WHITE, PAWN, dummyExpander));
-        state.set(0, 0, new Piece(WHITE, BISHOP, dummyExpander));
+        state.set(1, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            PAWN,
+                            dummyExpander));
+        
+        state.set(0, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            BISHOP, 
+                            dummyExpander));
          
         assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
     }
@@ -102,49 +112,47 @@ public final class WhitePawnExpanderTest {
     public void promotionFile7CannotCaptureToLeft() {
          state.set(N - 1,
                    PROMOTION_SOURCE_RANK, 
-                   new Piece(WHITE, 
+                   new Piece(BLACK, 
                              PAWN, 
                              expander));
          
-        state.set(N - 1, 0, new Piece(WHITE, PAWN, dummyExpander));
-        state.set(N - 2, 0, new Piece(WHITE, BISHOP, dummyExpander));
+        state.set(N - 1, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            PAWN,
+                            dummyExpander));
+        state.set(N - 2, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            BISHOP, 
+                            dummyExpander));
          
         assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
     }
     
     @Test
     public void cannotCaptureToLeft() {
-        state.set(0, 4, new Piece(WHITE, PAWN, expander));
+        state.set(0, 4, new Piece(BLACK, PAWN, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(1, children.size());
-        
-        ChessBoardState move = new ChessBoardState();
-        move.clear();
-        move.set(0, 3, new Piece(WHITE, PAWN));
-        
-        assertTrue(children.contains(move));
+        assertTrue(children.contains(getMove(state, 0, 4, 0, 5)));
     }
     
     @Test
     public void cannotCaptureToRight() {
-        state.set(7, 4, new Piece(WHITE, PAWN, expander));
+        state.set(7, 4, new Piece(BLACK, PAWN, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(1, children.size());
-        
-        ChessBoardState move = new ChessBoardState();
-        move.clear();
-        move.set(7, 3, new Piece(WHITE, PAWN));
-        
-        assertTrue(children.contains(move));
+        assertTrue(children.contains(getMove(state, 7, 4, 7, 5)));
     }
      
     @Test
-    public void moveWhitePawnInitialDoubleMove() {
-        state.set(0, INITIAL_WHITE_PAWN_RANK, new Piece(WHITE, PAWN, expander));
+    public void moveBlackPawnInitialDoubleMove() {
+        state.set(0, INITIAL_BLACK_PAWN_RANK, new Piece(WHITE, PAWN, expander));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -157,11 +165,11 @@ public final class WhitePawnExpanderTest {
         move2.clear();
         
         move1.set(0, 
-                  INITIAL_WHITE_PAWN_MOVE_1_RANK, 
+                  INITIAL_BLACK_PAWN_MOVE_1_RANK, 
                   new Piece(WHITE, PAWN, expander));
         
         move2.set(0, 
-                  INITIAL_WHITE_PAWN_MOVE_2_RANK,
+                  INITIAL_BLACK_PAWN_MOVE_2_RANK,
                   new Piece(WHITE, PAWN, expander));
         
         assertTrue(children.contains(move1));
@@ -169,20 +177,20 @@ public final class WhitePawnExpanderTest {
     }
     
     @Test
-    public void whitePawnCannotMoveForward() {
-        state.set(4, 5, new Piece(WHITE, PAWN, expander));
-        state.set(4, 4, new Piece(BLACK, ROOK, expander));
+    public void blackPawnCannotMoveForward() {
+        state.set(4, 4, new Piece(BLACK, PAWN, expander));
+        state.set(4, 5, new Piece(WHITE, ROOK));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertTrue(children.isEmpty());
     }
     
     @Test
-    public void whitePawnCanEatBothDirectionsAndMoveForward() {
-        state.set(5, 4, new Piece(WHITE, PAWN, expander));
-        state.set(4, 3, new Piece(BLACK, KNIGHT, expander));
-        state.set(6, 3, new Piece(BLACK, ROOK, expander));
+    public void blackPawnCanEatBothDirectionsAndMoveForward() {
+        state.set(4, 4, new Piece(BLACK, PAWN, expander));
+        state.set(3, 5, new Piece(WHITE, KNIGHT));
+        state.set(5, 5, new Piece(WHITE, ROOK));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
@@ -197,17 +205,17 @@ public final class WhitePawnExpanderTest {
         move3.clear();
         
         // Capture to the left:
-        move1.set(4, 3, new Piece(WHITE, PAWN, expander));
-        move1.set(6, 3, new Piece(BLACK, ROOK, expander));
+        move1.set(3, 5, new Piece(BLACK, PAWN));
+        move1.set(5, 5, new Piece(WHITE, ROOK));
         
         // Move forward:
-        move2.set(5, 3, new Piece(WHITE, PAWN, expander));
-        move2.set(4, 3, new Piece(BLACK, KNIGHT, expander));
-        move2.set(6, 3, new Piece(BLACK, ROOK, expander));
+        move2.set(4, 5, new Piece(BLACK, PAWN));
+        move2.set(3, 5, new Piece(WHITE, KNIGHT));
+        move2.set(5, 5, new Piece(WHITE, ROOK));
         
         // Caupture to the right:
-        move3.set(6, 3, new Piece(WHITE, PAWN, expander));
-        move3.set(4, 3, new Piece(BLACK, KNIGHT, expander));
+        move3.set(5, 5, new Piece(BLACK, PAWN));
+        move3.set(3, 5, new Piece(WHITE, KNIGHT));
         
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
@@ -215,17 +223,17 @@ public final class WhitePawnExpanderTest {
     }
     
     @Test
-    public void whitePawnCannotMakeFirstDoubleMoveDueToObstruction() {
+    public void blackPawnCannotMakeFirstDoubleMoveDueToObstruction() {
         state.set(6, 6, new Piece(WHITE, PAWN, expander));
         state.set(6, 5, new Piece(BLACK, BISHOP, expander));
         
-        assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
+        assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
         
         state.clear();
         state.set(4, 6, new Piece(WHITE, PAWN, expander));
         state.set(4, 5, new Piece(BLACK, ROOK, expander));
         
-        assertTrue(state.expand(PlayerTurn.WHITE).isEmpty());
+        assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
     }
     
     @Test
@@ -334,14 +342,14 @@ public final class WhitePawnExpanderTest {
     }
     
     @Test
-    public void whitePawnEnPassantToRight() {
-        state.set(3, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN, expander));
-        state.set(4, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN));
-        state.set(3, EN_PASSANT_TARGET_RANK, new Piece(BLACK, ROOK));
+    public void blackPawnEnPassantToRight() {
+        state.set(3, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
+        state.set(4, EN_PASSANT_SOURCE_RANK, new Piece(WHITE, PAWN));
+        state.set(3, EN_PASSANT_TARGET_RANK, new Piece(WHITE, ROOK));
         
-        state.markBlackPawnInitialDoubleMove(4);
+        state.markWhitePawnInitialDoubleMove(4);
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(1, children.size());
         
@@ -349,11 +357,30 @@ public final class WhitePawnExpanderTest {
         
         move.clear();
         
-        move.set(3, EN_PASSANT_TARGET_RANK, new Piece(BLACK, ROOK));
-        move.set(4, EN_PASSANT_TARGET_RANK, new Piece(WHITE, PAWN));
+        move.set(3, EN_PASSANT_TARGET_RANK, new Piece(WHITE, ROOK));
+        move.set(4, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
         
         boolean pass = children.contains(move);
         
         assertTrue(pass);
+    }
+    
+    private static ChessBoardState getMove(final ChessBoardState state,
+                                           final int sourceFile,
+                                           final int sourceRank,
+                                           final int targetFile,
+                                           final int targetRank) {
+        
+        final ChessBoardState move = new ChessBoardState(state);
+        
+        move.set(targetFile, 
+                 targetRank, 
+                 move.get(sourceFile, 
+                          sourceRank));
+        
+        move.clear(sourceFile,
+                   sourceRank);
+        
+        return move;
     }
 }
