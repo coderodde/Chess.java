@@ -80,7 +80,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         } else if (rank == PROMOTION_SOURCE_RANK) {
             if (file > 0 && 
                 root.getCellType(file - 1,
-                                  PROMOTION_TARGET_RANK) == CellType.BLACK) {
+                                 PROMOTION_TARGET_RANK) == CellType.BLACK) {
                 
                 // Once here, can capture to the left and promote:
                 for (final PieceType pieceType : PROMOTION_PIECE_TYPES) {

@@ -2,7 +2,6 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
-import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import static com.github.coderodde.game.chess.AbstractChessBoardStateExpander.PROMOTION_PIECE_TYPES;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
@@ -77,6 +76,9 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
                                 file, 
                                 rank, 
                                 piece);
+            
+            // TODO: Found out whether it is possible to capture instead of
+            //       doing en passant!
             return;
             
         } else if (rank == PROMOTION_SOURCE_RANK) {
@@ -127,7 +129,7 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
                 for (final PieceType pieceType : PROMOTION_PIECE_TYPES) {
                     final Piece newPiece = 
                             new Piece(
-                                    PieceColor.WHITE,
+                                    PieceColor.BLACK,
                                     pieceType,
                                     this);
                     
@@ -193,6 +195,7 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
         if (root.getCellType(file, rank + 1) == CellType.EMPTY) {
             
             final ChessBoardState child = new ChessBoardState(root);
+            
             child.set(file, 
                       rank + 1, 
                       piece);

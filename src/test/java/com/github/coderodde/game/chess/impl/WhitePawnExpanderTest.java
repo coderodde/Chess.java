@@ -181,8 +181,8 @@ public final class WhitePawnExpanderTest {
     @Test
     public void whitePawnCanEatBothDirectionsAndMoveForward() {
         state.set(5, 4, new Piece(WHITE, PAWN, expander));
-        state.set(4, 3, new Piece(BLACK, KNIGHT, expander));
-        state.set(6, 3, new Piece(BLACK, ROOK, expander));
+        state.set(4, 3, new Piece(BLACK, KNIGHT));
+        state.set(6, 3, new Piece(BLACK, ROOK));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
