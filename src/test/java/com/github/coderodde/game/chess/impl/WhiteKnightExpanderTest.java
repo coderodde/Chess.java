@@ -2,14 +2,17 @@ package com.github.coderodde.game.chess.impl;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
+import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
+import static com.github.coderodde.game.chess.PieceType.PAWN;
 import com.github.coderodde.game.chess.PlayerTurn;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +21,9 @@ public class WhiteKnightExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
             new WhiteKnightExpander();
+    
+    private final AbstractChessBoardStateExpander dummyExpander = 
+            new TestDummyExpander();
     
     private final ChessBoardState state = new ChessBoardState();
     
@@ -163,6 +169,107 @@ public class WhiteKnightExpanderTest {
         assertTrue(children.contains(getMove(state, 0, 2, 2, 3)));
     }
     
+    @Test
+    public void obstructionNorthLeft() {
+        state.set(2, 2, new Piece(WHITE, KNIGHT, expander));
+        state.set(1, 0, new Piece(WHITE, PAWN, dummyExpander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final ChessBoardState obstructedState = getMove(state,
+                                                        1,
+                                                        0,
+                                                        2, 
+                                                        2);
+        
+        
+        assertFalse(children.contains(obstructedState));
+    }
+    
+    @Test
+    public void cannotGenerateNorthRight() {
+        state.set(N - 1, 2, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+        assertTrue(children.contains(getMove(state, N - 1, 2, 6, 0)));
+        assertTrue(children.contains(getMove(state, N - 1, 2, 6, 4)));
+        assertTrue(children.contains(getMove(state, N - 1, 2, 5, 1)));
+        assertTrue(children.contains(getMove(state, N - 1, 2, 5, 3)));
+    }
+    
+    @Test
+    public void cannotGenerateWestUp() {
+        state.set(2, 0, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(4, children.size());
+        assertTrue(children.contains(getMove(state, 2, 0, 1, 2)));
+        assertTrue(children.contains(getMove(state, 2, 0, 3, 2)));
+        assertTrue(children.contains(getMove(state, 2, 0, 0, 1)));
+        assertTrue(children.contains(getMove(state, 2, 0, 4, 1)));
+    }
+    
+    @Test
+    public void cannotGenerateWestDown() {
+        state.set(2, N - 1, new Piece(WHITE, KNIGHT, expander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        System.out.println(state);
+        assertEquals(4, children.size());
+        
+        assertTrue(children.contains(getMove(state, 2, N - 1, 0, 6)));
+        assertTrue(children.contains(getMove(state, 2, N - 1, 4, 6)));
+        assertTrue(children.contains(getMove(state, 2, N - 1, 1, 5)));
+        assertTrue(children.contains(getMove(state, 2, N - 1, 3, 5)));
+    }
+    
+    @Test
+    public void allObstructions() {
+        final Piece p = new Piece(WHITE, PAWN, dummyExpander);
+        state.set(4, 4, new Piece(WHITE, KNIGHT, expander));
+        
+        // North left:
+        state.set(3, 2, p);
+        
+        // North east:
+        state.set(5, 2, p);
+                
+        // South left:
+        state.set(3, 6, p);
+        
+        // South right:
+        state.set(5, 6, p);
+        
+        // West up:
+        state.set(2, 3, p);
+        
+        // West down:
+        state.set(2, 5, p);
+        
+        // East up:
+        state.set(6, 3, p);
+        
+        // East down:
+        state.set(6, 5, p);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertTrue(children.isEmpty());
+    }
+    
+    /**
+     * Makes a move in a {@code state}.
+     * 
+     * @param state the source state.
+     * @param file1 the source state file.
+     * @param rank1 the source state rank.
+     * @param file2 the target state file.
+     * @param rank2 the target state rank.
+     * 
+     * @return a new move. 
+     */
     private static ChessBoardState 
         getMove(final ChessBoardState state,
                 final int file1,
