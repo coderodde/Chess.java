@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
 import org.junit.Test;
 
 public final class WhiteQueenExpanderTest {
@@ -24,6 +25,13 @@ public final class WhiteQueenExpanderTest {
     
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
+    
+    private final ChessBoardState state = new ChessBoardState();
+    
+    @Before
+    public void before() {
+        state.clear();
+    }
     
     @Test
     public void expand1() {
@@ -215,6 +223,18 @@ public final class WhiteQueenExpanderTest {
         }
         
         assertEquals(27, filter.size());
+    }
+    
+    @Test
+    public void obstructionOnNorthWest() {
+        state.set(7, 7, new Piece(WHITE, QUEEN, expander));
+        state.set(6, 7, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(7, 6, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(6, 6, new Piece(WHITE, PAWN, dummyExpander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertTrue(children.isEmpty());
     }
     
     private static ChessBoardState move(final ChessBoardState state,

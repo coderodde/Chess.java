@@ -201,8 +201,6 @@ public final class WhiteRookExpanderTest {
         state.set(6, 2, new Piece(WHITE, PAWN, dummyExpander));
         state.set(7, 3, new Piece(WHITE, PAWN, dummyExpander));
         
-        System.out.println(state);
-        
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(1, children.size());
