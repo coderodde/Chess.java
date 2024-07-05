@@ -164,6 +164,59 @@ public final class WhiteKingExpanderTest {
         assertTrue(children.contains(move));
     }
     
+    @Test
+    public void file1rank0() {
+        final Piece p = new Piece(WHITE, PAWN, dummyExpander);
+        
+        state.set(1, 0, new Piece(WHITE, KING, expander));
+        state.set(0, 0, p);
+        state.set(2, 0, p);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(3, children.size());
+        
+        assertTrue(children.contains(move(state, 1, 0, 0, 1)));
+        assertTrue(children.contains(move(state, 1, 0, 1, 1)));
+        assertTrue(children.contains(move(state, 1, 0, 2, 1)));
+    }
+    
+    @Test
+    public void file6rank7() {
+        final Piece p = new Piece(WHITE, PAWN, dummyExpander);
+        
+        state.set(6, 7, new Piece(WHITE, KING, expander));
+        state.set(5, 7, p);
+        state.set(7, 7, p);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        
+        assertEquals(3, children.size());
+        
+        assertTrue(children.contains(move(state, 6, 7, 5, 6)));
+        assertTrue(children.contains(move(state, 6, 7, 6, 6)));
+        assertTrue(children.contains(move(state, 6, 7, 7, 6)));
+    }
+    
+    private static ChessBoardState move(final ChessBoardState state,
+                                        final int sourceFile,
+                                        final int sourceRank,
+                                        final int targetFile,
+                                        final int targetRank) {
+        
+        final ChessBoardState move = new ChessBoardState(state);
+    
+        move.set(targetFile, 
+                 targetRank, 
+                 state.get(sourceFile,
+                           sourceRank));
+        
+        move.clear(sourceFile,
+                   sourceRank);
+        
+        return move;
+    }
+    
     private static ChessBoardState getMove(final int file,
                                            final int rank, 
                                            final ChessBoardState move) {
