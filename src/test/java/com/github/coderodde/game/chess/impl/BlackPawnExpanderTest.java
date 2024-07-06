@@ -55,7 +55,7 @@ public final class BlackPawnExpanderTest {
     public void file0CannotPromoteToLeft() {
         state.set(0, PROMOTION_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
         state.set(0, PROMOTION_TARGET_RANK, new Piece(WHITE, PAWN));
-        
+            
         assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
     }
     
@@ -124,6 +124,31 @@ public final class BlackPawnExpanderTest {
     }
     
     @Test
+    public void promotionFile7CannotCaptureToRight() {
+        state.set(7,
+                  PROMOTION_SOURCE_RANK, 
+                  new Piece(BLACK, 
+                            PAWN, 
+                            expander));
+         
+        state.set(6, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            PAWN,
+                            dummyExpander));
+        
+        state.set(7, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, 
+                            BISHOP, 
+                            dummyExpander));
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+         
+        assertTrue(children.isEmpty());
+    }
+    
+    @Test
     public void promotionFile7CannotCaptureToLeft() {
          state.set(N - 1,
                    PROMOTION_SOURCE_RANK, 
@@ -165,6 +190,23 @@ public final class BlackPawnExpanderTest {
         assertTrue(children.contains(getMove(state, 7, 4, 7, 5)));
     }
      
+    @Test
+    public void cannotCaptureToRightOnPromotion() {
+        state.set(7, 
+                  PROMOTION_SOURCE_RANK, 
+                  new Piece(BLACK, PAWN, expander));
+        
+        state.set(7, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, PAWN, dummyExpander));
+        
+        state.set(6, 
+                  PROMOTION_TARGET_RANK, 
+                  new Piece(BLACK, PAWN, dummyExpander));
+        
+        assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
+    }
+    
     @Test
     public void moveBlackPawnInitialDoubleMove() {
         state.set(0, INITIAL_BLACK_PAWN_RANK, new Piece(WHITE, PAWN, expander));
