@@ -18,10 +18,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public final class WhiteQueenExpanderTest {
+public final class BlackQueenExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
-            new WhiteQueenExpander();
+            new BlackQueenExpander();
     
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
@@ -39,13 +39,13 @@ public final class WhiteQueenExpanderTest {
         
         state.clear();
         
-        state.set(2, 2, new Piece(WHITE, QUEEN, expander));
-        state.set(4, 4, new Piece(BLACK, PAWN));
-        state.set(2, 4, new Piece(BLACK, BISHOP));
-        state.set(6, 6, new Piece(WHITE, BISHOP, dummyExpander));
-        state.set(4, 2, new Piece(BLACK, PAWN));
+        state.set(2, 2, new Piece(BLACK, QUEEN, expander));
+        state.set(4, 4, new Piece(WHITE, PAWN));
+        state.set(2, 4, new Piece(WHITE, BISHOP));
+        state.set(6, 6, new Piece(BLACK, BISHOP, dummyExpander));
+        state.set(4, 2, new Piece(WHITE, PAWN));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(16, children.size());
         
@@ -108,9 +108,9 @@ public final class WhiteQueenExpanderTest {
         final ChessBoardState state = new ChessBoardState();
         state.clear();
         
-        state.set(3, 4, new Piece(WHITE, QUEEN, expander));
+        state.set(3, 4, new Piece(BLACK, QUEEN, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         final Set<ChessBoardState> filter = new HashSet<>();
         
         assertEquals(27, children.size());
@@ -227,12 +227,12 @@ public final class WhiteQueenExpanderTest {
     
     @Test
     public void obstructionOnNorthWest() {
-        state.set(7, 7, new Piece(WHITE, QUEEN, expander));
-        state.set(6, 7, new Piece(WHITE, PAWN, dummyExpander));
-        state.set(7, 6, new Piece(WHITE, PAWN, dummyExpander));
-        state.set(6, 6, new Piece(WHITE, PAWN, dummyExpander));
+        state.set(7, 7, new Piece(BLACK, QUEEN, expander));
+        state.set(6, 7, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(7, 6, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(6, 6, new Piece(BLACK, PAWN, dummyExpander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertTrue(children.isEmpty());
     }

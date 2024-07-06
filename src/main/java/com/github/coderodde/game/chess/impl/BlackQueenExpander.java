@@ -6,18 +6,18 @@ import com.github.coderodde.game.chess.Piece;
 import java.util.List;
 
 /**
- * This class implements the expander generating all white queen moves.
+ * This class impelemnts the expander generating all the moves of a black queen.
  * 
- * @version 1.0.0 (Jul 2, 2024)
- * @since 1.0.0 (Jul 2, 2024)
+ * @version 1.0.0 (Jul 6, 2024)
+ * @since 1.0.0 (Jul 6, 2024)
  */
-public final class WhiteQueenExpander extends AbstractChessBoardStateExpander {
+public final class BlackQueenExpander extends AbstractChessBoardStateExpander {
 
     private static final AbstractChessBoardStateExpander ROOK_EXPANDER = 
-            new WhiteRookExpander();
+            new BlackRookExpander();
     
     private static final AbstractChessBoardStateExpander BISHOP_EXPANDER = 
-            new WhiteBishopExpander();
+            new BlackBishopExpander();
     
     @Override
     public void expand(final ChessBoardState state,
