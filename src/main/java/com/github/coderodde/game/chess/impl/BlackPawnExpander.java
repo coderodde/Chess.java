@@ -11,7 +11,7 @@ import com.github.coderodde.game.chess.PieceType;
 import java.util.List;
 
 /**
- * This class implements an expander for generating all white pawn moves.
+ * This class implements an expander for generating all black pawn moves.
  * 
  * @version 1.0.0 (Jun 26, 2024)
  * @since 1.0.0 (Jun 26, 2024)
@@ -37,7 +37,7 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
                 && root.get(file, INITIAL_BLACK_PAWN_MOVE_1_RANK) == null
                 && root.get(file, INITIAL_BLACK_PAWN_MOVE_2_RANK) == null) {
             
-            // Once here, we can move a white pawn two moves forward:
+            // Once here, we can move a black pawn two moves forward:
             final ChessBoardState child = new ChessBoardState(root);
             
             child.markBlackPawnInitialDoubleMove(file);
