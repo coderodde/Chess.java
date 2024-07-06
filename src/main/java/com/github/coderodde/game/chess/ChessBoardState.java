@@ -1,6 +1,17 @@
 package com.github.coderodde.game.chess;
 
+import com.github.coderodde.game.chess.impl.BlackBishopExpander;
+import com.github.coderodde.game.chess.impl.BlackKingExpander;
+import com.github.coderodde.game.chess.impl.BlackKnightExpander;
+import com.github.coderodde.game.chess.impl.BlackPawnExpander;
+import com.github.coderodde.game.chess.impl.BlackQueenExpander;
+import com.github.coderodde.game.chess.impl.BlackRookExpander;
+import com.github.coderodde.game.chess.impl.WhiteBishopExpander;
+import com.github.coderodde.game.chess.impl.WhiteKingExpander;
+import com.github.coderodde.game.chess.impl.WhiteKnightExpander;
 import com.github.coderodde.game.chess.impl.WhitePawnExpander;
+import com.github.coderodde.game.chess.impl.WhiteQueenExpander;
+import com.github.coderodde.game.chess.impl.WhiteRookExpander;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +26,36 @@ public final class ChessBoardState {
     
     public static final int N = 8;
     
+    private static final AbstractChessBoardStateExpander WHITE_BISHOP_EXPANDER;
+    private static final AbstractChessBoardStateExpander WHITE_KING_EXPANDER;
+    private static final AbstractChessBoardStateExpander WHITE_KNIGHT_EXPANDER;
+    private static final AbstractChessBoardStateExpander WHITE_PAWN_EXPANDER;
+    private static final AbstractChessBoardStateExpander WHITE_QUEEN_EXPANDER;
+    private static final AbstractChessBoardStateExpander WHITE_ROOK_EXPANDER;
+    
+    private static final AbstractChessBoardStateExpander BLACK_BISHOP_EXPANDER;
+    private static final AbstractChessBoardStateExpander BLACK_KING_EXPANDER;
+    private static final AbstractChessBoardStateExpander BLACK_KNIGHT_EXPANDER;
+    private static final AbstractChessBoardStateExpander BLACK_PAWN_EXPANDER;
+    private static final AbstractChessBoardStateExpander BLACK_QUEEN_EXPANDER;
+    private static final AbstractChessBoardStateExpander BLACK_ROOK_EXPANDER;
+    
+    static {
+        WHITE_BISHOP_EXPANDER = new WhiteBishopExpander();
+        WHITE_KING_EXPANDER   = new WhiteKingExpander();
+        WHITE_KNIGHT_EXPANDER = new WhiteKnightExpander();
+        WHITE_PAWN_EXPANDER   = new WhitePawnExpander();
+        WHITE_QUEEN_EXPANDER  = new WhiteQueenExpander();
+        WHITE_ROOK_EXPANDER   = new WhiteRookExpander();
+        
+        BLACK_BISHOP_EXPANDER = new BlackBishopExpander();
+        BLACK_KING_EXPANDER   = new BlackKingExpander();
+        BLACK_KNIGHT_EXPANDER = new BlackKnightExpander();
+        BLACK_PAWN_EXPANDER   = new BlackPawnExpander();
+        BLACK_QUEEN_EXPANDER  = new BlackQueenExpander();
+        BLACK_ROOK_EXPANDER   = new BlackRookExpander();
+    }
+    
     private Piece[][] state;
     private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
     private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
@@ -24,41 +65,81 @@ public final class ChessBoardState {
         state = new Piece[N][N];
         
         // Black pieces:
-        state[0][0] = new Piece(PieceColor.BLACK, PieceType.ROOK, null);
-        state[0][7] = new Piece(PieceColor.BLACK, PieceType.ROOK, null);
-  
-        state[0][1] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, null);
-        state[0][6] = new Piece(PieceColor.BLACK, PieceType.KNIGHT, null);
+        state[0][0] = new Piece(PieceColor.BLACK, 
+                                PieceType.ROOK, 
+                                BLACK_ROOK_EXPANDER);
         
-        state[0][2] = new Piece(PieceColor.BLACK, PieceType.BISHOP, null);
-        state[0][5] = new Piece(PieceColor.BLACK, PieceType.BISHOP, null);
+        state[0][7] = new Piece(PieceColor.BLACK, 
+                                PieceType.ROOK, 
+                                BLACK_ROOK_EXPANDER);
   
-        state[0][3] = new Piece(PieceColor.BLACK, PieceType.QUEEN, null);
-        state[0][4] = new Piece(PieceColor.BLACK, PieceType.KING, null);
+        state[0][1] = new Piece(PieceColor.BLACK, 
+                                PieceType.KNIGHT,
+                                BLACK_KNIGHT_EXPANDER);
+        
+        state[0][6] = new Piece(PieceColor.BLACK, 
+                                PieceType.KNIGHT, 
+                                BLACK_KNIGHT_EXPANDER);
+        
+        state[0][2] = new Piece(PieceColor.BLACK, 
+                                PieceType.BISHOP, 
+                                BLACK_BISHOP_EXPANDER);
+        
+        state[0][5] = new Piece(PieceColor.BLACK, 
+                                PieceType.BISHOP, 
+                                BLACK_BISHOP_EXPANDER);
+  
+        state[0][3] = new Piece(PieceColor.BLACK, 
+                                PieceType.QUEEN, 
+                                BLACK_QUEEN_EXPANDER);
+        
+        state[0][4] = new Piece(PieceColor.BLACK, 
+                                PieceType.KING, 
+                                BLACK_KING_EXPANDER);
         
         for (int file = 0; file < N; file++) {
             state[1][file] = new Piece(PieceColor.BLACK,
                                        PieceType.PAWN,
-                                       new WhitePawnExpander());
+                                       BLACK_PAWN_EXPANDER);
         }
         
         // White pieces:
-        state[7][0] = new Piece(PieceColor.WHITE, PieceType.ROOK, null);
-        state[7][7] = new Piece(PieceColor.WHITE, PieceType.ROOK, null);
+        state[7][0] = new Piece(PieceColor.WHITE, 
+                                PieceType.ROOK, 
+                                WHITE_ROOK_EXPANDER);
+        
+        state[7][7] = new Piece(PieceColor.WHITE, 
+                                PieceType.ROOK, 
+                                WHITE_ROOK_EXPANDER);
   
-        state[7][1] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, null);
-        state[7][6] = new Piece(PieceColor.WHITE, PieceType.KNIGHT, null);
+        state[7][1] = new Piece(PieceColor.WHITE, 
+                                PieceType.KNIGHT, 
+                                WHITE_KNIGHT_EXPANDER);
         
-        state[7][2] = new Piece(PieceColor.WHITE, PieceType.BISHOP, null);
-        state[7][5] = new Piece(PieceColor.WHITE, PieceType.BISHOP, null);
+        state[7][6] = new Piece(PieceColor.WHITE, 
+                                PieceType.KNIGHT, 
+                                WHITE_KNIGHT_EXPANDER);
         
-        state[7][3] = new Piece(PieceColor.WHITE, PieceType.QUEEN, null);
-        state[7][4] = new Piece(PieceColor.WHITE, PieceType.KING, null);
+        state[7][2] = new Piece(PieceColor.WHITE, 
+                                PieceType.BISHOP, 
+                                WHITE_BISHOP_EXPANDER);
+        
+        state[7][5] = new Piece(PieceColor.WHITE, 
+                                PieceType.BISHOP, 
+                                WHITE_BISHOP_EXPANDER);
+        
+        state[7][3] = new Piece(PieceColor.WHITE, 
+                                PieceType.QUEEN, 
+                                WHITE_QUEEN_EXPANDER);
+        
+        state[7][4] = new Piece(PieceColor.WHITE, 
+                                PieceType.KING, 
+                                WHITE_KING_EXPANDER);
         
         for (int file = 0; file < N; file++) {
             state[6][file] = new Piece(PieceColor.WHITE,
                                        PieceType.PAWN,
-                                       null);
+                                       WHITE_PAWN_EXPANDER);
         }
     }
     
