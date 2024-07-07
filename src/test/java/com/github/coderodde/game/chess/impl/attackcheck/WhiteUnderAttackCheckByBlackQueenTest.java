@@ -212,10 +212,16 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
         assertNotCheck(2, 2);
     }
     
-    private void assertCheck(final int file, 
-                             final int rank) {
-        
-        assertTrue(QUEEN_CHECK.check(state, file, rank));
+    @Test
+    public void limitNorthEastFile() {
+        state.set(6, 3, whitePawn);
+        assertNotCheck(6, 3);
+    }
+    
+    @Test
+    public void limitNorthEastRank() {
+        state.set(3, 6, whiteQueen);
+        assertNotCheck(3, 6);
     }
     
     private void assertNotCheck(final int file, 
