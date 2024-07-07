@@ -123,6 +123,14 @@ public final class Piece {
                       pieceType.getPieceTypeCodeBits());
     }
     
+    public PieceColor getPieceColor() {
+        return pieceColor;
+    }
+    
+    public PieceType getPieceType() {
+        return pieceType;
+    }
+    
     public boolean isWhite() {
         return (byte)(pieceColor.getPieceColorCodeBits() & WHITE_COLOR) != 0;
     }
