@@ -17,7 +17,8 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
     private static final Piece whiteQueen = new Piece(WHITE, QUEEN);
     private static final Piece blackQueen = new Piece(BLACK, QUEEN);
     
-    private static final Piece pawn = new Piece(BLACK, PAWN);
+    private static final Piece whitePawn = new Piece(WHITE, PAWN);
+    private static final Piece blackPawn = new Piece(BLACK, PAWN);
     
     private static final UnderAttackCheck QUEEN_CHECK = 
             new WhiteUnderAttackCheckByBlackQueen();
@@ -128,49 +129,49 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
         
     @Test
     public void blackPawnNorth() {
-        state.set(3, 1, pawn);
+        state.set(3, 1, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnSouth() {
-        state.set(3, 7, pawn);
+        state.set(3, 7, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnWest() {
-        state.set(0, 3, pawn);
+        state.set(0, 3, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnEast() {
-        state.set(6, 3, pawn);
+        state.set(6, 3, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnNorthEast() {
-        state.set(6, 0, pawn);
+        state.set(6, 0, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnNorthWest() {
-        state.set(0, 0, pawn);
+        state.set(0, 0, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnSouthEast() {
-        state.set(6, 6, pawn);
+        state.set(6, 6, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnSouthWest() {
-        state.set(0, 6, pawn);
+        state.set(0, 6, blackPawn);
         assertNotCheck();
     }
     
@@ -191,6 +192,36 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
         state.set(7, 3, blackQueen);
         
         assertTrue(QUEEN_CHECK.check(state, 3, 3));
+    }
+    
+    @Test
+    public void limitNorthWestFile() {
+        state.set(2, 3, whitePawn);
+        assertNotCheck(2, 3);
+    }
+    
+    @Test
+    public void limitNorthWestRank() {
+        state.set(3, 2, whitePawn);
+        assertNotCheck(3, 2);
+    }
+    
+    @Test
+    public void limitNorthWestBoth() {
+        state.set(2, 2, whitePawn);
+        assertNotCheck(2, 2);
+    }
+    
+    private void assertCheck(final int file, 
+                             final int rank) {
+        
+        assertTrue(QUEEN_CHECK.check(state, file, rank));
+    }
+    
+    private void assertNotCheck(final int file, 
+                                final int rank) {
+        
+        assertFalse(QUEEN_CHECK.check(state, file, rank));
     }
     
     private void assertCheck() {
