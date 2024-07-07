@@ -46,11 +46,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenSouthWest(state, file, rank)) {
-            return true;
-        }
-        
-        return false;
+        return whiteCellIsUnderAttackByBlackQueenSouthWest(state, file, rank);
     }
     
     /**
@@ -219,6 +215,10 @@ public final class WhiteUnderAttackCheckByBlackQueen
             
             final Piece piece = state.get(f, r);
             
+            // Make sure that the counters are updated:
+            f--;
+            r--;
+            
             if (piece == null) {
                 continue;
             }
@@ -232,9 +232,6 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 // Match! The black queen threatens the piece:
                 return true;
             }
-            
-            f--;
-            r--;
         }
         
         // Once here, there is no black queen below the piece:
@@ -262,6 +259,10 @@ public final class WhiteUnderAttackCheckByBlackQueen
             
             final Piece piece = state.get(f, r);
             
+            // Make sure the indices are updated:
+            f++;
+            r--;
+            
             if (piece == null) {
                 continue;
             }
@@ -275,9 +276,6 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 // Match! The black queen threatens this position:
                 return true;
             }
-            
-            f++;
-            r--;
         }
         
         // Once here, there is no black queen below the piece:
@@ -305,6 +303,10 @@ public final class WhiteUnderAttackCheckByBlackQueen
             
             final Piece piece = state.get(f, r);
             
+            // Make sure that the indices are updated:
+            f--;
+            r++;
+            
             if (piece == null) {
                 continue;
             }
@@ -318,9 +320,6 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 // Match! The black queen threatens the current position:
                 return true;
             }
-            
-            f--;
-            r++;
         }
         
         // Once here, there is no black queen below the piece:
@@ -348,6 +347,10 @@ public final class WhiteUnderAttackCheckByBlackQueen
             
             final Piece piece = state.get(f, r);
             
+            // Make sure that the indices are updated:
+            f++;
+            r++;
+            
             if (piece == null) {
                 continue;
             }
@@ -361,9 +364,6 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 // Match! A black queen threatens this piece:
                 return true;
             }
-            
-            f++;
-            r++;
         }
         
         // Once here, there is no black queen below the piece:
