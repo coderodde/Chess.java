@@ -8,16 +8,17 @@ import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.QUEEN;
 import com.github.coderodde.game.chess.UnderAttackCheck;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public final class WhiteUnderAttackCheckByBlackQueenTest {
     
-    private static final Piece queen = new Piece(BLACK, QUEEN);
+    private static final Piece whiteQueen = new Piece(WHITE, QUEEN);
+    private static final Piece blackQueen = new Piece(BLACK, QUEEN);
+    
+    private static final Piece pawn = new Piece(BLACK, PAWN);
+    
     private static final UnderAttackCheck QUEEN_CHECK = 
             new WhiteUnderAttackCheckByBlackQueen();
     
@@ -31,40 +32,146 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
     
     @Test
     public void blackQueenNorth() {
-        state.set(3, 1, queen);
+        state.set(3, 1, blackQueen);
         assertCheck();
     }
     
     @Test
     public void blackQueenSouth() {
-        state.set(3, 7, queen);
+        state.set(3, 7, blackQueen);
         assertCheck();
     }
     
     @Test
     public void blackQueenWest() {
-        state.set(0, 3, queen);
+        state.set(0, 3, blackQueen);
         assertCheck();
     }
     
     @Test
     public void blackQueenEast() {
-        state.set(6, 3, queen);
+        state.set(6, 3, blackQueen);
         assertCheck();
     }
     
     @Test
     public void blackQueenNorthEast() {
-        state.set(6, 0, queen);
+        state.set(6, 0, blackQueen);
         assertCheck();
-        System.out.println("northeast");
     }
     
     @Test
     public void blackQueenNorthWest() {
-        state.set(0, 0, queen);
+        state.set(0, 0, blackQueen);
         assertCheck();
-        System.out.println("northwest");
+    }
+    
+    @Test
+    public void blackQueenSouthEast() {
+        state.set(6, 6, blackQueen);
+        assertCheck();
+    }
+    
+    @Test
+    public void blackQueenSouthWest() {
+        state.set(0, 6, blackQueen);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteQueenNorth() {
+        state.set(3, 1, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenSouth() {
+        state.set(3, 7, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenWest() {
+        state.set(0, 3, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenEast() {
+        state.set(6, 3, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenNorthEast() {
+        state.set(6, 0, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenNorthWest() {
+        state.set(0, 0, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenSouthEast() {
+        state.set(6, 6, whiteQueen);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteQueenSouthWest() {
+        state.set(0, 6, whiteQueen);
+        assertNotCheck();
+    }
+        
+    @Test
+    public void blackPawnNorth() {
+        state.set(3, 1, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnSouth() {
+        state.set(3, 7, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnWest() {
+        state.set(0, 3, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnEast() {
+        state.set(6, 3, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnNorthEast() {
+        state.set(6, 0, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnNorthWest() {
+        state.set(0, 0, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnSouthEast() {
+        state.set(6, 6, pawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnSouthWest() {
+        state.set(0, 6, pawn);
+        assertNotCheck();
     }
     
     @Test
@@ -72,21 +179,25 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
         state.set(3, 3, new Piece(WHITE, BISHOP));
         
         // Diagonal queens:
-        state.set(0, 0, queen);
-        state.set(6, 6, queen);
-        state.set(1, 5, queen);
-        state.set(5, 1, queen);
+        state.set(0, 0, blackQueen);
+        state.set(6, 6, blackQueen);
+        state.set(1, 5, blackQueen);
+        state.set(5, 1, blackQueen);
         
         // Straight queens:
-        state.set(3, 5, queen);
-        state.set(3, 0, queen);
-        state.set(0, 3, queen);
-        state.set(7, 3, queen);
+        state.set(3, 5, blackQueen);
+        state.set(3, 0, blackQueen);
+        state.set(0, 3, blackQueen);
+        state.set(7, 3, blackQueen);
         
         assertTrue(QUEEN_CHECK.check(state, 3, 3));
     }
     
     private void assertCheck() {
         assertTrue(QUEEN_CHECK.check(state, 3, 3));
+    }
+    
+    private void assertNotCheck() {
+        assertFalse(QUEEN_CHECK.check(state, 3, 3));
     }
 }
