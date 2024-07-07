@@ -1,4 +1,4 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;

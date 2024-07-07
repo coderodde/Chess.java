@@ -1,5 +1,7 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
+import com.github.coderodde.game.chess.impl.expanders.WhiteRookExpander;
+import com.github.coderodde.game.chess.impl.expanders.TestDummyExpander;
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;

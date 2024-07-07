@@ -1,6 +1,6 @@
 package com.github.coderodde.game.chess;
 
-import com.github.coderodde.game.chess.impl.WhitePawnExpander;
+import com.github.coderodde.game.chess.impl.expanders.WhitePawnExpander;
 import java.util.List;
 
 public class Chess {

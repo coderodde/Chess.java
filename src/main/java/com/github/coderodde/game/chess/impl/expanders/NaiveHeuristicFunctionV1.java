@@ -1,4 +1,4 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.HeuristicFunction;

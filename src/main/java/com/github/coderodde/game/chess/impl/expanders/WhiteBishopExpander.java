@@ -1,4 +1,4 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.CellType;
@@ -7,7 +7,7 @@ import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import java.util.List;
 
-public class BlackBishopExpander extends AbstractChessBoardStateExpander {
+public class WhiteBishopExpander extends AbstractChessBoardStateExpander {
 
     @Override
     public void expand(final ChessBoardState state, 
@@ -61,7 +61,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
             final CellType cellType = state.getCellType(file - index,
                                                         rank - index);
             
-            if (cellType == CellType.WHITE) {
+            if (cellType == CellType.BLACK) {
                 // Can capture:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -77,7 +77,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
                 return;
             }
@@ -116,7 +116,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
             final CellType cellType = state.getCellType(file + index,
                                                         rank - index);
             
-            if (cellType == CellType.WHITE) {
+            if (cellType == CellType.BLACK) {
                 // Can capture:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -132,7 +132,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
                 return;
             }
@@ -171,7 +171,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
             final CellType cellType = state.getCellType(file - index,
                                                         rank + index);
             
-            if (cellType == CellType.WHITE) {
+            if (cellType == CellType.BLACK) {
                 // Can capture:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -187,7 +187,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
                 return;
             }
@@ -226,7 +226,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
             final CellType cellType = state.getCellType(file + index,
                                                         rank + index);
             
-            if (cellType == CellType.WHITE) {
+            if (cellType == CellType.BLACK) {
                 // Can capture:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -242,7 +242,7 @@ public class BlackBishopExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Cannot move further because of obstruction:
                 return;
             }

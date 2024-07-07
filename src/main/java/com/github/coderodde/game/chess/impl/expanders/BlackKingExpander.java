@@ -1,4 +1,4 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.CellType;
@@ -13,7 +13,7 @@ import java.util.List;
  * @version 1.0.0 (Jul 1, 2024)
  * @since 1.0.0 (Jul 1, 2024)
  */
-public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
+public final class BlackKingExpander extends AbstractChessBoardStateExpander {
 
     @Override
     public void expand(final ChessBoardState state,
@@ -25,7 +25,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         if (file > 0) {
             // Once here, can move to the left:
             if (rank > 0 && state.getCellType(file - 1, 
-                                              rank - 1) != CellType.WHITE) {
+                                              rank - 1) != CellType.BLACK) {
                 
                 // Once here, can move to left upwards:
                 children.add(
@@ -37,7 +37,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             }
             
             if (rank < N - 1 && state.getCellType(file - 1, 
-                                                  rank + 1) != CellType.WHITE) {
+                                                  rank + 1) != CellType.BLACK) {
                 
                 // Once here, can move to left downwards:
                 children.add(
@@ -49,7 +49,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             }
             
             // Move to the left:
-            if (state.getCellType(file - 1, rank) != CellType.WHITE) {
+            if (state.getCellType(file - 1, rank) != CellType.BLACK) {
                 children.add(
                         move(state, 
                              file, 
@@ -62,7 +62,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         if (file < N - 1) {
             // Once here, can move to the right:
             if (rank > 0 && state.getCellType(file + 1, 
-                                              rank - 1) != CellType.WHITE) {
+                                              rank - 1) != CellType.BLACK) {
                 
                 // Once here, can move to right upwards:
                 children.add(
@@ -74,7 +74,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             }
             
             if (rank < N - 1 && state.getCellType(file + 1, 
-                                                  rank + 1) != CellType.WHITE) {
+                                                  rank + 1) != CellType.BLACK) {
                 // Once here, can move to right downwards:
                 children.add(
                         move(state, 
@@ -85,7 +85,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             }
             
             // Move to the right:
-            if (state.getCellType(file + 1, rank) != CellType.WHITE) {
+            if (state.getCellType(file + 1, rank) != CellType.BLACK) {
                 children.add(
                         move(state, 
                              file, 
@@ -95,7 +95,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             }
         }
         
-        if (rank > 0 && state.getCellType(file, rank - 1) != CellType.WHITE) {
+        if (rank > 0 && state.getCellType(file, rank - 1) != CellType.BLACK) {
             // Move upwards:
             children.add(
                     move(state, 
@@ -106,7 +106,7 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         }
         
         if (rank < N - 1 && state.getCellType(file, 
-                                              rank + 1) != CellType.WHITE) {
+                                              rank + 1) != CellType.BLACK) {
             // Move downwards:
             children.add(
                     move(state, 

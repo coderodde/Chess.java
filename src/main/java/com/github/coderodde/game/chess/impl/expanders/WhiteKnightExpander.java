@@ -1,21 +1,21 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import static com.github.coderodde.game.chess.PieceColor.BLACK;
+import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import java.util.List;
 
 /**
- * This class implements an expander for generating all black knight moves.
+ * This class implements an expander for generating all white knight moves.
  * 
  * @version 1.0.0 (Jun 30, 2024)
  * @since 1.0.0 (Jun 30, 2024)
  */
-public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
+public final class WhiteKnightExpander extends AbstractChessBoardStateExpander {
 
     @Override
     public void expand(final ChessBoardState state, 
@@ -38,7 +38,7 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves 
+     * Attempts to move a white knight at {@code (file, rank)} two moves 
      * upwards and one move to the left.
      * 
      * @param state    the starting state.
@@ -58,19 +58,19 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file - 1, rank - 2) != CellType.BLACK) {
+        if (state.getCellType(file - 1, rank - 2) != CellType.WHITE) {
             // Once here, can move or capture:
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file - 1, rank - 2, new Piece(BLACK, KNIGHT, this));
+            child.set(file - 1, rank - 2, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves 
+     * Attempts to move a white knight at {@code (file, rank)} two moves 
      * upwards and one move to the right.
      * 
      * @param state    the starting state.
@@ -90,19 +90,19 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file + 1, rank - 2) != CellType.BLACK) {
+        if (state.getCellType(file + 1, rank - 2) != CellType.WHITE) {
             // Once here, can move or capture:
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file + 1, rank - 2, new Piece(BLACK, KNIGHT, this));
+            child.set(file + 1, rank - 2, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves 
+     * Attempts to move a white knight at {@code (file, rank)} two moves 
      * downwards and one move to the left.
      * 
      * @param state    the starting state.
@@ -122,18 +122,18 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file - 1, rank + 2) != CellType.BLACK) {
+        if (state.getCellType(file - 1, rank + 2) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file - 1, rank + 2, new Piece(BLACK, KNIGHT, this));
+            child.set(file - 1, rank + 2, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves 
+     * Attempts to move a white knight at {@code (file, rank)} two moves 
      * downwards and one move to the right.
      * 
      * @param state    the starting state.
@@ -153,18 +153,18 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file + 1, rank + 2) != CellType.BLACK) {
+        if (state.getCellType(file + 1, rank + 2) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file + 1, rank + 2, new Piece(BLACK, KNIGHT, this));
+            child.set(file + 1, rank + 2, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves to the 
+     * Attempts to move a white knight at {@code (file, rank)} two moves to the 
      * left and one move upwards.
      * 
      * @param state    the starting state.
@@ -184,18 +184,18 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file - 2, rank - 1) != CellType.BLACK) {
+        if (state.getCellType(file - 2, rank - 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file - 2, rank - 1, new Piece(BLACK, KNIGHT, this));
+            child.set(file - 2, rank - 1, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves to the 
+     * Attempts to move a white knight at {@code (file, rank)} two moves to the 
      * left and one move downwards.
      * 
      * @param state    the starting state.
@@ -215,18 +215,18 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file - 2, rank + 1) != CellType.BLACK) {
+        if (state.getCellType(file - 2, rank + 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file - 2, rank + 1, new Piece(BLACK, KNIGHT, this));
+            child.set(file - 2, rank + 1, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves to the 
+     * Attempts to move a white knight at {@code (file, rank)} two moves to the 
      * right and one move upwards.
      * 
      * @param state    the starting state.
@@ -246,18 +246,18 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file + 2, rank - 1) != CellType.BLACK) {
+        if (state.getCellType(file + 2, rank - 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file + 2, rank - 1, new Piece(BLACK, KNIGHT, this));
+            child.set(file + 2, rank - 1, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }
     }
     
     /**
-     * Attempts to move a black knight at {@code (file, rank)} two moves to the 
+     * Attempts to move a white knight at {@code (file, rank)} two moves to the 
      * right and one move downwards.
      * 
      * @param state    the starting state.
@@ -277,11 +277,11 @@ public final class BlackKnightExpander extends AbstractChessBoardStateExpander {
             return;
         }
         
-        if (state.getCellType(file + 2, rank + 1) != CellType.BLACK) {
+        if (state.getCellType(file + 2, rank + 1) != CellType.WHITE) {
             final ChessBoardState child = new ChessBoardState(state);
             
             child.clear(file, rank);
-            child.set(file + 2, rank + 1, new Piece(BLACK, KNIGHT, this));
+            child.set(file + 2, rank + 1, new Piece(WHITE, KNIGHT, this));
             
             children.add(child);
         }

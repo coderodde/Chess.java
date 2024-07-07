@@ -1,10 +1,11 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
+import com.github.coderodde.game.chess.impl.expanders.WhiteKnightExpander;
+import com.github.coderodde.game.chess.impl.expanders.TestDummyExpander;
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
@@ -18,10 +19,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BlackKnightExpanderTest {
+public class WhiteKnightExpanderTest {
     
     private final AbstractChessBoardStateExpander expander = 
-            new BlackKnightExpander();
+            new WhiteKnightExpander();
     
     private final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
@@ -37,9 +38,9 @@ public class BlackKnightExpanderTest {
     public void expand8() {
         ChessBoardState state = new ChessBoardState();
         state.clear();
-        state.set(4, 4, new Piece(BLACK, KNIGHT, expander));
+        state.set(4, 4, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(8, children.size());
         
@@ -62,28 +63,28 @@ public class BlackKnightExpanderTest {
         move8.clear();
         
         // North left:
-        move1.set(3, 2, new Piece(BLACK, KNIGHT));
+        move1.set(3, 2, new Piece(WHITE, KNIGHT));
         
         // North right:
-        move2.set(5, 2, new Piece(BLACK, KNIGHT));
+        move2.set(5, 2, new Piece(WHITE, KNIGHT));
         
         // South left:
-        move3.set(3, 6, new Piece(BLACK, KNIGHT));
+        move3.set(3, 6, new Piece(WHITE, KNIGHT));
         
         // South right:
-        move4.set(5, 6, new Piece(BLACK, KNIGHT));
+        move4.set(5, 6, new Piece(WHITE, KNIGHT));
         
         // West up:
-        move5.set(2, 3, new Piece(BLACK, KNIGHT));
+        move5.set(2, 3, new Piece(WHITE, KNIGHT));
         
         // West down:
-        move6.set(2, 5, new Piece(BLACK, KNIGHT));
+        move6.set(2, 5, new Piece(WHITE, KNIGHT));
         
         // East up:
-        move7.set(6, 3, new Piece(BLACK, KNIGHT));
+        move7.set(6, 3, new Piece(WHITE, KNIGHT));
         
         // East down:
-        move8.set(6, 5, new Piece(BLACK, KNIGHT));
+        move8.set(6, 5, new Piece(WHITE, KNIGHT));
         
         assertTrue(children.contains(move1));
         assertTrue(children.contains(move2));
@@ -113,9 +114,9 @@ public class BlackKnightExpanderTest {
         final ChessBoardState state = new ChessBoardState();
         state.clear();
         
-        state.set(1, 1, new Piece(BLACK, KNIGHT, expander));
+        state.set(1, 1, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
     }
@@ -125,9 +126,9 @@ public class BlackKnightExpanderTest {
         final ChessBoardState state = new ChessBoardState();
         state.clear();
         
-        state.set(6, 1, new Piece(BLACK, KNIGHT, expander));
+        state.set(6, 1, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
     }
@@ -137,9 +138,9 @@ public class BlackKnightExpanderTest {
         final ChessBoardState state = new ChessBoardState();
         state.clear();
         
-        state.set(1, 6, new Piece(BLACK, KNIGHT, expander));
+        state.set(1, 6, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
     }
@@ -149,18 +150,18 @@ public class BlackKnightExpanderTest {
         final ChessBoardState state = new ChessBoardState();
         state.clear();
         
-        state.set(6, 6, new Piece(BLACK, KNIGHT, expander));
+        state.set(6, 6, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
     }
     
     @Test
     public void cannotMoveNorthLeft() {
-        state.set(0, 2, new Piece(BLACK, KNIGHT, expander));
+        state.set(0, 2, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
         
@@ -172,10 +173,10 @@ public class BlackKnightExpanderTest {
     
     @Test
     public void obstructionNorthLeft() {
-        state.set(2, 2, new Piece(BLACK, KNIGHT, expander));
-        state.set(1, 0, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(2, 2, new Piece(WHITE, KNIGHT, expander));
+        state.set(1, 0, new Piece(WHITE, PAWN, dummyExpander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         final ChessBoardState obstructedState = getMove(state,
                                                         1,
                                                         0,
@@ -188,9 +189,9 @@ public class BlackKnightExpanderTest {
     
     @Test
     public void cannotGenerateNorthRight() {
-        state.set(N - 1, 2, new Piece(BLACK, KNIGHT, expander));
+        state.set(N - 1, 2, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
         assertTrue(children.contains(getMove(state, N - 1, 2, 6, 0)));
@@ -201,9 +202,9 @@ public class BlackKnightExpanderTest {
     
     @Test
     public void cannotGenerateWestUp() {
-        state.set(2, 0, new Piece(BLACK, KNIGHT, expander));
+        state.set(2, 0, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
         assertTrue(children.contains(getMove(state, 2, 0, 1, 2)));
@@ -214,9 +215,9 @@ public class BlackKnightExpanderTest {
     
     @Test
     public void cannotGenerateWestDown() {
-        state.set(2, N - 1, new Piece(BLACK, KNIGHT, expander));
+        state.set(2, N - 1, new Piece(WHITE, KNIGHT, expander));
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertEquals(4, children.size());
         
@@ -228,8 +229,8 @@ public class BlackKnightExpanderTest {
     
     @Test
     public void allObstructions() {
-        final Piece p = new Piece(BLACK, PAWN, dummyExpander);
-        state.set(4, 4, new Piece(BLACK, KNIGHT, expander));
+        final Piece p = new Piece(WHITE, PAWN, dummyExpander);
+        state.set(4, 4, new Piece(WHITE, KNIGHT, expander));
         
         // North left:
         state.set(3, 2, p);
@@ -255,7 +256,7 @@ public class BlackKnightExpanderTest {
         // East down:
         state.set(6, 5, p);
         
-        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
         
         assertTrue(children.isEmpty());
     }

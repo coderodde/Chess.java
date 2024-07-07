@@ -1,4 +1,4 @@
-package com.github.coderodde.game.chess.impl;
+package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.CellType;
@@ -8,15 +8,15 @@ import com.github.coderodde.game.chess.Piece;
 import java.util.List;
 
 /**
- * This class implements an expander for generating all white rook moves.
+ * This class implements an expander for generating all black rook moves.
  * 
  * @version 1.0.0 (Jun 30, 2024)
  * @since 1.0.0 (Jun 30, 2024)
  */
-public class WhiteRookExpander extends AbstractChessBoardStateExpander {
+public class BlackRookExpander extends AbstractChessBoardStateExpander {
 
     /**
-     * Generates all the moves a white rook at coordinates {@code (file, rank)} 
+     * Generates all the moves a black rook at coordinates {@code (file, rank)} 
      * can make in the state {@code state}.
      * 
      * @param state    the state in which to perform the moves.
@@ -58,7 +58,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
     }
     
     /**
-     * Generates all the white rook moves upwards from {@code (file, rank)}.
+     * Generates all the black rook moves upwards from {@code (file, rank)}.
      * 
      * @param state    the current game state.
      * @param file     the starting file of the white rook.
@@ -74,7 +74,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             
             final CellType cellType = state.getCellType(file, currentRank);
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Can capture upwards:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -90,8 +90,8 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.WHITE) {
-                // A white piece blocks the current rook:
+            if (cellType == CellType.BLACK) {
+                // A black piece blocks the current rook:
                 return;
             }
             
@@ -112,7 +112,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
     }
     
     /**
-     * Generates all the white rook moves downwards from {@code (file, rank)}.
+     * Generates all the black rook moves downwards from {@code (file, rank)}.
      * 
      * @param state    the current game state.
      * @param file     the starting file of the white rook.
@@ -128,7 +128,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             
             final CellType cellType = state.getCellType(file, currentRank);
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Can capture downwards:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -144,8 +144,8 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.WHITE) {
-                // A white piece blocks the current rook:
+            if (cellType == CellType.BLACK) {
+                // A black piece blocks the current rook:
                 return;
             }
             
@@ -166,7 +166,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
     }
     
     /**
-     * Generates all the white rook moves to the left from {@code (file, rank)}.
+     * Generates all the black rook moves to the left from {@code (file, rank)}.
      * 
      * @param state    the current game state.
      * @param file     the starting file of the white rook.
@@ -182,7 +182,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             
             final CellType cellType = state.getCellType(currentFile, rank);
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Can capture to the left:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -198,8 +198,8 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.WHITE) {
-                // A white pieced blocks the current rook:
+            if (cellType == CellType.BLACK) {
+                // A black pieced blocks the current rook:
                 return;
             }
             // Once here, just move the rook without capturing and continue
@@ -219,7 +219,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
     }
     
     /**
-     * Generates all the white rook moves to the right from 
+     * Generates all the black rook moves to the right from 
      * {@code (file, rank)}.
      * 
      * @param state    the current game state.
@@ -236,7 +236,7 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
             
             final CellType cellType = state.getCellType(currentFile, rank);
             
-            if (cellType == CellType.BLACK) {
+            if (cellType == CellType.WHITE) {
                 // Can capture to the left:
                 final ChessBoardState child = new ChessBoardState(state);
                 
@@ -252,8 +252,8 @@ public class WhiteRookExpander extends AbstractChessBoardStateExpander {
                 return;
             }
             
-            if (cellType == CellType.WHITE) {
-                // A white pieced blocks the current rook:
+            if (cellType == CellType.BLACK) {
+                // A black pieced blocks the current rook:
                 return;
             }
             
