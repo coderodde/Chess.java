@@ -7,13 +7,13 @@ import com.github.coderodde.game.chess.PieceType;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
- * This class is responsible for checking whether a white piece is threatened by
- * the black queen.
+ * This class is responsible for checking whether a black piece is threatened by
+ * the white queen..
  * 
  * @version 1.0.0 (Jul 7, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
-public final class WhiteUnderAttackCheckByBlackQueen 
+public final class BlackUnderAttackCheckByWhiteQueen 
         implements UnderAttackCheck {
 
     @Override
@@ -21,35 +21,35 @@ public final class WhiteUnderAttackCheckByBlackQueen
                          final int file, 
                          final int rank) {
         
-        if (whiteCellIsUnderAttackByBlackQueenNorth(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenNorth(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenSouth(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenSouth(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenWest(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenWest(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenEast(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenNorthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenNorthEast(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenNorthWest(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenNorthWest(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackQueenSouthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteQueenSouthEast(state, file, rank)) {
             return true;
         }
         
-        return whiteCellIsUnderAttackByBlackQueenSouthWest(state, file, rank);
+        return blackCellIsUnderAttackByWhiteQueenSouthWest(state, file, rank);
     }
     
     /**
@@ -61,7 +61,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenNorth(
+    private boolean blackCellIsUnderAttackByWhiteQueenNorth(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -74,8 +74,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the same color piece:
+            if (piece.isBlack()) {
+                // Blocked by the same color piece (black):
                 return false;
             }
             
@@ -98,7 +98,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenSouth(
+    private boolean blackCellIsUnderAttackByWhiteQueenSouth(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -110,8 +110,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the same color piece:
+            if (piece.isBlack()) {
+                // Blocked by the same color piece (black):
                 return false;
             }
             
@@ -133,7 +133,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenWest(
+    private boolean blackCellIsUnderAttackByWhiteQueenWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -146,8 +146,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the same color piece:
+            if (piece.isBlack()) {
+                // Blocked by the same color piece (black):
                 return false;
             }
             
@@ -169,7 +169,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenEast(
+    private boolean blackCellIsUnderAttackByWhiteQueenEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -182,8 +182,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the same color piece:
+            if (piece.isBlack()) {
+                // Blocked by the same color piece (black):
                 return false;
             }
             
@@ -206,7 +206,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenNorthWest(
+    private boolean blackCellIsUnderAttackByWhiteQueenNorthWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -226,8 +226,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
@@ -250,7 +250,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenNorthEast(
+    private boolean blackCellIsUnderAttackByWhiteQueenNorthEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -270,8 +270,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color:
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
@@ -294,7 +294,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenSouthWest(
+    private boolean blackCellIsUnderAttackByWhiteQueenSouthWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -314,8 +314,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the piece of the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by the piece of the same color (black):
                 return false;
             }
             
@@ -338,7 +338,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackQueenSouthEast(
+    private boolean blackCellIsUnderAttackByWhiteQueenSouthEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -358,8 +358,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
