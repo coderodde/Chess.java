@@ -415,6 +415,10 @@ public final class ChessBoardState {
             return true;
         }
         
+        if (cellIsUnderAttackWhiteRook(file, rank)) {
+            return true;
+        }
+        
         throw new UnsupportedOperationException();
     }
     
@@ -448,7 +452,33 @@ public final class ChessBoardState {
             return true;
         }
         
-        if (cellIsUnderAttackWhiteQueenSouth(file, rank));
+        if (cellIsUnderAttackWhiteQueenSouth(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenWest(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenEast(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenNorthEast(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenNorthWest(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenSouthEast(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteQueenSouthWest(file, rank)) {
+            return true;
+        }
         
         return false;
     }
@@ -465,6 +495,7 @@ public final class ChessBoardState {
     private boolean cellIsUnderAttackWhiteQueenNorth(final int file, 
                                                      final int rank) {
         for (int r = rank - 1; r >= 0; r--) {
+            
             final Piece piece = get(file, r);
             
             if (piece == null) {
@@ -495,6 +526,7 @@ public final class ChessBoardState {
      */
     private boolean cellIsUnderAttackWhiteQueenSouth(final int file, 
                                                      final int rank) {
+        
         for (int r = rank + 1; r < N; r++) {
             final Piece piece = get(file, r);
             
@@ -511,7 +543,376 @@ public final class ChessBoardState {
             }
         }
         
-        // Once here, there is no black queen above the piece:
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenWest(final int file, 
+                                                    final int rank) {
+        for (int f = file - 1; f >= 0; f--) {
+            
+            final Piece piece = get(f, rank);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the right.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenEast(final int file, 
+                                                    final int rank) {
+        for (int f = file + 1; f < N; f++) {
+            
+            final Piece piece = get(f, rank);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the top
+     * left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenNorthWest(final int file, 
+                                                         final int rank) {
+        int f = file - 1;
+        int r = rank - 1;
+        
+        while (f >= 0 && r >= 0) {
+            
+            final Piece piece = get(f, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+            
+            f--;
+            r--;
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the top
+     * right.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenNorthEast(final int file, 
+                                                         final int rank) {
+        int f = file + 1;
+        int r = rank - 1;
+        
+        while (f < N && r >= 0) {
+            
+            final Piece piece = get(f, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+            
+            f++;
+            r--;
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the bottom
+     * left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenSouthWest(final int file, 
+                                                         final int rank) {
+        int f = file - 1;
+        int r = rank + 1;
+        
+        while (f >= 0 && r < N) {
+            
+            final Piece piece = get(f, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+            
+            f--;
+            r++;
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black queen on the bottom
+     * left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteQueenSouthEast(final int file, 
+                                                         final int rank) {
+        int f = file + 1;
+        int r = rank + 1;
+        
+        while (f < N && r < N) {
+            
+            final Piece piece = get(f, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.QUEEN) {
+                return true;
+            }
+            
+            f++;
+            r++;
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black rook.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteRook(final int file, 
+                                               final int rank) {
+        
+        if (cellIsUnderAttackWhiteRookNorth(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteRookSouth(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteRookWest(file, rank)) {
+            return true;
+        }
+        
+        if (cellIsUnderAttackWhiteRookEast(file, rank)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
+    /**
+     * Checks that a white piece is under attack by a black rook above.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteRookNorth(final int file,
+                                                   final int rank) {
+        for (int r = rank - 1; r >= 0; r--) {
+            
+            final Piece piece = get(file, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.ROOK) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black rook below.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteRookSouth(final int file,
+                                                    final int rank) {
+        for (int r = rank + 1; r < N; r++) {
+            
+            final Piece piece = get(file, r);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.ROOK) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black rook on the left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteRookWest(final int file,
+                                                   final int rank) {
+        for (int f = file - 1; f >= 0; f--) {
+            
+            final Piece piece = get(f, rank);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.ROOK) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
+        return false;
+    }
+    
+    /**
+     * Checks that a white piece is under attack by a black rook on the left.
+     * 
+     * @param file the file of the piece to test for.
+     * @param rank the rank of the piece to test for.
+     * 
+     * @return {@code true} if and only if the white piece is under attack. 
+     */
+    private boolean cellIsUnderAttackWhiteRookEast(final int file,
+                                                   final int rank) {
+        for (int f = file + 1; f < N; f++) {
+            
+            final Piece piece = get(f, rank);
+            
+            if (piece == null) {
+                continue;
+            }
+            
+            if (piece.isWhite()) {
+                return false;
+            }
+            
+            if (piece.getPieceType() == PieceType.ROOK) {
+                return true;
+            }
+        }
+        
+        // Once here, there is no black queen below the piece:
         return false;
     }
 }
