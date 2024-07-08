@@ -7,13 +7,13 @@ import com.github.coderodde.game.chess.PieceType;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
- * This class is responsible for checking whether a white piece is threatened by
- * a black bishop.
+ * This class is responsible for checking whether a black piece is threatened by
+ * a white bishop.
  * 
  * @version 1.0.0 (Jul 8, 2024)
  * @since 1.0.0 (Jul 8, 2024)
  */
-public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
+public class BlackUnderAttackCheckByWhiteBishop implements UnderAttackCheck {
 
     /**
      * Checks that the piece at file {@code file} and rank {@code rank} is 
@@ -30,23 +30,23 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
                          final int file, 
                          final int rank) {
     
-        if (whiteCellIsUnderAttackByBlackBishopNorthWest(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopNorthWest(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackBishopNorthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopNorthEast(state, file, rank)) {
             return true;
         }
         
-        if (whiteCellIsUnderAttackByBlackBishopSouthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopSouthEast(state, file, rank)) {
             return true;
         }
         
-        return whiteCellIsUnderAttackByBlackBishopSouthWest(state, file, rank);
+        return blackCellIsUnderAttackByWhiteBishopSouthWest(state, file, rank);
     }
     
     /**
-     * Checks that a white piece is under attack by a black bishop on the top
+     * Checks that a black piece is under attack by a white bishop on the top
      * left.
      * 
      * @param file the file of the piece to test for.
@@ -54,7 +54,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackBishopNorthWest(
+    private boolean blackCellIsUnderAttackByWhiteBishopNorthWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -74,8 +74,8 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
@@ -90,7 +90,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
     }
     
     /**
-     * Checks that a white piece is under attack by a black bishop on the top
+     * Checks that a black piece is under attack by a white bishop on the top
      * right.
      * 
      * @param file the file of the piece to test for.
@@ -98,7 +98,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackBishopNorthEast(
+    private boolean blackCellIsUnderAttackByWhiteBishopNorthEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -118,8 +118,8 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color:
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
@@ -134,7 +134,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
     }
     
     /**
-     * Checks that a white piece is under attack by a black bishop on the bottom
+     * Checks that a black piece is under attack by a white bishop on the bottom
      * left.
      * 
      * @param file the file of the piece to test for.
@@ -142,7 +142,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackBishopSouthWest(
+    private boolean blackCellIsUnderAttackByWhiteBishopSouthWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -162,8 +162,8 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by the piece of the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by the piece of the same color (black):
                 return false;
             }
             
@@ -178,7 +178,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
     }
     
     /**
-     * Checks that a white piece is under attack by a black bishop on the bottom
+     * Checks that a black piece is under attack by a white bishop on the bottom
      * right.
      * 
      * @param file the file of the piece to test for.
@@ -186,7 +186,7 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean whiteCellIsUnderAttackByBlackBishopSouthEast(
+    private boolean blackCellIsUnderAttackByWhiteBishopSouthEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -206,8 +206,8 @@ public class WhiteUnderAttackByBlackBishop implements UnderAttackCheck {
                 continue;
             }
             
-            if (piece.isWhite()) {
-                // Blocked by a piece with the same color (white):
+            if (piece.isBlack()) {
+                // Blocked by a piece with the same color (black):
                 return false;
             }
             
