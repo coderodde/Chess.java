@@ -79,10 +79,7 @@ public class BlackUnderAttackCheckByWhiteBishop implements UnderAttackCheck {
                 return false;
             }
             
-            if (piece.getPieceType() == PieceType.BISHOP) {
-                // Match! The black queen threatens the piece:
-                return true;
-            }
+            return piece.getPieceType() == PieceType.BISHOP;
         }
         
         // Once here, there is no black queen below the piece:
@@ -123,10 +120,7 @@ public class BlackUnderAttackCheckByWhiteBishop implements UnderAttackCheck {
                 return false;
             }
             
-            if (piece.getPieceType() == PieceType.BISHOP) {
-                // Match! The black queen threatens this position:
-                return true;
-            }
+            return piece.getPieceType() == PieceType.BISHOP;
         }
         
         // Once here, there is no black queen below the piece:
@@ -167,10 +161,7 @@ public class BlackUnderAttackCheckByWhiteBishop implements UnderAttackCheck {
                 return false;
             }
             
-            if (piece.getPieceType() == PieceType.BISHOP) {
-                // Match! The black queen threatens the current position:
-                return true;
-            }
+            return piece.getPieceType() == PieceType.BISHOP;
         }
         
         // Once here, there is no black queen below the piece:
@@ -211,10 +202,7 @@ public class BlackUnderAttackCheckByWhiteBishop implements UnderAttackCheck {
                 return false;
             }
             
-            if (piece.getPieceType() == PieceType.BISHOP) {
-                // Match! A black queen threatens this piece:
-                return true;
-            }
+            return piece.getPieceType() == PieceType.BISHOP;
         }
         
         // Once here, there is no black queen below the piece:

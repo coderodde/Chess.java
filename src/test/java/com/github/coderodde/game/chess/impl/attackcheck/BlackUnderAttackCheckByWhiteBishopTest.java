@@ -169,6 +169,34 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
         assertNotCheck(3, 6);
     }
     
+    @Test
+    public void coverIf1() {
+        // Don't match the black bishop:
+        state.set(5, 5, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void coverIf2() {
+        // Don't match the black bishop:
+        state.set(0, 0, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void coverIf3() {
+        // Don't match the black bishop:
+        state.set(6, 0, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void coverIf4() {
+        // Don't match the black bishop:
+        state.set(0, 6, whitePawn);
+        assertNotCheck();
+    }
+    
     private void assertNotCheck(final int file, 
                                 final int rank) {
         
