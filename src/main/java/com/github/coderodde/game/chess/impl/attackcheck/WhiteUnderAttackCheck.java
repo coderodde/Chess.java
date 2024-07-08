@@ -13,6 +13,9 @@ public final class WhiteUnderAttackCheck implements UnderAttackCheck {
     private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_QUEEN = 
             new WhiteUnderAttackCheckByBlackQueen();
     
+    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_BISHOP = 
+            new WhiteUnderAttackCheckByBlackBishop();
+    
     @Override
     public boolean check(final ChessBoardState state, 
                          final int file,
@@ -20,6 +23,10 @@ public final class WhiteUnderAttackCheck implements UnderAttackCheck {
         
         return WHITE_UNDER_ATTACK_BY_BLACK_QUEEN.check(state, 
                                                        file, 
-                                                       rank);
+                                                       rank)
+                ||
+                WHITE_UNDER_ATTACK_BY_BLACK_BISHOP.check(state, 
+                                                         file, 
+                                                         rank);
     }
 }
