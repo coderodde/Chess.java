@@ -27,45 +27,66 @@ public final class BlackUnderAttackCheckByWhiteKnightTest {
     
     @Test
     public void threatNorthLeft() {
-        checkImpl(3, 1);
+        checkThreatImpl(3, 1);
     }
     
     @Test
     public void threatNorthRight() {
-        checkImpl(5, 1);
+        checkThreatImpl(5, 1);
     }
     
     @Test
     public void threatSouthLeft() {
-        checkImpl(3, 5);
+        checkThreatImpl(3, 5);
     }
     
     @Test
     public void threatSouthRight() {
-        checkImpl(5, 5);
+        checkThreatImpl(5, 5);
     }
     
     @Test
     public void threatWestUp() {
-        checkImpl(2, 2);
+        checkThreatImpl(2, 2);
     }
     
     @Test
     public void threatWestDown() {
-        checkImpl(2, 4);
+        checkThreatImpl(2, 4);
     }
     
     @Test
     public void threatEastUp() {
-        checkImpl(6, 2);
+        checkThreatImpl(6, 2);
     }
     
     @Test
     public void threatEastDown() {
-        checkImpl(6, 4);
+        checkThreatImpl(6, 4);
     }
     
-    private void checkImpl(final int blackPawnFile, final int blackPawnRank) {
+    @Test
+    public void northWestCorner() {
+        checkNoThreatImpl(0, 0);
+    }
+    
+    @Test
+    public void southWestCorner() {
+        checkNoThreatImpl(0, 7);
+    }
+    
+    @Test
+    public void northEastCorner() {
+        checkNoThreatImpl(7, 0);
+    }
+    
+    @Test
+    public void southEastCorner() {
+        checkNoThreatImpl(7, 7);
+    }
+    
+    private void checkThreatImpl(final int blackPawnFile,
+                                 final int blackPawnRank) {
         state.set(4, 
                   3,
                   whiteKnight);
@@ -77,5 +98,16 @@ public final class BlackUnderAttackCheckByWhiteKnightTest {
         assertTrue(KNIGHT_CHECK.check(state, 
                                       4, 
                                       3));
+    }
+    
+    private void checkNoThreatImpl(final int whiteKnightFile,
+                                   final int whiteKnightRank) {
+        state.set(whiteKnightFile, 
+                  whiteKnightRank,
+                  whiteKnight);
+        
+        assertFalse(KNIGHT_CHECK.check(state, 
+                                       whiteKnightFile, 
+                                       whiteKnightRank));
     }
 }
