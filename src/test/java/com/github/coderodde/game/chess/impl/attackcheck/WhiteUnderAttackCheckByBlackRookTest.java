@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public final class BlackUnderAttackCheckByWhiteRookTest {
+public final class WhiteUnderAttackCheckByBlackRookTest {
     
     private static final Piece whiteRook = new Piece(WHITE, ROOK);
     private static final Piece blackRook = new Piece(BLACK, ROOK);
@@ -21,85 +21,85 @@ public final class BlackUnderAttackCheckByWhiteRookTest {
     private static final Piece blackPawn = new Piece(BLACK, PAWN);
     
     private static final UnderAttackCheck ROOK_CHECK = 
-            new BlackUnderAttackCheckByWhiteRook();
+            new WhiteUnderAttackCheckByBlackRook();
     
     private final ChessBoardState state = new ChessBoardState();
     
     @Before
     public void before() {
         state.clear();
-        state.set(3, 3, blackPawn);
-    }
-    
-    @Test
-    public void whiteRookNorth() {
-        state.set(3, 1, whiteRook);
-        assertCheck();
-    }
-    
-    @Test
-    public void whiteRookSouth() {
-        state.set(3, 7, whiteRook);
-        assertCheck();
-    }
-    
-    @Test
-    public void whiteRookWest() {
-        state.set(0, 3, whiteRook);
-        assertCheck();
-    }
-    
-    @Test
-    public void whiteRookEast() {
-        state.set(6, 3, whiteRook);
-        assertCheck();
+        state.set(3, 3, whitePawn);
     }
     
     @Test
     public void blackRookNorth() {
         state.set(3, 1, blackRook);
-        assertNotCheck();
+        assertCheck();
     }
     
     @Test
     public void blackRookSouth() {
         state.set(3, 7, blackRook);
-        assertNotCheck();
+        assertCheck();
     }
     
     @Test
     public void blackRookWest() {
         state.set(0, 3, blackRook);
-        assertNotCheck();
+        assertCheck();
     }
     
     @Test
     public void blackRookEast() {
         state.set(6, 3, blackRook);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteRookNorth() {
+        state.set(3, 1, whiteRook);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteRookSouth() {
+        state.set(3, 7, whiteRook);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteRookWest() {
+        state.set(0, 3, whiteRook);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void whiteRookEast() {
+        state.set(6, 3, whiteRook);
         assertNotCheck();
     }
         
     @Test
     public void blackPawnNorth() {
-        state.set(3, 1, whitePawn);
+        state.set(3, 1, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnSouth() {
-        state.set(3, 7, whitePawn);
+        state.set(3, 7, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnWest() {
-        state.set(0, 3, whitePawn);
+        state.set(0, 3, blackPawn);
         assertNotCheck();
     }
     
     @Test
     public void blackPawnEast() {
-        state.set(6, 3, whitePawn);
+        state.set(6, 3, blackPawn);
         assertNotCheck();
     }
     
@@ -108,10 +108,10 @@ public final class BlackUnderAttackCheckByWhiteRookTest {
         state.set(3, 3, new Piece(WHITE, BISHOP));
         
         // Straight queens:
-        state.set(3, 5, whiteRook);
-        state.set(3, 0, whiteRook);
-        state.set(0, 3, whiteRook);
-        state.set(7, 3, whiteRook);
+        state.set(3, 5, blackRook);
+        state.set(3, 0, blackRook);
+        state.set(0, 3, blackRook);
+        state.set(7, 3, blackRook);
         
         assertTrue(ROOK_CHECK.check(state, 3, 3));
     }

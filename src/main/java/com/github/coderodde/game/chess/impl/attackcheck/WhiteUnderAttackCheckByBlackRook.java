@@ -7,13 +7,13 @@ import com.github.coderodde.game.chess.PieceType;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
- * This class is responsible for checking whether a black piece is threatened by
- * a white rook.
+ * This class is responsible for checking whether a white piece is threatened by
+ * a black rook.
  * 
  * @version 1.0.0 (Jul 7, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
-public final class BlackUnderAttackCheckByWhiteRook 
+public final class WhiteUnderAttackCheckByBlackRook 
         implements UnderAttackCheck {
 
     @Override
@@ -21,23 +21,23 @@ public final class BlackUnderAttackCheckByWhiteRook
                          final int file, 
                          final int rank) {
         
-        if (blackCellIsUnderAttackByWhiteRookNorth(state, file, rank)) {
+        if (whiteCellIsUnderAttackByBlackRookNorth(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteRookSouth(state, file, rank)) {
+        if (whiteCellIsUnderAttackByBlackRookSouth(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteRookWest(state, file, rank)) {
+        if (whiteCellIsUnderAttackByBlackRookWest(state, file, rank)) {
             return true;
         }
         
-        return blackCellIsUnderAttackByWhiteRookEast(state, file, rank);
+        return whiteCellIsUnderAttackByBlackRookEast(state, file, rank);
     }
     
     /**
-     * Checks that a black piece is under attack by a white rook on top of the
+     * Checks that a white piece is under attack by a black rook on top of the
      * piece.
      * 
      * @param file the file of the piece to test for.
@@ -45,7 +45,7 @@ public final class BlackUnderAttackCheckByWhiteRook
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean blackCellIsUnderAttackByWhiteRookNorth(
+    private boolean whiteCellIsUnderAttackByBlackRookNorth(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -58,8 +58,8 @@ public final class BlackUnderAttackCheckByWhiteRook
                 continue;
             }
             
-            if (piece.isBlack()) {
-                // Blocked by the same color piece (black):
+            if (piece.isWhite()) {
+                // Blocked by the same color piece (white):
                 return false;
             }
             
@@ -71,7 +71,7 @@ public final class BlackUnderAttackCheckByWhiteRook
     }
     
     /**
-     * Checks that a black piece is under attack by a white rook below the
+     * Checks that a white piece is under attack by a black rook below the
      * piece.
      * 
      * @param file the file of the piece to test for.
@@ -79,7 +79,7 @@ public final class BlackUnderAttackCheckByWhiteRook
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean blackCellIsUnderAttackByWhiteRookSouth(
+    private boolean whiteCellIsUnderAttackByBlackRookSouth(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -91,8 +91,8 @@ public final class BlackUnderAttackCheckByWhiteRook
                 continue;
             }
             
-            if (piece.isBlack()) {
-                // Blocked by the same color piece (black):
+            if (piece.isWhite()) {
+                // Blocked by the same color piece (white):
                 return false;
             }
             
@@ -104,14 +104,14 @@ public final class BlackUnderAttackCheckByWhiteRook
     }
     
     /**
-     * Checks that a black piece is under attack by a white rook on the left.
+     * Checks that a white piece is under attack by a black rook on the left.
      * 
      * @param file the file of the piece to test for.
      * @param rank the rank of the piece to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean blackCellIsUnderAttackByWhiteRookWest(
+    private boolean whiteCellIsUnderAttackByBlackRookWest(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -124,8 +124,8 @@ public final class BlackUnderAttackCheckByWhiteRook
                 continue;
             }
             
-            if (piece.isBlack()) {
-                // Blocked by the same color piece (black):
+            if (piece.isWhite()) {
+                // Blocked by the same color piece (white):
                 return false;
             }
             
@@ -137,14 +137,14 @@ public final class BlackUnderAttackCheckByWhiteRook
     }
     
     /**
-     * Checks that a black piece is under attack by a white rook on the right.
+     * Checks that a white piece is under attack by a black rook on the right.
      * 
      * @param file the file of the piece to test for.
      * @param rank the rank of the piece to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
-    private boolean blackCellIsUnderAttackByWhiteRookEast(
+    private boolean whiteCellIsUnderAttackByBlackRookEast(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -157,8 +157,8 @@ public final class BlackUnderAttackCheckByWhiteRook
                 continue;
             }
             
-            if (piece.isBlack()) {
-                // Blocked by the same color piece (black):
+            if (piece.isWhite()) {
+                // Blocked by the same color piece (white):
                 return false;
             }
             
