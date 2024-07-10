@@ -16,6 +16,16 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
 public final class WhiteUnderAttackCheckByBlackQueen 
         implements UnderAttackCheck {
 
+    /**
+     * Checks that the piece at file {@code file} and rank {@code rank} is 
+     * threatened by a black queen.
+     * 
+     * @param state the board state to consider.
+     * @param file  the file of the possibly threatened piece.
+     * @param rank  the rank of the possibly threatened piece.
+     * 
+     * @return {@code true} if and only if the piece in question is threatened.
+     */
     @Override
     public boolean check(final ChessBoardState state,
                          final int file, 
@@ -331,7 +341,7 @@ public final class WhiteUnderAttackCheckByBlackQueen
     
     /**
      * Checks that a white piece is under attack by a black queen on the bottom
-     * left.
+     * right.
      * 
      * @param file the file of the piece to test for.
      * @param rank the rank of the piece to test for.
