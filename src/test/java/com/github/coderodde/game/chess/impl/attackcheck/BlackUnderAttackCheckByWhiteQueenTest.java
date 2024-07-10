@@ -32,145 +32,145 @@ public final class BlackUnderAttackCheckByWhiteQueenTest {
     }
     
     @Test
-    public void blackQueenNorth() {
+    public void whiteQueenNorth() {
         state.set(3, 1, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenSouth() {
+    public void whiteQueenSouth() {
         state.set(3, 7, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenWest() {
+    public void whiteQueenWest() {
         state.set(0, 3, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenEast() {
+    public void whiteQueenEast() {
         state.set(6, 3, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenNorthEast() {
+    public void whiteQueenNorthEast() {
         state.set(6, 0, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenNorthWest() {
+    public void whiteQueenNorthWest() {
         state.set(0, 0, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenSouthEast() {
+    public void whiteQueenSouthEast() {
         state.set(6, 6, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void blackQueenSouthWest() {
+    public void whiteQueenSouthWest() {
         state.set(0, 6, whiteQueen);
         assertCheck();
     }
     
     @Test
-    public void whiteQueenNorth() {
+    public void blackQueenNorth() {
         state.set(3, 1, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenSouth() {
+    public void blackQueenSouth() {
         state.set(3, 7, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenWest() {
+    public void blackQueenWest() {
         state.set(0, 3, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenEast() {
+    public void blackQueenEast() {
         state.set(6, 3, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenNorthEast() {
+    public void blackQueenNorthEast() {
         state.set(6, 0, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenNorthWest() {
+    public void blackQueenNorthWest() {
         state.set(0, 0, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenSouthEast() {
+    public void blackQueenSouthEast() {
         state.set(6, 6, blackQueen);
         assertNotCheck();
     }
     
     @Test
-    public void whiteQueenSouthWest() {
+    public void blackQueenSouthWest() {
         state.set(0, 6, blackQueen);
         assertNotCheck();
     }
         
     @Test
-    public void blackPawnNorth() {
+    public void whitePawnNorth() {
         state.set(3, 1, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnSouth() {
+    public void whitePawnSouth() {
         state.set(3, 7, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnWest() {
+    public void whitePawnWest() {
         state.set(0, 3, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnEast() {
+    public void whitePawnEast() {
         state.set(6, 3, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnNorthEast() {
+    public void whitePawnNorthEast() {
         state.set(6, 0, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnNorthWest() {
+    public void whitePawnNorthWest() {
         state.set(0, 0, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnSouthEast() {
+    public void whitePawnSouthEast() {
         state.set(6, 6, whitePawn);
         assertNotCheck();
     }
     
     @Test
-    public void blackPawnSouthWest() {
+    public void whitePawnSouthWest() {
         state.set(0, 6, whitePawn);
         assertNotCheck();
     }

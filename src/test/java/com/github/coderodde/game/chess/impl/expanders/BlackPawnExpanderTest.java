@@ -272,10 +272,6 @@ public final class BlackPawnExpanderTest {
         move2.set(3, 5, new Piece(WHITE, KNIGHT));
         move2.set(5, 5, new Piece(WHITE, ROOK));
         
-//        System.out.println(move1);
-//        System.out.println(move2);
-//        System.out.println(move3);
-        
         // Capture to the right:
         move3.set(5, 5, new Piece(BLACK, PAWN));
         move3.set(3, 5, new Piece(WHITE, KNIGHT));

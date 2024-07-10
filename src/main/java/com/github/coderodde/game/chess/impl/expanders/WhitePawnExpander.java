@@ -56,37 +56,63 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
             
             if (file > 0) {
                 // Try en passant to the left:
-                tryEnPassantToLeft(root, 
+                final boolean enPassantSuccessful =
+                        tryEnPassantToLeft(root, 
                                    piece, 
                                    file, 
                                    children);
-            }
-            
-            if (file < N - 1) {
+                
+                tryCaptureRight(root, 
+                                children, 
+                                file,
+                                rank, 
+                                piece);
+                
+                tryBasicMoveForward(root,
+                                    children, 
+                                    file, 
+                                    rank, 
+                                    piece);
+                
+                // No need
+            } else if (file < N - 1) {
                 // Try en passant to the right:
                 tryEnPassantToRight(root,
                                     piece, 
                                     file,
                                     children);
-            }
-            
-            tryBasicMoveForward(root,
+                
+                tryCaptureLeft(root, 
+                               children, 
+                               file, 
+                               rank, 
+                               piece);
+                
+                tryBasicMoveForward(root,
+                                    children, 
+                                    file, 
+                                    rank, 
+                                    piece);
+            } else {
+                tryCaptureLeft(root, 
+                               children, 
+                               file, 
+                               rank, 
+                               piece);
+                
+                tryBasicMoveForward(root,
+                                    children, 
+                                    file, 
+                                    rank, 
+                                    piece);
+                
+                tryCaptureRight(root, 
                                 children, 
-                                file, 
+                                file,
                                 rank, 
                                 piece);
+            }
             
-            tryCaptureLeft(root, 
-                           children, 
-                           file, 
-                           rank, 
-                           piece);
-            
-            tryCaptureRight(root, 
-                            children, 
-                            file,
-                            rank, 
-                            piece);
             return;
             
         } else if (rank == PROMOTION_SOURCE_RANK) {
@@ -189,13 +215,24 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         }
     }
     
-    private void tryEnPassantToLeft(final ChessBoardState root,
-                                    final Piece piece, 
-                                    final int file,
-                                    final List<ChessBoardState> children) {
+    /**
+     * Attempts to do an en passant to the left.
+     * 
+     * @param root     the root board state.
+     * @param piece    the actual piece (a white pawn) that is attempting the 
+     *                 en passant.
+     * @param file     the file of the pawn that is attempting the en passant.
+     * @param children the child state container.
+     * 
+     * @return {@code true} if and only if the en passant took place.
+     */
+    private boolean tryEnPassantToLeft(final ChessBoardState root,
+                                       final Piece piece, 
+                                       final int file,
+                                       final List<ChessBoardState> children) {
         
         if (!root.getBlackIsPreviouslyDoubleMoved()[file - 1]) {
-            return;
+            return false;
         }
         
         final ChessBoardState child = new ChessBoardState(root);
@@ -205,14 +242,26 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         child.set(file - 1, EN_PASSANT_TARGET_RANK, piece);
         
         children.add(child);
+        return true;
     }
     
-    private void tryEnPassantToRight(final ChessBoardState root,
-                                     final Piece piece, 
-                                     final int file,
-                                     final List<ChessBoardState> children) {
+    /**
+     * Attempts to do an en passant to the right.
+     * 
+     * @param root     the root board state.
+     * @param piece    the actual piece (a white pawn) that is attempting the 
+     *                 en passant.
+     * @param file     the file of the pawn that is attempting the en passant.
+     * @param children the child state container.
+     * 
+     * @return {@code true} if and only if the en passant took place.
+     */
+    private boolean tryEnPassantToRight(final ChessBoardState root,
+                                        final Piece piece, 
+                                        final int file,
+                                        final List<ChessBoardState> children) {
         if (!root.getBlackIsPreviouslyDoubleMoved()[file + 1]) {
-            return;
+            return false;
         }
         
         final ChessBoardState child = new ChessBoardState(root);
@@ -222,6 +271,7 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
         child.set(file + 1, EN_PASSANT_TARGET_RANK, piece);
         
         children.add(child);
+        return true;
     }
     
     private void tryCaptureLeft(final ChessBoardState root,

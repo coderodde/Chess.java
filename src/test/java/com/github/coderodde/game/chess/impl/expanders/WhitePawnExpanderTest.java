@@ -217,12 +217,9 @@ public final class WhitePawnExpanderTest {
     }
     
     @Test
-    public void whitePawnEnPassantToLeffedst() {
+    public void whitePawnEnPassantToLeft22() {
         state.set(4, EN_PASSANT_SOURCE_RANK, new Piece(BLACK, PAWN, expander));
         state.set(3, EN_PASSANT_TARGET_RANK, new Piece(BLACK, PAWN));
-        
-        System.out.println("hello");
-        System.out.println(state);
     }
     
     @Test
