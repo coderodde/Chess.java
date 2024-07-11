@@ -66,6 +66,46 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
     }
     
     @Test
+    public void noKnightThreatNorthLeft() {
+        checkNoThreatImpl(3, 1);
+    }
+    
+    @Test
+    public void noKnightThreatNorthRight() {
+        checkNoThreatImpl(5, 1);
+    }
+    
+    @Test
+    public void noKnightThreatSouthLeft() {
+        checkNoThreatImpl(3, 5);
+    }
+    
+    @Test
+    public void noKnightThreatSouthRight() {
+        checkNoThreatImpl(5, 5);
+    }
+    
+    @Test
+    public void noKnightThreatWestUp() {
+        checkNoThreatImpl(2, 2);
+    }
+    
+    @Test
+    public void noKnightThreatWestDown() {
+        checkNoThreatImpl(2, 4);
+    }
+    
+    @Test
+    public void noKnightThreatEastUp() {
+        checkNoThreatImpl(6, 2);
+    }
+    
+    @Test
+    public void noKnightThreatEastDown() {
+        checkNoThreatImpl(6, 4);
+    }
+    
+    @Test
     public void northWestCorner() {
         checkNoThreatImpl(0, 0);
     }

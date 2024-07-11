@@ -85,8 +85,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -122,8 +121,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -159,8 +157,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -196,8 +193,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -233,8 +229,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -270,8 +265,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -307,8 +301,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
     
     /**
@@ -344,7 +337,6 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite() 
-                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
+        return piece.isWhite();
     }
 }
