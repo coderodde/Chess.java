@@ -85,14 +85,14 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
         checkNoThreatImpl(7, 7);
     }
     
-    private void checkThreatImpl(final int blackPawnFile,
-                                 final int blackPawnRank) {
+    private void checkThreatImpl(final int whitePawnFile,
+                                 final int whitePawnRank) {
         state.set(4, 
                   3,
                   blackKnight);
         
-        state.set(blackPawnFile, 
-                  blackPawnRank, 
+        state.set(whitePawnFile, 
+                  whitePawnRank, 
                   whitePawn);
         
         assertTrue(KNIGHT_CHECK.check(state, 

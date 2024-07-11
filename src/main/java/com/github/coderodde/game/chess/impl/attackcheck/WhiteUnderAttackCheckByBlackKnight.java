@@ -3,6 +3,7 @@ package com.github.coderodde.game.chess.impl.attackcheck;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
+import com.github.coderodde.game.chess.PieceType;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
@@ -84,7 +85,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -120,7 +122,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -152,11 +155,12 @@ public final class WhiteUnderAttackCheckByBlackKnight
         final Piece piece = state.get(file - 1, rank + 2);
         
         if (piece == null) {
-            // Nothting to threat:
+            // Nothing to threat:
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -192,7 +196,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -228,7 +233,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -264,7 +270,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -300,7 +307,8 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
     
     /**
@@ -336,6 +344,7 @@ public final class WhiteUnderAttackCheckByBlackKnight
             return false;
         }
         
-        return piece.isWhite();
+        return piece.isWhite() 
+                && state.get(file, rank).getPieceType() == PieceType.KNIGHT;
     }
 }
