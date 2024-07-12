@@ -3,7 +3,7 @@ package com.github.coderodde.game.chess.impl.attackcheck;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.PieceColor;
+import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
@@ -21,48 +21,48 @@ public final class BlackUnderAttackCheckByWhiteKnight
                          final int file, 
                          final int rank) {
         
-        if (blackCellIsUnderAttackByWhiteKnightNorthLeft(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightNorthLeft(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightNorthRight(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightNorthRight(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightSouthLeft(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightSouthLeft(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightSouthRight(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightSouthRight(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightWestUp(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightWestUp(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightWestDown(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightWestDown(state, file, rank)) {
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteKnightEastUp(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightEastUp(state, file, rank)) {
             return true;
         }
         
-        return blackCellIsUnderAttackByWhiteKnightEastDown(state, file, rank);
+        return blackPieceIsUnderAttackByWhiteKnightEastDown(state, file, rank);
     }
     
     /**
-     * Checks that the white knight threatens a black piece up north left.
+     * Checks that a white knight threatens a black piece up north left.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece up north to the left.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from north left.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightNorthLeft(
+    private boolean blackPieceIsUnderAttackByWhiteKnightNorthLeft(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -81,24 +81,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file - 1, rank - 2);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threating:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece up north right.
+     * Checks that a white knight threatens a black piece up north right.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece up north to the right.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from north right.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightNorthRight(
+    private boolean blackPieceIsUnderAttackByWhiteKnightNorthRight(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -117,24 +117,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file + 1, rank - 2);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threating:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece up south left.
+     * Checks that a white knight threatens a black piece up south left.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece up south to the left.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from south left.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightSouthLeft(
+    private boolean blackPieceIsUnderAttackByWhiteKnightSouthLeft(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -153,24 +153,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file - 1, rank + 2);
         
         if (piece == null) {
-            // Nothting to threat:
+            // Nothing is threatening:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece up south right.
+     * Checks that a white knight threatens a black piece up south right.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece up south to the right.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from south right.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightSouthRight(
+    private boolean blackPieceIsUnderAttackByWhiteKnightSouthRight(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -189,24 +189,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file + 1, rank + 2);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threatening:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece to the west up.
+     * Checks that a white knight threatens a black piece to the west up.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece to the west up.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from west up.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightWestUp(
+    private boolean blackPieceIsUnderAttackByWhiteKnightWestUp(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -225,24 +225,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file - 2, rank - 1);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threatening
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece to the west down.
+     * Checks that a white knight threatens a black piece to the west down.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece to the west down.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from west down.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightWestDown(
+    private boolean blackPieceIsUnderAttackByWhiteKnightWestDown(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -261,24 +261,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file - 2, rank + 1);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threatening:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece to the east up.
+     * Checks that a white knight threatens a black piece to the east up.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece to the east up.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from east up.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightEastUp(
+    private boolean blackPieceIsUnderAttackByWhiteKnightEastUp(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -297,24 +297,24 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file + 2, rank - 1);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threatening:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
     
     /**
-     * Checks that the white knight threatens a black piece to the east down.
+     * Checks that a white knight threatens a black piece to the east down.
      * 
      * @param state the state to check.
-     * @param file  the file of the white knight.
-     * @param rank  the rank of the white knight.
+     * @param file  the file of the piece to test.
+     * @param rank  the rank of the piece to test.
      * 
-     * @return {@code true} if and only if the input white knight threatens a
-     *         black piece to the east down.
+     * @return {@code true} if and only if the specified black piece is 
+     *         threatened by a white knight from east down.
      */
-    private boolean blackCellIsUnderAttackByWhiteKnightEastDown(
+    private boolean blackPieceIsUnderAttackByWhiteKnightEastDown(
             final ChessBoardState state,
             final int file, 
             final int rank) {
@@ -333,10 +333,10 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file + 2, rank + 1);
         
         if (piece == null) {
-            // Nothing to threat:
+            // Nothing is threating:
             return false;
         }
         
-        return piece.isBlack();
+        return piece.isWhite() && piece.getPieceType() == KNIGHT;
     }
 }
