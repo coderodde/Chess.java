@@ -6,6 +6,7 @@ import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
+import static com.github.coderodde.game.chess.PieceType.ROOK;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +16,9 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
     
     private final ChessBoardState state = new ChessBoardState();
     private final Piece blackKnight = new Piece(BLACK, KNIGHT);
+    private final Piece blackRook = new Piece(BLACK, ROOK);
     private final Piece whitePawn = new Piece(WHITE, PAWN); 
+    private final Piece whiteKnight = new Piece(WHITE, KNIGHT);
     
     private static final UnderAttackCheck KNIGHT_CHECK = 
             new WhiteUnderAttackCheckByBlackKnight();
@@ -63,6 +66,86 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
     @Test
     public void threatEastDown() {
         checkThreatImpl(6, 4);
+    }
+    
+    @Test
+    public void noWhiteThreatNorthLeft() {
+        checkNoBlackThreatImpl(3, 1);
+    }
+    
+    @Test
+    public void noWhiteThreatNorthRight() {
+        checkNoBlackThreatImpl(5, 1);
+    }
+    
+    @Test
+    public void noWhiteThreatSouthLeft() {
+        checkNoBlackThreatImpl(3, 5);
+    }
+    
+    @Test
+    public void noWhiteThreatSouthRight() {
+        checkNoBlackThreatImpl(5, 5);
+    }
+    
+    @Test
+    public void noWhiteThreatWestUp() {
+        checkNoBlackThreatImpl(2, 2);
+    }
+    
+    @Test
+    public void noWhiteThreatWestDown() {
+        checkNoBlackThreatImpl(2, 4);
+    }
+    
+    @Test
+    public void noWhiteThreatEastUp() {
+        checkNoBlackThreatImpl(6, 2);
+    }
+    
+    @Test
+    public void noWhiteThreatEastDown() {
+                checkNoBlackThreatImpl(6, 4);
+    }
+    
+    @Test
+    public void noBlackKnightThreatNorthLeft() {
+        checkBlackNotKnightThreatImpl(3, 1);
+    }
+    
+    @Test
+    public void noBlackKnightThreatNorthRight() {
+        checkBlackNotKnightThreatImpl(5, 1);
+    }
+    
+    @Test
+    public void noBlackKnightThreatSouthLeft() {
+        checkBlackNotKnightThreatImpl(3, 5);
+    }
+    
+    @Test
+    public void noBlackKnightThreatSouthRight() {
+        checkBlackNotKnightThreatImpl(5, 5);
+    }
+    
+    @Test
+    public void noBlackKnightThreatWestUp() {
+        checkBlackNotKnightThreatImpl(2, 2);
+    }
+    
+    @Test
+    public void noBlackKnightThreatWestDown() {
+        checkBlackNotKnightThreatImpl(2, 4);
+    }
+    
+    @Test
+    public void noBlackKnightThreatEastUp() {
+        checkBlackNotKnightThreatImpl(6, 2);
+    }
+    
+    @Test
+    public void noBlackKnightThreatEastDown() {
+        checkBlackNotKnightThreatImpl(6, 4);
     }
     
     @Test
@@ -136,8 +219,8 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
                   whitePawn);
         
         assertTrue(KNIGHT_CHECK.check(state, 
-                                      4, 
-                                      3));
+                                      whitePawnFile, 
+                                      whitePawnRank));
     }
     
     private void checkNoThreatImpl(final int blackKnightFile,
@@ -149,5 +232,31 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
         assertFalse(KNIGHT_CHECK.check(state, 
                                        blackKnightFile, 
                                        blackKnightRank));
+    }
+    
+    private void checkNoBlackThreatImpl(final int whitePieceFile,
+                                        final int whitePieceRank) {
+        state.set(4, 3, whiteKnight);
+        
+        state.set(whitePieceFile, 
+                  whitePieceRank,
+                  whiteKnight);
+        
+        assertFalse(KNIGHT_CHECK.check(state, 
+                                       whitePieceFile, 
+                                       whitePieceRank));
+    }
+    
+    private void checkBlackNotKnightThreatImpl(final int whitePieceFile,
+                                               final int whitePieceRank) {
+        state.set(4, 3, blackRook);
+        
+        state.set(whitePieceFile, 
+                  whitePieceRank,
+                  whiteKnight);
+        
+        assertFalse(KNIGHT_CHECK.check(state, 
+                                       whitePieceFile, 
+                                       whitePieceRank));
     }
 }
