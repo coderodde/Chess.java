@@ -37,7 +37,256 @@ public final class BlackUnderAttackCheckByWhiteKingTest {
     }
     
     @Test
-    public void whiteKingNorthNotThreatens() {
+    public void whiteKingSouthThreatens() {
+        state.set(3, 4, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingWestThreatens() {
+        state.set(2, 3, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingEastThreatens() {
+        state.set(4, 3, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingNorthWestThreatens() {
+        state.set(2, 2, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingNorthEastThreatens() {
+        state.set(4, 2, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingSouthWestThreatens() {
+        state.set(2, 4, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void whiteKingSouthEastThreatens() {
+        state.set(4, 4, whiteKing);
+        assertCheck();
+    }
+    
+    @Test
+    public void blockKingNorthThreatens() {
+        state.set(3, 2, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingSouthThreatens() {
+        state.set(3, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingWestThreatens() {
+        state.set(2, 3, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingEastThreatens() {
+        state.set(4, 3, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingNorthWestThreatens() {
+        state.set(2, 2, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingNorthEastThreatens() {
+        state.set(4, 2, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingSouthWestThreatens() {
+        state.set(2, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockKingSouthEastThreatens() {
+        state.set(4, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnNorthThreatens() {
+        state.set(3, 2, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnSouthThreatens() {
+        state.set(3, 4, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnWestThreatens() {
+        state.set(2, 3, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnEastThreatens() {
+        state.set(4, 3, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnNorthWestThreatens() {
+        state.set(2, 2, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnNorthEastThreatens() {
+        state.set(4, 2, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnSouthWestThreatens() {
+        state.set(2, 4, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blockPawnSouthEastThreatens() {
+        state.set(4, 4, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackPawnNorthNotThreatens() {
+        state.set(3, 2, whitePawn);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingSouthNotThreatens() {
+        state.set(3, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingWestNotThreatens() {
+        state.set(2, 3, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingEastNotThreatens() {
+        state.set(4, 3, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingNorthWestNotThreatens() {
+        state.set(2, 2, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingNorthEastNotThreatens() {
+        state.set(4, 2, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingSouthWestNotThreatens() {
+        state.set(2, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void blackKingSouthEastNotThreatens() {
+        state.set(4, 4, blackKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void northWestCorner() {
+        state.set(0, 0, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void northEastCorner() {
+        state.set(7, 0, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void southWestCorner() {
+        state.set(0, 7, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void soutEastCorner() {
+        state.set(7, 7, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void allSurroundingKings() {
+        state.set(2, 2, blackKing);
+        state.set(3, 2, blackKing);
+        state.set(4, 2, blackKing);
+        state.set(2, 3, blackKing);
+        state.set(4, 3, blackKing);
+        state.set(2, 4, blackKing);
+        state.set(3, 4, blackKing);
+        state.set(4, 4, blackKing);
+        
+        assertNotCheck();
+    }
+    
+    @Test
+    public void rank0() {
+        state.set(3, 0, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void rank7() {
+        state.set(3, 7, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void file0() {
+        state.set(0, 2, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void file7() {
+        state.set(7, 2, whiteKing);
+        assertNotCheck();
+    }
+    
+    @Test
+    public void bottomCenterWhiteKing() {
+        state.set(2, 7, whiteKing);
         assertNotCheck();
     }
     
