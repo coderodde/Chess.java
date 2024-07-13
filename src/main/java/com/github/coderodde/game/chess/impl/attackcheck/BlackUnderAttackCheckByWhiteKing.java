@@ -59,7 +59,7 @@ public final class BlackUnderAttackCheckByWhiteKing
             return true;
         }
         
-        throw new UnsupportedOperationException();
+        return blackPieceUnderAttackByWhiteKingNorthWest(state, file, rank);
     }
     
     /**
