@@ -290,11 +290,42 @@ public final class BlackUnderAttackCheckByWhiteKingTest {
         assertNotCheck();
     }
     
+    @Test
+    public void cornerCase1() {
+        assertNotCheck(1, 0, blackPawn);
+    }
+    
+    @Test
+    public void cornerCase2() {
+        assertNotCheck(1, 7, blackPawn);
+    }
+    
+    @Test
+    public void cornerCase3() {
+        assertNotCheck(0, 1, blackPawn);
+    }
+    
+    @Test
+    public void cornerCase4() {
+        assertNotCheck(7, 1, blackPawn);
+    }
+    
     private void assertCheck() {
         assertTrue(KING_CHECK.check(state, 3, 3));
     }
     
     private void assertNotCheck() {
         assertFalse(KING_CHECK.check(state, 3, 3));
+    }
+    
+    private void assertNotCheck(final int file, 
+                                final int rank, 
+                                final Piece piece) {
+        
+        state.set(file, 
+                  rank, 
+                  piece);
+        
+        assertFalse(KING_CHECK.check(state, file, rank));
     }
 }
