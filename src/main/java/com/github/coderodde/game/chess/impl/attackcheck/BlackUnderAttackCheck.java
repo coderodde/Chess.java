@@ -8,24 +8,24 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @version 1.0.0 (Jul 7, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
-public final class WhiteUnderAttackCheck implements UnderAttackCheck {
+public final class BlackUnderAttackCheck implements UnderAttackCheck {
 
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_QUEEN = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_QUEEN = 
             new WhiteUnderAttackCheckByBlackQueen();
     
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_ROOK = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_ROOK = 
             new WhiteUnderAttackCheckByBlackRook();
     
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_BISHOP = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_BISHOP = 
             new WhiteUnderAttackCheckByBlackBishop();
     
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_KNIGHT = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_KNIGHT = 
             new WhiteUnderAttackCheckByBlackKnight();
     
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_PAWN = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_PAWN = 
             new WhiteUnderAttackCheckByBlackPawn();
     
-    private static final UnderAttackCheck WHITE_UNDER_ATTACK_BY_BLACK_KING = 
+    private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_KING = 
             new WhiteUnderAttackCheckByBlackKing();
     
     @Override
@@ -33,27 +33,27 @@ public final class WhiteUnderAttackCheck implements UnderAttackCheck {
                          final int file,
                          final int rank) {
         
-        return WHITE_UNDER_ATTACK_BY_BLACK_QUEEN.check(state, 
+        return BLACK_UNDER_ATTACK_BY_BLACK_QUEEN.check(state, 
                                                        file, 
                                                        rank)
                 ||
-                WHITE_UNDER_ATTACK_BY_BLACK_ROOK.check(state, 
+                BLACK_UNDER_ATTACK_BY_BLACK_ROOK.check(state, 
                                                        file,
                                                        rank)
                 ||
-                WHITE_UNDER_ATTACK_BY_BLACK_BISHOP.check(state, 
+                BLACK_UNDER_ATTACK_BY_BLACK_BISHOP.check(state, 
                                                          file, 
                                                          rank)
                 ||
-                WHITE_UNDER_ATTACK_BY_BLACK_KNIGHT.check(state,
+                BLACK_UNDER_ATTACK_BY_BLACK_KNIGHT.check(state,
                                                          file,
                                                          rank)
                 ||
-                WHITE_UNDER_ATTACK_BY_BLACK_PAWN.check(state, 
+                BLACK_UNDER_ATTACK_BY_BLACK_PAWN.check(state, 
                                                        file, 
                                                        rank)
                 ||
-                WHITE_UNDER_ATTACK_BY_BLACK_KING.check(state, 
+                BLACK_UNDER_ATTACK_BY_BLACK_KING.check(state, 
                                                        file,
                                                        rank);
     }
