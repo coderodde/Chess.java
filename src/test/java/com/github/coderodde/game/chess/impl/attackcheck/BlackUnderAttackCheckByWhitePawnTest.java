@@ -161,6 +161,45 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
     }
     
     @Test
+    public void wrongPieceEnPassantToLeft() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, whiteRook);
+        state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[3] = true;
+        assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void wrongPieceEnPassantToRight() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, whiteRook);
+        state.set(5, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[5] = true;
+        assertNotThreatens(5, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void wrongColorEnPassantToLeft() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[3] = true;
+        assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void wrongColorEnPassantToRight() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.set(5, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[5] = true;
+        assertNotThreatens(5, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void cannotEnPassantFromRightOnNullPiece() {
+        state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[3] = true;
+        assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
     public void canDoEnPassantToLeft() {
         
     }
