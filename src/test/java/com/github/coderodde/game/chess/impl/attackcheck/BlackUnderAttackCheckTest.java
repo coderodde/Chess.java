@@ -40,42 +40,42 @@ public final class BlackUnderAttackCheckTest {
     @Test
     public void catchQueenAttack() {
         state.set(1, 1, pawn);
-        state.set(4, 4, new Piece(BLACK, QUEEN));
+        state.set(4, 4, new Piece(WHITE, QUEEN));
         assertTrue(CHECKER.check(state, 1, 1));
     }
     
     @Test
     public void catchRookAttack() {
         state.set(1, 1, pawn);
-        state.set(1, 4, new Piece(BLACK, ROOK));
+        state.set(1, 4, new Piece(WHITE, ROOK));
         assertTrue(CHECKER.check(state, 1, 1));
     }
     
     @Test
     public void catchBishopAttack() {
         state.set(1, 1, pawn);
-        state.set(5, 5, new Piece(BLACK, BISHOP));
+        state.set(5, 5, new Piece(WHITE, BISHOP));
         assertTrue(CHECKER.check(state, 1, 1));
     }
     
     @Test
     public void catchKnightAttack() {
         state.set(1, 1, pawn);
-        state.set(2, 3, new Piece(BLACK, KNIGHT));
+        state.set(2, 3, new Piece(WHITE, KNIGHT));
         assertTrue(CHECKER.check(state, 1, 1));
     }
     
     @Test
     public void catchPawnAttack() {
         state.set(1, 1, pawn);
-        state.set(2, 2, new Piece(BLACK, PAWN));
+        state.set(2, 2, new Piece(WHITE, PAWN));
         assertTrue(CHECKER.check(state, 1, 1));
     }
     
     @Test
     public void catchKingAttack() {
         state.set(1, 1, pawn);
-        state.set(0, 1, new Piece(BLACK, KING));
+        state.set(0, 1, new Piece(WHITE, KING));
         assertTrue(CHECKER.check(state, 1, 1));
     }
 }

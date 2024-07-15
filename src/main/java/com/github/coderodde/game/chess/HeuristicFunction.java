@@ -17,6 +17,5 @@ public interface HeuristicFunction {
      * 
      * @return the evaluation of the input state.
      */
-    public int evaluate(final ChessBoardState state, 
-                        final int depth);
+    public int evaluate(final ChessBoardState state, final int depth);
 }

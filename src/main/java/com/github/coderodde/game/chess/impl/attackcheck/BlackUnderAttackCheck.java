@@ -4,29 +4,31 @@ import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
- *
+ * This class provides facilities to check whether a black piece is threatened 
+ * by a white piece.
+ * '
  * @version 1.0.0 (Jul 7, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
 public final class BlackUnderAttackCheck implements UnderAttackCheck {
 
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_QUEEN = 
-            new WhiteUnderAttackCheckByBlackQueen();
+            new BlackUnderAttackCheckByWhiteQueen();
     
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_ROOK = 
-            new WhiteUnderAttackCheckByBlackRook();
+            new BlackUnderAttackCheckByWhiteRook();
     
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_BISHOP = 
-            new WhiteUnderAttackCheckByBlackBishop();
+            new BlackUnderAttackCheckByWhiteBishop();
     
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_KNIGHT = 
-            new WhiteUnderAttackCheckByBlackKnight();
+            new BlackUnderAttackCheckByWhiteKnight();
     
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_PAWN = 
-            new WhiteUnderAttackCheckByBlackPawn();
+            new BlackUnderAttackCheckByWhitePawn();
     
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_KING = 
-            new WhiteUnderAttackCheckByBlackKing();
+            new BlackUnderAttackCheckByWhiteKing();
     
     @Override
     public boolean check(final ChessBoardState state, 

@@ -39,18 +39,8 @@ public final class Piece {
     private final PieceColor pieceColor;
     private final PieceType pieceType;
     private final AbstractChessBoardStateExpander expander;
-    
-//    public Piece(final PieceColor pieceColor,
-//                 final PieceType pieceType,
-//                 final int file,
-//                 final int rank,
-//                 final AbstractChessBoardStateExpander expander) {
-//        this.pieceColor = pieceColor;
-//        this.pieceType = pieceType;
-//        this.file = file;
-//        this.rank = rank;
-//        this.expander = expander;
-//    }
+    private int presenceScore;
+    private int vulnerabilityScore;
     
     public Piece(final Piece other) {
         this(other.pieceColor,
@@ -78,6 +68,44 @@ public final class Piece {
         this.pieceColor = pieceColor;
         this.pieceType = pieceType;
         this.expander = expander;
+        
+        switch (pieceType) {
+            case PAWN -> {
+                this.presenceScore = 2;
+                this.vulnerabilityScore = 1;
+            }
+                
+            case ROOK -> {
+                this.presenceScore = 10;
+                this.vulnerabilityScore = 5;
+            }
+                
+            case BISHOP -> {
+                this.presenceScore = 6;
+                this.vulnerabilityScore = 3;
+            }
+                
+            case KNIGHT -> {
+                this.presenceScore = 6;
+                this.vulnerabilityScore = 3;
+            }
+                
+            case QUEEN -> {
+                this.presenceScore = 18;
+                this.vulnerabilityScore = 9;
+            }
+                
+            case KING -> {
+                this.presenceScore = 2_000_000;
+                this.vulnerabilityScore = 1_000_000;
+            }
+                
+            default -> {
+                this.presenceScore = -1;
+                this.vulnerabilityScore = -1;
+                throw new IllegalStateException("Should not get here.");
+            }
+        }
     }
     
     public Piece(final Piece other,
@@ -88,6 +116,14 @@ public final class Piece {
         this.pieceColor = other.pieceColor;
         this.pieceType = other.pieceType;
         this.expander = expander;
+    }
+    
+    public int getPresenceScore() {
+        return presenceScore;
+    }
+    
+    public int getVulnerabilityScore() {
+        return vulnerabilityScore;
     }
     
     public AbstractChessBoardStateExpander getChessBoardStateExpander() {
