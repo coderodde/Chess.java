@@ -81,7 +81,7 @@ public final class BlackUnderAttackCheckByWhiteKnight
         final Piece piece = state.get(file - 1, rank - 2);
         
         if (piece == null) {
-            // Nothing is threating:
+            // Nothing is threatening:
             return false;
         }
         
