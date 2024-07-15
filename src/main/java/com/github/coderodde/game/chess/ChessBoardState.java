@@ -185,6 +185,14 @@ public final class ChessBoardState {
         return Arrays.deepHashCode(state);
     }
     
+    public void clearBlackInitialDoubleMoveFlags() {
+        Arrays.fill(this.blackIsPreviouslyDoubleMoved, false);
+    }
+    
+    public void clearWhiteInitialDoubleMoveFlags() {
+        Arrays.fill(this.whiteIsPreviouslyDoubleMoved, false);
+    }
+    
     /**
      * Clears the entire board. Used in unit testing.
      */

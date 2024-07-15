@@ -8,6 +8,7 @@ import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.ROOK;
 import com.github.coderodde.game.chess.UnderAttackCheck;
+import static com.github.coderodde.game.chess.impl.expanders.WhitePawnExpander.EN_PASSANT_SOURCE_RANK;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -26,6 +27,8 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
     @Before
     public void before() {
         state.clear();
+        state.clearBlackInitialDoubleMoveFlags();
+        state.clearWhiteInitialDoubleMoveFlags();
     }
     
     @Test
@@ -126,6 +129,45 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
     public void southEasttCornerNoThreat() {
         state.set(7, 6, blackPawn);
         assertNotThreatens(7, 6);
+    }
+    
+    // En passant tests:
+    @Test 
+    public void cannotEnPassantFromFile0() {
+        state.set(0, EN_PASSANT_SOURCE_RANK, blackPawn);
+        assertNotThreatens(0, EN_PASSANT_SOURCE_RANK);  
+    } 
+    
+    @Test 
+    public void cannotEnPassantFromFile7() {
+        state.set(7, EN_PASSANT_SOURCE_RANK, blackPawn);
+        assertNotThreatens(7, EN_PASSANT_SOURCE_RANK);  
+    } 
+    
+    @Test
+    public void enPassantToLeft() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, whitePawn);
+        state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[3] = true;
+        assertThreatens(3, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void enPassantToRight() {
+        state.set(4, EN_PASSANT_SOURCE_RANK, whitePawn);
+        state.set(5, EN_PASSANT_SOURCE_RANK, blackPawn);
+        state.getBlackIsPreviouslyDoubleMoved()[5] = true;
+        assertThreatens(5, EN_PASSANT_SOURCE_RANK);
+    }
+    
+    @Test
+    public void canDoEnPassantToLeft() {
+        
+    }
+    
+    @Test
+    public void canDoEnPassantToRight() {
+        
     }
     
     private void assertThreatens(final int file, 

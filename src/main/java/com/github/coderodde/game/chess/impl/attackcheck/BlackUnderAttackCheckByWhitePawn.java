@@ -88,12 +88,12 @@ public final class BlackUnderAttackCheckByWhitePawn
             return false;
         }
         
-        if (state.getBlackIsPreviouslyDoubleMoved()[file - 1] == false) {
+        if (state.getBlackIsPreviouslyDoubleMoved()[file] == false) {
             // The previous black move was not a double move of a pawn:
             return false;
         }
         
-        final Piece piece = state.get(file + 1, rank);
+        final Piece piece = state.get(file - 1, rank);
         
         if (piece == null) {
             // Nothing to threat:
@@ -117,7 +117,7 @@ public final class BlackUnderAttackCheckByWhitePawn
             return false;
         }
         
-        if (state.getBlackIsPreviouslyDoubleMoved()[file + 1] == false) {
+        if (state.getBlackIsPreviouslyDoubleMoved()[file] == false) {
             // The previous black move was not a double move of a pawn:
             return false;
         }
