@@ -109,8 +109,6 @@ public final class Piece {
     }
     
     public Piece(final Piece other,
-                 final int file, 
-                 final int rank, 
                  final AbstractChessBoardStateExpander expander) {
         
         this.pieceColor = other.pieceColor;

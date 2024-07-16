@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess;
 
+import static com.github.coderodde.game.chess.PlayerTurn.WHITE;
 import com.github.coderodde.game.chess.impl.expanders.BlackBishopExpander;
 import com.github.coderodde.game.chess.impl.expanders.BlackKingExpander;
 import com.github.coderodde.game.chess.impl.expanders.BlackKnightExpander;
@@ -60,6 +61,10 @@ public final class ChessBoardState {
     private boolean[] whiteIsPreviouslyDoubleMoved = new boolean[N];
     private boolean[] blackIsPreviouslyDoubleMoved = new boolean[N];
     private byte enPassantFlags;
+    private int whiteKingFile;
+    private int whiteKingRank;
+    private int blackKingFile;
+    private int blackKingRank;
     
     public ChessBoardState() {
         state = new Piece[N][N];
@@ -96,6 +101,9 @@ public final class ChessBoardState {
         state[0][4] = new Piece(PieceColor.BLACK, 
                                 PieceType.KING, 
                                 BLACK_KING_EXPANDER);
+        
+        blackKingFile = 4;
+        blackKingRank = 0;
         
         for (int file = 0; file < N; file++) {
             state[1][file] = new Piece(PieceColor.BLACK,
@@ -136,6 +144,9 @@ public final class ChessBoardState {
                                 PieceType.KING, 
                                 WHITE_KING_EXPANDER);
         
+        whiteKingFile = 4;
+        whiteKingRank = 7;
+        
         for (int file = 0; file < N; file++) {
             state[6][file] = new Piece(PieceColor.WHITE,
                                        PieceType.PAWN,
@@ -146,15 +157,23 @@ public final class ChessBoardState {
     public ChessBoardState(final ChessBoardState copy) {
         this.state = new Piece[N][N];
         
+        // TODO: Does this mess the logic?
         for (int rank = 0; rank < N; rank++) {
-            for (int file = 0; file < N; file++) {
-                if (copy.state[rank][file] == null) {
-                    continue;
-                }
-                
-                this.state[rank][file] = new Piece(copy.state[rank][file]);
-            }
+            System.arraycopy(copy.state[rank],
+                             0,
+                             this.state[rank], 
+                             0, 
+                             N);
         }
+//        for (int rank = 0; rank < N; rank++) {
+//            for (int file = 0; file < N; file++) {
+//                if (copy.state[rank][file] == null) {
+//                    continue;
+//                }
+//                
+//                this.state[rank][file] = new Piece(copy.state[rank][file]);
+//            }
+//        }
         
         // TODO: Just set?
         System.arraycopy(this.whiteIsPreviouslyDoubleMoved, 
@@ -191,6 +210,38 @@ public final class ChessBoardState {
     
     public void clearWhiteInitialDoubleMoveFlags() {
         Arrays.fill(this.whiteIsPreviouslyDoubleMoved, false);
+    }
+    
+    public int getWhiteKingFile() {
+        return whiteKingFile;
+    }
+    
+    public int getWhiteKingRank() {
+        return whiteKingRank;
+    }
+    
+    public int getBlackKingFile() {
+        return blackKingFile;
+    }
+    
+    public int getBlackKingRank() {
+        return blackKingRank;
+    }
+    
+    public void setWhiteKingFile(final int whiteKingFile) {
+        this.whiteKingFile = whiteKingFile;
+    }
+    
+    public void setWhiteKingRank(final int whiteKingRank) {
+        this.whiteKingRank = whiteKingRank;
+    }
+    
+    public void setBlackKingFile(final int blackKingFile) {
+        this.blackKingFile = blackKingFile;
+    }
+    
+    public void setBlackKingRank(final int blackKingRank) {
+        this.blackKingRank = blackKingRank;
     }
     
     /**
@@ -368,43 +419,54 @@ public final class ChessBoardState {
         
         final List<ChessBoardState> children = new ArrayList<>();
         
-        if (null == playerTurn) {
-            throw new NullPointerException("playerTurn is null.");
-        } else switch (playerTurn) {
-            case WHITE -> {
-                for (int rank = 0; rank < N; rank++) {
-                    for (int file = 0; file < N; file++) {
-                        final CellType cellType = getCellType(file, rank);
-                        
-                        if (cellType == CellType.WHITE) {
-                            children.addAll(
-                                    state[rank]
-                                         [file].expand(this, file, rank));
-                        }
+        if (playerTurn == WHITE) {
+            for (int rank = 0; rank < N; rank++) {
+                for (int file = 0; file < N; file++) {
+                    final CellType cellType = getCellType(file, rank);
+
+                    if (cellType == CellType.WHITE) {
+                        children.addAll(
+                                state[rank]
+                                     [file].expand(this, file, rank));
                     }
-                }   
-            }
-                
-            case BLACK -> {
-                for (int rank = 0; rank < N; rank++) {
-                    for (int file = 0; file < N; file++) {
-                        final CellType cellType = getCellType(file, rank);
-                        
-                        if (cellType == CellType.BLACK) {
-                            children.addAll(
-                                    state[rank]
-                                         [file].expand(this, file, rank));
-                        }
+                }
+            }   
+            
+            return children;
+            
+        } else {
+            // Once here, we must have 'playerTurn == BLACK':
+            for (int rank = 0; rank < N; rank++) {
+                for (int file = 0; file < N; file++) {
+                    final CellType cellType = getCellType(file, rank);
+
+                    if (cellType == CellType.BLACK) {
+                        children.addAll(
+                                state[rank]
+                                     [file].expand(this, file, rank));
                     }
                 }
             }
             
-            default -> throw new EnumConstantNotPresentException(
-                        PlayerTurn.class,
-                        playerTurn.name());
+            return children;
         }
+    }
+    
+    public boolean isCheckMate(final PlayerTurn playerTurn) {
+        if (playerTurn == WHITE) {
+            return isCheckMateWhite();
+        } else {
+            return isCheckMateBlack();
+        }
+    }
+    
+    private boolean isCheckMateWhite() {
         
-        return children;
+        throw new UnsupportedOperationException();
+    }
+    
+    private boolean isCheckMateBlack() {
+        throw new UnsupportedOperationException();
     }
     
     /**

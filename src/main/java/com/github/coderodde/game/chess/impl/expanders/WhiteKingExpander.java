@@ -133,6 +133,9 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         moveState.clear(sourceFile,
                         sourceRank);
         
+        state.setWhiteKingFile(targetFile);
+        state.setWhiteKingRank(targetRank);
+        
         return moveState;
     }
 }
