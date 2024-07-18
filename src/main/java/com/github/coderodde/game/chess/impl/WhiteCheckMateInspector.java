@@ -38,14 +38,14 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        return     tryHideWest      (state, kingFile, kingRank) 
-                && tryHideEast      (state, kingFile, kingRank)
-                && tryHideNorth     (state, kingFile, kingRank)
-                && tryHideNorthWest (state, kingFile, kingRank) 
-                && tryHideNorthEast (state, kingFile, kingRank)
-                && tryHideSouth     (state, kingFile, kingRank)
-                && tryHideSouthWest (state, kingFile, kingRank) 
-                && tryHideSouthEast (state, kingFile, kingRank);
+        return     cannotHideWest      (state, kingFile, kingRank) 
+                && cannotHideEast      (state, kingFile, kingRank)
+                && cannotHideNorth     (state, kingFile, kingRank)
+                && cannotHideNorthWest (state, kingFile, kingRank) 
+                && cannotHideNorthEast (state, kingFile, kingRank)
+                && cannotHideSouth     (state, kingFile, kingRank)
+                && cannotHideSouthWest (state, kingFile, kingRank) 
+                && cannotHideSouthEast (state, kingFile, kingRank);
     }
     
     /**
@@ -58,7 +58,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the north.
      */
-    private boolean tryHideNorth(final ChessBoardState state, 
+    private boolean cannotHideNorth(final ChessBoardState state, 
                                  final int kingFile, 
                                  final int kingRank) {
         if (kingRank == 0) {
@@ -96,7 +96,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the south. 
      */
-    private boolean tryHideSouth(final ChessBoardState state, 
+    private boolean cannotHideSouth(final ChessBoardState state, 
                                  final int kingFile, 
                                  final int kingRank) {
         if (kingRank == N - 1) {
@@ -134,7 +134,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the west.
      */
-    private boolean tryHideWest(final ChessBoardState state, 
+    private boolean cannotHideWest(final ChessBoardState state, 
                                 final int kingFile, 
                                 final int kingRank) {
         if (kingFile == 0) {
@@ -172,7 +172,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the east.
      */
-    private boolean tryHideEast(final ChessBoardState state, 
+    private boolean cannotHideEast(final ChessBoardState state, 
                                 final int kingFile, 
                                 final int kingRank) {
         if (kingFile == N - 1) {
@@ -212,7 +212,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the north west.
      */
-    private boolean tryHideNorthWest(final ChessBoardState state, 
+    private boolean cannotHideNorthWest(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == 0) {
@@ -256,7 +256,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the north east.
      */
-    private boolean tryHideNorthEast(final ChessBoardState state, 
+    private boolean cannotHideNorthEast(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == N - 1) {
@@ -300,7 +300,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the south west.
      */
-    private boolean tryHideSouthWest(final ChessBoardState state, 
+    private boolean cannotHideSouthWest(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == 0) {
@@ -344,7 +344,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the south east.
      */
-    private boolean tryHideSouthEast(final ChessBoardState state, 
+    private boolean cannotHideSouthEast(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == N - 1) {

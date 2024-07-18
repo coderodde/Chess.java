@@ -312,9 +312,41 @@ public final class WhiteCheckMateInspectorTest {
         
         state.set(6, 5, blackQueen);
         
-        System.out.println(state);
+        assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void cannotHideToSouthEastFile7() {
+        prepareKing(7, 3);
+        
+        state.set(7, 2, whitePawn);
+        state.set(7, 4, whitePawn);
+        state.set(6, 2, whitePawn);
+        state.set(6, 4, whitePawn);
+        
+        state.set(2, 3, blackQueen);
         
         assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void southEastPieceIsNull() {
+        prepareKing(6, 3);
+        
+        // top pawn border:
+        state.set(5, 2, whitePawn);
+        state.set(6, 2, whitePawn);
+        state.set(7, 2, whitePawn);
+        
+        state.set(7, 3, whitePawn   );
+        
+        state.set(5, 4, whitePawn);
+        state.set(6, 4, whitePawn);
+        state.set(2, 3, blackQueen);
+        
+        System.out.println(state);
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
     }
     
     @Test
