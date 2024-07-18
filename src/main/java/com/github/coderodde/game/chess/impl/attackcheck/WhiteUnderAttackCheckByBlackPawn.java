@@ -45,6 +45,10 @@ public final class WhiteUnderAttackCheckByBlackPawn
             return false;
         }
         
+        if (rank == N - 1) {
+            return false;
+        }
+        
         final Piece piece = state.get(file - 1, rank + 1);
         
         if (piece == null) {
@@ -64,7 +68,11 @@ public final class WhiteUnderAttackCheckByBlackPawn
             return false;
         }
         
-        final Piece piece = state.get(file +     1, rank + 1);
+        if (rank == N - 1) {
+            return false;
+        }
+        
+        final Piece piece = state.get(file + 1, rank + 1);
         
         if (piece == null) {
             // Nothing to threat:

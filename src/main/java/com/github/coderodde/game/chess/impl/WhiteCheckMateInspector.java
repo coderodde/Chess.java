@@ -38,39 +38,14 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        if (tryHideWest(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideEast(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideNorth(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideNorthWest(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideNorthEast(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideSouth(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideSouthWest(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        if (tryHideSouthEast(state, kingFile, kingRank)) {
-            return true;
-        }
-        
-        throw new UnsupportedOperationException();
+        return     tryHideWest      (state, kingFile, kingRank) 
+                && tryHideEast      (state, kingFile, kingRank)
+                && tryHideNorth     (state, kingFile, kingRank)
+                && tryHideNorthWest (state, kingFile, kingRank) 
+                && tryHideNorthEast (state, kingFile, kingRank)
+                && tryHideSouth     (state, kingFile, kingRank)
+                && tryHideSouthWest (state, kingFile, kingRank) 
+                && tryHideSouthEast (state, kingFile, kingRank);
     }
     
     /**
@@ -80,8 +55,8 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the north.
      */
     private boolean tryHideNorth(final ChessBoardState state, 
                                  final int kingFile, 
@@ -92,14 +67,23 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         final Piece northPiece = state.get(kingFile, kingRank - 1);
         
-        if (northPiece == null || northPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile, 
-                                               kingRank - 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        if (northPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile, 
+                                              kingRank - 1);
+        } 
+        
+        if (northPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
         }
+        
+        // Once here, the northPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile, 
+                                          kingRank - 1);
     }
     
     /**
@@ -109,26 +93,35 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the south. 
      */
     private boolean tryHideSouth(final ChessBoardState state, 
                                  final int kingFile, 
                                  final int kingRank) {
         if (kingRank == N - 1) {
-            return false;
+            return true;
         }
         
         final Piece southPiece = state.get(kingFile, kingRank + 1);
         
-        if (southPiece == null || southPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile, 
-                                               kingRank + 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        if (southPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state,
+                                              kingFile, 
+                                              kingRank + 1);
         }
+        
+        if (southPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the southPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile, 
+                                          kingRank + 1);
     }
     
     /**
@@ -138,26 +131,35 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the west.
      */
     private boolean tryHideWest(final ChessBoardState state, 
                                 final int kingFile, 
                                 final int kingRank) {
         if (kingFile == 0) {
-            return false;
+            return true;
         }
         
         final Piece westPiece = state.get(kingFile - 1, kingRank);
         
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile - 1, 
-                                               kingRank);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        if (westPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile - 1, 
+                                              kingRank);
         }
+        
+        if (westPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the westPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile - 1, 
+                                          kingRank);
     }
     
     /**
@@ -167,26 +169,36 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the east.
      */
     private boolean tryHideEast(final ChessBoardState state, 
                                 final int kingFile, 
                                 final int kingRank) {
         if (kingFile == N - 1) {
-            return false;
+            return true;
         }
         
-        final Piece westPiece = state.get(kingFile + 1, kingRank);
+        final Piece eastPiece = state.get(kingFile + 1, kingRank);
         
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile + 1, 
-                                               kingRank);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        if (eastPiece == null) { 
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile + 1, 
+                                              kingRank);
+            
         }
+        
+        if (eastPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the eastPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile + 1, 
+                                          kingRank);
     }
     
     /**
@@ -197,30 +209,40 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the north west.
      */
     private boolean tryHideNorthWest(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == 0) {
-            return false;
+            return true;
         }
         
         if (kingRank == 0) {
-            return false;
+            return true;
         }
         
-        final Piece westPiece = state.get(kingFile - 1, kingRank - 1);
-        
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile - 1, 
+        final Piece northWestPiece = state.get(kingFile - 1, 
                                                kingRank - 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        
+        if (northWestPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile - 1,
+                                              kingFile - 1);
         }
+        
+        if (northWestPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the northWestPiece is a black piece, check whether 
+        // capturing it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile - 1, 
+                                          kingRank - 1);
     }
     
     /**
@@ -231,30 +253,40 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the north east.
      */
     private boolean tryHideNorthEast(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == N - 1) {
-            return false;
+            return true;
         }
         
         if (kingRank == 0) {
-            return false;
+            return true;
         }
         
-        final Piece westPiece = state.get(kingFile + 1, kingRank - 1);
-        
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile + 1, 
+        final Piece northEastPiece = state.get(kingFile + 1, 
                                                kingRank - 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        
+        if (northEastPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile + 1, 
+                                              kingRank - 1);
         }
+        
+        if (northEastPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the northEastPiece is a black piece, check whether 
+        // capturing it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile + 1, 
+                                          kingRank - 1);
     }
     
     /**
@@ -265,30 +297,40 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the south west.
      */
     private boolean tryHideSouthWest(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == 0) {
-            return false;
+            return true;
         }
         
         if (kingRank == N - 1) {
-            return false;
+            return true;
         }
         
-        final Piece westPiece = state.get(kingFile - 1, kingRank + 1);
-        
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile - 1, 
+        final Piece southWestPiece = state.get(kingFile - 1, 
                                                kingRank + 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        
+        if (southWestPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile - 1, 
+                                              kingRank + 1);
         }
+        
+        if (southWestPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the northPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile - 1, 
+                                          kingRank + 1);
     }
     
     /**
@@ -299,29 +341,39 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @param kingFile the file of the white king.
      * @param kingRank the rank of the black king.
      * 
-     * @return {@code true} if and only if the input state is in checkmate for
-     *         the white player.
+     * @return {@code true} if and only if the white king cannot hide by moving
+     *         to the south east.
      */
     private boolean tryHideSouthEast(final ChessBoardState state, 
                                      final int kingFile, 
                                      final int kingRank) {
         if (kingFile == N - 1) {
-            return false;
+            return true;
         }
         
         if (kingRank == N - 1) {
-            return false;
+            return true;
         }
         
-        final Piece westPiece = state.get(kingFile + 1, kingRank + 1);
-        
-        if (westPiece == null || westPiece.isBlack()) {
-            return !WHITE_ATTACK_CHECKER.check(state,
-                                               kingFile + 1, 
+        final Piece southEastPiece = state.get(kingFile + 1,
                                                kingRank + 1);
-        } else {
-            // North cell is blocked by a white piece:
-            return false;
+        
+        if (southEastPiece == null) {
+            // Can hide only if not under attack:
+            return WHITE_ATTACK_CHECKER.check(state, 
+                                              kingFile + 1, 
+                                              kingRank + 1);
         }
+        
+        if (southEastPiece.isWhite()) {
+            // Blocked by a white piece:
+            return true;
+        }
+        
+        // Once here, the northPiece is a black piece, check whether capturing 
+        // it is safe:
+        return WHITE_ATTACK_CHECKER.check(state,
+                                          kingFile + 1, 
+                                          kingRank + 1);
     }
 }
