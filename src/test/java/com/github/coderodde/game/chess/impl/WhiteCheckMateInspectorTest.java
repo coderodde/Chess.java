@@ -254,6 +254,70 @@ public final class WhiteCheckMateInspectorTest {
     }
     
     @Test
+    public void northWestRank0() {
+        prepareKing(1, 0);
+        state.set(0, 0, whitePawn);
+        state.set(2, 0, whitePawn);
+        state.set(0, 1, whitePawn);
+        state.set(2, 1, whitePawn);
+        
+        state.set(1, 6, blackQueen);
+        
+        assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void northWestPieceIsNull() {
+        prepareKing(3, 3);
+        
+        // bottom pawn border
+        state.set(2, 4, whitePawn);
+        state.set(3, 4, whitePawn);
+        state.set(4, 4, whitePawn);
+        
+        // left pawn border
+        state.set(2, 2, whitePawn);
+        state.set(2, 3, whitePawn);
+        
+        state.set(4, 3, whitePawn);
+        state.set(3, 0, blackQueen);
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void tryHideNorthWestPieceIsNull() {
+        prepareKing(4, 5);
+        
+        state.set(3, 5, whitePawn);
+        state.set(5, 5, whitePawn);
+        state.set(4, 4, whitePawn);
+        state.set(5, 4, whitePawn);
+        state.set(3, 5, whitePawn);
+        state.set(5, 5, whitePawn);
+        
+        state.set(4, 7, blackQueen);
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void tryHideSouthWestFile0() {
+        prepareKing(0, 5);
+        
+        state.set(0, 4, whitePawn);
+        state.set(0, 6, whitePawn);
+        state.set(1, 4, whitePawn);
+        state.set(1, 6, whitePawn);
+        
+        state.set(6, 5, blackQueen);
+        
+        System.out.println(state);
+        
+        assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
     public void tryHideNorthRank0() {
         state.set(0, 0, whitePawn);
         prepareKing(1, 0);

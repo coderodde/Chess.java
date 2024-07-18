@@ -62,7 +62,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                                  final int kingFile, 
                                  final int kingRank) {
         if (kingRank == 0) {
-            return false;
+            return true;
         }
         
         final Piece northPiece = state.get(kingFile, kingRank - 1);
