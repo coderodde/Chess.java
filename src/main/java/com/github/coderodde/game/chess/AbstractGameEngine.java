@@ -11,6 +11,15 @@ import java.util.Objects;
  */
 public abstract class AbstractGameEngine {
     
+    // TODO: Put in the heuristic function?
+    protected static final int MINIMUM_SCORE = -1000_000_000;
+    protected static final int MAXIMUM_SCORE = +1000_000_000;
+    
+    /**
+     * This field caches the best move state so far in this search.
+     */
+    protected ChessBoardState bestMoveState;
+    
     /**
      * Holds the used heuristic function.
      */
