@@ -40,6 +40,11 @@ public final class BlackUnderAttackCheckByWhitePawn
     private boolean threatensFromLeft(final ChessBoardState state,
                                       final int file,
                                       final int rank) {
+        if (rank == N - 1) {
+            // This branch is used in unit testing.
+            return false;
+        }
+        
         if (file == 0) {
             // Cannot capture from the left:
             return false;
@@ -59,12 +64,17 @@ public final class BlackUnderAttackCheckByWhitePawn
                                        final int file, 
                                        final int rank) {
         
+        if (rank == N - 1) {
+            // This branch is used in unit testing.
+            return false;
+        }
+        
         if (file == N - 1) {
             // Cannot capture from right:
             return false;
         }
         
-        final Piece piece = state.get(file +     1, rank + 1);
+        final Piece piece = state.get(file + 1, rank + 1);
         
         if (piece == null) {
             // Nothing to threat:

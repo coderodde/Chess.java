@@ -1,7 +1,5 @@
 package com.github.coderodde.game.chess.impl.expanders;
 
-import com.github.coderodde.game.chess.impl.expanders.BlackKingExpander;
-import com.github.coderodde.game.chess.impl.expanders.TestDummyExpander;
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
@@ -9,6 +7,7 @@ import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KING;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
+import static com.github.coderodde.game.chess.PieceType.QUEEN;
 import com.github.coderodde.game.chess.PlayerTurn;
 import java.util.HashSet;
 import java.util.List;
@@ -20,13 +19,16 @@ import org.junit.Test;
 
 public final class BlackKingExpanderTest {
     
-    private final ChessBoardState state = new ChessBoardState();
+    private static final ChessBoardState state = new ChessBoardState();
     
-    private final AbstractChessBoardStateExpander expander = 
+    private static final AbstractChessBoardStateExpander expander = 
             new BlackKingExpander();
     
-    private final AbstractChessBoardStateExpander dummyExpander = 
+    private static final AbstractChessBoardStateExpander dummyExpander = 
             new TestDummyExpander();
+    
+    private static final Piece whiteQueen = new Piece(WHITE, QUEEN);
+    private static final Piece blackKing = new Piece(BLACK, KING, expander);
     
     @Before
     public void before() {
@@ -97,6 +99,61 @@ public final class BlackKingExpanderTest {
         move.clear(7, 7);
         
         assertTrue(children.contains(move));
+    }
+    
+    @Test
+    public void canMoveNorthWest() {
+        state.set(2, 2, new Piece(BLACK, KING, expander));
+        state.set(1, 5, whiteQueen);
+            
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        
+        assertEquals(4, children.size());
+        
+        assertChildrenContains(children,
+                               state, 
+                               2, 
+                               2, 
+                               2, 
+                               1, 
+                               blackKing);
+        
+        assertChildrenContains(children,
+                               state, 
+                               2, 
+                               2, 
+                               2, 
+                               3, 
+                               blackKing);
+        
+        assertChildrenContains(children,
+                               state, 
+                               2, 
+                               2, 
+                               3, 
+                               1, 
+                               blackKing);
+        
+        assertChildrenContains(children,
+                               state, 
+                               2, 
+                               2, 
+                               3, 
+                               2, 
+                               blackKing);
+    }
+    
+    @Test
+    public void rightUpwardsNotSafe() {
+        state.set(5, 1, blackKing);
+        // Try attack (6, 2)
+        state.set(2, 5, whiteQueen);
+        
+        System.out.println(state);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        
+        assertEquals(6, children.size());
     }
     
     @Test
@@ -239,5 +296,25 @@ public final class BlackKingExpanderTest {
         child.set(file, rank, new Piece(BLACK, KING));
         
         return child;
+    }
+    
+    private void assertChildrenContains(final List<ChessBoardState> children,
+                                        final ChessBoardState state,
+                                        final int sourceFile, 
+                                        final int sourceRank,
+                                        final int targetFile, 
+                                        final int targetRank,
+                                        final Piece piece) {
+        
+        final ChessBoardState move = new ChessBoardState(state);
+        
+        move.clear(sourceFile,
+                   sourceRank);
+        
+        move.set(targetFile, 
+                 targetRank,
+                 piece);
+        
+        assertTrue(children.contains(move));
     }
 }
