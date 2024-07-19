@@ -5,16 +5,21 @@ import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
+import com.github.coderodde.game.chess.UnderAttackCheck;
+import com.github.coderodde.game.chess.impl.attackcheck.WhiteUnderAttackCheck;
 import java.util.List;
 
 /**
  * This class implements an expander for generating all white king moves.
  * 
- * @version 1.0.0 (Jul 1, 2024)
+ * @version 1.0.1 (Jul 18, 2024)
  * @since 1.0.0 (Jul 1, 2024)
  */
 public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
 
+    private static final UnderAttackCheck BLACK_ATTACKS_CHECK = 
+            new WhiteUnderAttackCheck();
+    
     @Override
     public void expand(final ChessBoardState state,
                        final Piece piece,
@@ -27,35 +32,41 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             if (rank > 0 && state.getCellType(file - 1, 
                                               rank - 1) != CellType.WHITE) {
                 
-                // Once here, can move to left upwards:
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file - 1, 
-                             rank - 1));
+                if (!BLACK_ATTACKS_CHECK.check(state, file - 1, rank - 1)) {
+                    // Once here, can move to left upwards:
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file - 1, 
+                                 rank - 1));
+                }
             }
             
             if (rank < N - 1 && state.getCellType(file - 1, 
-                                                  rank + 1) != CellType.WHITE) {
+                                                  rank + 1) != CellType.WHITE)  {
                 
-                // Once here, can move to left downwards:
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file - 1, 
-                             rank + 1));
+                if (!BLACK_ATTACKS_CHECK.check(state, file - 1, rank + 1)) {
+                    // Once here, can move to left downwards:
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file - 1, 
+                                 rank + 1));
+                }
             }
             
-            // Move to the left:
             if (state.getCellType(file - 1, rank) != CellType.WHITE) {
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file - 1, 
-                             rank));    
+                // Move to the left:
+                if (!BLACK_ATTACKS_CHECK.check(state, file - 1, rank)) {
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file - 1, 
+                                 rank));
+                }
             }
         } 
         
@@ -64,56 +75,70 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
             if (rank > 0 && state.getCellType(file + 1, 
                                               rank - 1) != CellType.WHITE) {
                 
-                // Once here, can move to right upwards:
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file + 1, 
-                             rank - 1));    
+                if (!BLACK_ATTACKS_CHECK.check(state, file + 1, rank - 1)) {
+                    // Once here, can move to right upwards:
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file + 1, 
+                                 rank - 1));
+                }
             }
             
             if (rank < N - 1 && state.getCellType(file + 1, 
                                                   rank + 1) != CellType.WHITE) {
-                // Once here, can move to right downwards:
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file + 1, 
-                             rank + 1));
+                
+                if (!BLACK_ATTACKS_CHECK.check(state, file + 1, rank + 1)) {
+                    // Once here, can move to right downwards:
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file + 1, 
+                                 rank + 1));
+                }
             }
             
-            // Move to the right:
             if (state.getCellType(file + 1, rank) != CellType.WHITE) {
-                children.add(
-                        move(state, 
-                             file, 
-                             rank, 
-                             file + 1, 
-                             rank));
+                
+                if (!BLACK_ATTACKS_CHECK.check(state, file + 1, rank)) {
+                    // Move to the right:
+                    children.add(
+                            move(state, 
+                                 file, 
+                                 rank, 
+                                 file + 1, 
+                                 rank));
+                }
             }
         }
         
         if (rank > 0 && state.getCellType(file, rank - 1) != CellType.WHITE) {
-            // Move upwards:
-            children.add(
-                    move(state, 
-                         file, 
-                         rank, 
-                         file, 
-                         rank - 1));
+            
+            if (!BLACK_ATTACKS_CHECK.check(state, file, rank - 1)) {
+                // Move upwards:
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file, 
+                             rank - 1));
+            }
         }
         
         if (rank < N - 1 && state.getCellType(file, 
                                               rank + 1) != CellType.WHITE) {
-            // Move downwards:
-            children.add(
-                    move(state, 
-                         file, 
-                         rank, 
-                         file, 
-                         rank + 1));
+            
+            if (!BLACK_ATTACKS_CHECK.check(state, file, rank + 1)) {
+                // Move downwards:
+                children.add(
+                        move(state, 
+                             file, 
+                             rank, 
+                             file, 
+                             rank + 1));
+            }
         }
     }
     
@@ -133,8 +158,8 @@ public final class WhiteKingExpander extends AbstractChessBoardStateExpander {
         moveState.clear(sourceFile,
                         sourceRank);
         
-        state.setWhiteKingFile(targetFile);
-        state.setWhiteKingRank(targetRank);
+        moveState.setBlackKingFile(targetFile);
+        moveState.setBlackKingRank(targetRank);
         
         return moveState;
     }

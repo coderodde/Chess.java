@@ -152,8 +152,6 @@ public final class BlackKingExpanderTest {
         // Try attack (6, 2)
         state.set(2, 5, whiteQueen);
         
-        System.out.println(state);
-        
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(6, children.size());
@@ -273,8 +271,6 @@ public final class BlackKingExpanderTest {
         
         state.set(6, 0, whiteQueen);
         
-        System.out.println("Yeah:::\n" + state);
-        
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
         assertEquals(1, children.size());
@@ -299,9 +295,6 @@ public final class BlackKingExpanderTest {
         state.set(6, 2, blackPawn);
         
         state.set(7, 0, whiteQueen);
-        
-        System.out.println("--------");
-        System.out.println(state);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
