@@ -24,10 +24,13 @@ public final class BlackKingExpanderTest {
     private static final AbstractChessBoardStateExpander expander = 
             new BlackKingExpander();
     
-    private static final AbstractChessBoardStateExpander dummyExpander = 
+    private static final AbstractChessBoardStateExpander DUMMY_EXPANDER = 
             new TestDummyExpander();
     
     private static final Piece whiteQueen = new Piece(WHITE, QUEEN);
+    private static final Piece blackPawn = new Piece(BLACK, 
+                                                     PAWN, 
+                                                     DUMMY_EXPANDER);
     private static final Piece blackKing = new Piece(BLACK, KING, expander);
     
     @Before
@@ -82,7 +85,7 @@ public final class BlackKingExpanderTest {
         state.clear();
     
         state.set(7, 7, new Piece(BLACK, KING, expander));
-        state.set(6, 6, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(6, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
@@ -187,14 +190,14 @@ public final class BlackKingExpanderTest {
     @Test
     public void cannotMoveInAnyDiriection() {
         state.set(2, 5, new Piece(BLACK, KING, expander));
-        state.set(1, 5, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 5, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(1, 6, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(2, 6, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 6, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(1, 4, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(2, 4, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 4, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(1, 5, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 5, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(1, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(2, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(1, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(2, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
         
         assertTrue(state.expand(PlayerTurn.BLACK).isEmpty());
     }
@@ -202,14 +205,14 @@ public final class BlackKingExpanderTest {
     @Test
     public void cannotMoveRightDownwards() {
         state.set(2, 5, new Piece(BLACK, KING, expander));
-        state.set(1, 5, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 5, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(1, 6, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(2, 6, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 6, new Piece(WHITE, PAWN, dummyExpander));
-        state.set(1, 4, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(2, 4, new Piece(BLACK, PAWN, dummyExpander));
-        state.set(3, 4, new Piece(BLACK, PAWN, dummyExpander));
+        state.set(1, 5, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 5, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(1, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(2, 6, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 6, new Piece(WHITE, PAWN, DUMMY_EXPANDER));
+        state.set(1, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(2, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
+        state.set(3, 4, new Piece(BLACK, PAWN, DUMMY_EXPANDER));
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
         
@@ -225,7 +228,7 @@ public final class BlackKingExpanderTest {
     
     @Test
     public void file1rank0() {
-        final Piece p = new Piece(BLACK, PAWN, dummyExpander);
+        final Piece p = new Piece(BLACK, PAWN, DUMMY_EXPANDER);
         
         state.set(1, 0, new Piece(BLACK, KING, expander));
         state.set(0, 0, p);
@@ -242,7 +245,7 @@ public final class BlackKingExpanderTest {
     
     @Test
     public void file6rank7() {
-        final Piece p = new Piece(BLACK, PAWN, dummyExpander);
+        final Piece p = new Piece(BLACK, PAWN, DUMMY_EXPANDER);
         
         state.set(6, 7, new Piece(BLACK, KING, expander));
         state.set(5, 7, p);
@@ -255,6 +258,62 @@ public final class BlackKingExpanderTest {
         assertTrue(children.contains(move(state, 6, 7, 5, 6)));
         assertTrue(children.contains(move(state, 6, 7, 6, 6)));
         assertTrue(children.contains(move(state, 6, 7, 7, 6)));
+    }
+    
+    @Test
+    public void northIsUnderAttack() {
+        state.set(6, 3, blackKing);
+        state.set(5, 2, blackPawn);
+        state.set(5, 3, blackPawn);
+        state.set(5, 4, blackPawn);
+        
+        state.set(7, 2, blackPawn);
+        state.set(6, 4, blackPawn);
+        state.set(7, 3, blackPawn);
+        
+        state.set(6, 0, whiteQueen);
+        
+        System.out.println("Yeah:::\n" + state);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        
+        assertEquals(1, children.size());
+        assertChildrenContains(children,
+                               state, 
+                               6, 
+                               3, 
+                               7,
+                               4, 
+                               blackKing);
+    }
+    
+    @Test
+    public void northEastIsUnderAttack() {
+        state.set(6, 3, blackKing);
+        state.set(5, 2, blackPawn);
+        state.set(5, 3, blackPawn);
+        state.set(5, 4, blackPawn);
+        
+        state.set(6, 4, blackPawn);
+        state.set(7, 3, blackPawn);
+        state.set(6, 2, blackPawn);
+        
+        state.set(7, 0, whiteQueen);
+        
+        System.out.println("--------");
+        System.out.println(state);
+        
+        final List<ChessBoardState> children = state.expand(PlayerTurn.BLACK);
+        
+        assertEquals(1, children.size());
+        
+        assertChildrenContains(children,
+                               state,
+                               6, 
+                               3, 
+                               7,
+                               4,
+                               blackKing);
     }
     
     private static ChessBoardState move(final ChessBoardState state,
