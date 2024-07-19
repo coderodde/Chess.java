@@ -38,6 +38,12 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
+        boolean isUnderAttackOnce = false;
+        
+        if (cannotHideWest(state, kingFile, kingRank)) {
+            isUnderAttackOnce = true;
+        }
+        
         return     cannotHideWest      (state, kingFile, kingRank) 
                 && cannotHideEast      (state, kingFile, kingRank)
                 && cannotHideNorth     (state, kingFile, kingRank)

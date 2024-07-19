@@ -76,16 +76,20 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             if (piece.isBlack()) {
                 // Blocked by the same color piece (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! A black queen threatens the position:
+                ATTACKER_COORDINATES.file = file;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
         }
         
         // Once here, there is no black queen above the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -112,16 +116,20 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             if (piece.isBlack()) {
                 // Blocked by the same color piece (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! A black queen threatens the position:
+                ATTACKER_COORDINATES.file = file;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -148,16 +156,20 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             if (piece.isBlack()) {
                 // Blocked by the same color piece (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! A black queen threatens the position:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = rank;
                 return true;
             }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -184,16 +196,20 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             if (piece.isBlack()) {
                 // Blocked by the same color piece (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE; 
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! A black queen threatens the position:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = rank;
                 return true;
             }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE; 
         return false;
     }
     
@@ -218,26 +234,31 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the counters are updated:
-            f--;
-            r--;
-            
             if (piece == null) {
+                f--;
+                r--;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! The black queen threatens the piece:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
+            
+            f--;
+            r--;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -262,26 +283,31 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             final Piece piece = state.get(f, r);
             
-            // Make sure the indices are updated:
-            f++;
-            r--;
-            
             if (piece == null) {
+                f++;
+                r--;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! The black queen threatens this position:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
+            
+            f++;
+            r--;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -306,26 +332,31 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the indices are updated:
-            f--;
-            r++;
-            
             if (piece == null) {
+                f--;
+                r++;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by the piece of the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! The black queen threatens the current position:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
+            
+            f--;
+            r++;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -350,26 +381,31 @@ public final class BlackUnderAttackCheckByWhiteQueen
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the indices are updated:
-            f++;
-            r++;
-            
             if (piece == null) {
+                f++;
+                r++;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == PieceType.QUEEN) {
                 // Match! A black queen threatens this piece:
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
                 return true;
             }
+            
+            f++;
+            r++;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
 }
