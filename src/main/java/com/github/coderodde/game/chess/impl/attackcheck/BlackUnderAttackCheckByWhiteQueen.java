@@ -10,7 +10,7 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * This class is responsible for checking whether a black piece is threatened by
  * the white queen.
  * 
- * @version 1.0.0 (Jul 7, 2024)
+ * @version 1.0.1 (Jul 19, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
 public final class BlackUnderAttackCheckByWhiteQueen 
