@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -13,8 +14,8 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @version 1.0.1 (Jul 19, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
-public final class BlackUnderAttackCheckByWhiteQueen 
-        implements UnderAttackCheck {
+public final class BlackUnderAttackCheckByWhiteQueen
+        extends UnderAttackCheck {
 
     @Override
     public boolean check(final ChessBoardState state,

@@ -5,9 +5,9 @@ import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.WhiteUnderAttackCheck;
 import java.util.List;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
  * This class implements an expander for generating all white king moves.

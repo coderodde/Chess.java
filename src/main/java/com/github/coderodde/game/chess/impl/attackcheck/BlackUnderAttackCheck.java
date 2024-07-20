@@ -10,7 +10,7 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @version 1.0.0 (Jul 7, 2024)
  * @since 1.0.0 (Jul 7, 2024)
  */
-public final class BlackUnderAttackCheck implements UnderAttackCheck {
+public final class BlackUnderAttackCheck extends UnderAttackCheck {
 
     private static final UnderAttackCheck BLACK_UNDER_ATTACK_BY_BLACK_QUEEN = 
             new BlackUnderAttackCheckByWhiteQueen();

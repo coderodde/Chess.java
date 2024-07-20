@@ -6,11 +6,11 @@ import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KING;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class WhiteUnderAttackCheckByBlackKingTest {
     

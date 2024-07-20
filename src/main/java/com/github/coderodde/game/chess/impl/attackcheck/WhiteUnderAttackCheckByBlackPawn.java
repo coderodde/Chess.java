@@ -4,8 +4,8 @@ import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import static com.github.coderodde.game.chess.impl.expanders.WhitePawnExpander.EN_PASSANT_SOURCE_RANK;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
  * This class is responsible for checking whether a black piece is threatened by
@@ -15,7 +15,7 @@ import static com.github.coderodde.game.chess.impl.expanders.WhitePawnExpander.E
  * @since 1.0.0 (Jul 15, 2024)
  */
 public final class WhiteUnderAttackCheckByBlackPawn 
-        implements UnderAttackCheck {
+        extends UnderAttackCheck {
 
     @Override
     public boolean check(final ChessBoardState state,

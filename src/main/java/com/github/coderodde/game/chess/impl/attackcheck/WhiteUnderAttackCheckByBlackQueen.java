@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -14,7 +15,7 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @since 1.0.0 (Jul 7, 2024)
  */
 public final class WhiteUnderAttackCheckByBlackQueen 
-        implements UnderAttackCheck {
+        extends UnderAttackCheck {
 
     /**
      * Checks that the piece at file {@code file} and rank {@code rank} is 

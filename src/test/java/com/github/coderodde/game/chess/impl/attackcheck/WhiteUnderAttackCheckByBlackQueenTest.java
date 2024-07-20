@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
@@ -7,10 +8,10 @@ import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.QUEEN;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class WhiteUnderAttackCheckByBlackQueenTest {
     
@@ -23,7 +24,7 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
     private static final UnderAttackCheck QUEEN_CHECK = 
             new WhiteUnderAttackCheckByBlackQueen();
     
-    private static final UnderAttackCheck.CellCoordinates CELL_COORDS =
+    private static final CellCoordinates CELL_COORDS =
             UnderAttackCheck.ATTACKER_COORDINATES;
     
     private final ChessBoardState state = new ChessBoardState();
@@ -276,6 +277,6 @@ public final class WhiteUnderAttackCheckByBlackQueenTest {
     }
     
     private void assertNoCell() {
-        assertEquals(UnderAttackCheck.CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
+        assertEquals(CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
     }
 }

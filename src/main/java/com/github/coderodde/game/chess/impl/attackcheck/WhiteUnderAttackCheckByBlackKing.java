@@ -13,8 +13,8 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @version 1.0.0 (Jul 12, 2024)
  * @since 1.0.0 (Jul 12, 2024)
  */
-public final class WhiteUnderAttackCheckByBlackKing 
-        implements UnderAttackCheck {
+public final class WhiteUnderAttackCheckByBlackKing
+        extends UnderAttackCheck {
 
     /**
      * Checks that a white piece at the file {@code file} and the rank 

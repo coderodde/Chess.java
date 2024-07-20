@@ -4,8 +4,8 @@ import com.github.coderodde.game.chess.CheckMateInspector;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.WhiteUnderAttackCheck;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
  * This class implements the API for checking for checkmate for the white king.

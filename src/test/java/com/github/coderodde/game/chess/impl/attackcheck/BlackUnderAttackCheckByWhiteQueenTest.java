@@ -7,11 +7,11 @@ import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.QUEEN;
-import com.github.coderodde.game.chess.UnderAttackCheck;
-import com.github.coderodde.game.chess.UnderAttackCheck.CellCoordinates;
+import com.github.coderodde.game.chess.CellCoordinates;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class BlackUnderAttackCheckByWhiteQueenTest {
     
@@ -25,7 +25,7 @@ public final class BlackUnderAttackCheckByWhiteQueenTest {
             new BlackUnderAttackCheckByWhiteQueen();
     
     private final ChessBoardState state = new ChessBoardState();
-    private static final UnderAttackCheck.CellCoordinates CELL_COORDS =
+    private static final CellCoordinates CELL_COORDS =
             UnderAttackCheck.ATTACKER_COORDINATES;
     
     @Before

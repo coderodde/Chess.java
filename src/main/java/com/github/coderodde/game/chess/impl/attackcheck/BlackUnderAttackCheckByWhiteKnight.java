@@ -14,7 +14,7 @@ import com.github.coderodde.game.chess.UnderAttackCheck;
  * @since 1.0.0 (Jul 9, 2024)
  */
 public final class BlackUnderAttackCheckByWhiteKnight
-        implements UnderAttackCheck {
+        extends UnderAttackCheck {
 
     @Override
     public boolean check(final ChessBoardState state, 

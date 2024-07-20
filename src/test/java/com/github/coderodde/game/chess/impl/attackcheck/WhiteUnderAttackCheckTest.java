@@ -10,11 +10,11 @@ import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.QUEEN;
 import static com.github.coderodde.game.chess.PieceType.ROOK;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class WhiteUnderAttackCheckTest {
     

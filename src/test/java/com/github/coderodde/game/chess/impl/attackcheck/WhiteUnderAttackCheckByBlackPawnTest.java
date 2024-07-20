@@ -7,11 +7,11 @@ import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.KNIGHT;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.ROOK;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import static com.github.coderodde.game.chess.impl.expanders.WhitePawnExpander.EN_PASSANT_SOURCE_RANK;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class WhiteUnderAttackCheckByBlackPawnTest {
     

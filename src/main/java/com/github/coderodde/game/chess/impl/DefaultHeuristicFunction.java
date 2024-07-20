@@ -4,9 +4,9 @@ import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.HeuristicFunction;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.BlackUnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.WhiteUnderAttackCheck;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
  * This class implements a default heuristic function. It takes into account 

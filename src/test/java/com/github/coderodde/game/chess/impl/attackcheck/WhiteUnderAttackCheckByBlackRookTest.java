@@ -7,10 +7,10 @@ import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import static com.github.coderodde.game.chess.PieceType.ROOK;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 public final class WhiteUnderAttackCheckByBlackRookTest {
     

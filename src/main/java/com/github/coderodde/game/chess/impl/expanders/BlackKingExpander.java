@@ -1,13 +1,14 @@
 package com.github.coderodde.game.chess.impl.expanders;
 
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.CellType;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.UnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.BlackUnderAttackCheck;
 import java.util.List;
+import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
  * This class implements an expander for generating all white king moves.
@@ -27,6 +28,8 @@ public final class BlackKingExpander extends AbstractChessBoardStateExpander {
                        final int rank, 
                        final List<ChessBoardState> children) {
         
+        CellCoordinates offendingCellCoordinates = null;
+        
         if (file > 0) {
             // Once here, can move to the left:
             if (rank > 0 && state.getCellType(file - 1, 
@@ -40,7 +43,7 @@ public final class BlackKingExpander extends AbstractChessBoardStateExpander {
                                  rank, 
                                  file - 1, 
                                  rank - 1));
-                }
+                } 
             }
             
             if (rank < N - 1 && state.getCellType(file - 1, 
