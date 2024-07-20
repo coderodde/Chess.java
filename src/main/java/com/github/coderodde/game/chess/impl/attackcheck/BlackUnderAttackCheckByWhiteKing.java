@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -78,18 +79,26 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file, rank - 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file;
+            ATTACKER_COORDINATES.rank = rank - 1;
+            return true;
+        }
         
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -108,17 +117,26 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file, rank + 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file;
+            ATTACKER_COORDINATES.file = rank + 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -137,17 +155,26 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (file == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file - 1, rank);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file - 1;
+            ATTACKER_COORDINATES.rank = rank;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -166,17 +193,26 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (file == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file + 1, rank);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file + 1;
+            ATTACKER_COORDINATES.file = rank;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -195,21 +231,31 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file + 1, rank - 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file + 1;
+            ATTACKER_COORDINATES.rank = rank - 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -228,21 +274,31 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file + 1, rank + 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file + 1;
+            ATTACKER_COORDINATES.file = rank + 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -261,21 +317,31 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == N - 1) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file - 1, rank + 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file - 1;
+            ATTACKER_COORDINATES.rank = rank + 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     /**
@@ -294,20 +360,30 @@ public final class BlackUnderAttackCheckByWhiteKing
             final int rank) {
         
         if (rank == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == 0) {
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file - 1, rank - 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == KING;
+        if (piece.getPieceType() == KING) {
+            ATTACKER_COORDINATES.file = file - 1;
+            ATTACKER_COORDINATES.rank = rank - 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
 }
