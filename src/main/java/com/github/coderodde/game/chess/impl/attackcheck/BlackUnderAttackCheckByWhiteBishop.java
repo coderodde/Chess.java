@@ -4,7 +4,6 @@ import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
-import com.github.coderodde.game.chess.PieceType;
 import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
@@ -84,7 +83,7 @@ public class BlackUnderAttackCheckByWhiteBishop
             if (piece.getPieceType() == BISHOP) {
                 ATTACKER_COORDINATES.file = f;
                 ATTACKER_COORDINATES.rank = r;
-                return piece.getPieceType() == PieceType.BISHOP;
+                return true;
             }
             
             f--;
