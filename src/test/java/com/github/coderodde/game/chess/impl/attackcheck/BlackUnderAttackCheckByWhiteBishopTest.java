@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
@@ -23,6 +24,8 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
             new BlackUnderAttackCheckByWhiteBishop();
     
     private final ChessBoardState state = new ChessBoardState();
+    private static final CellCoordinates CELL_COORDS =
+            UnderAttackCheck.ATTACKER_COORDINATES;
     
     @Before
     public void before() {
@@ -34,96 +37,112 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
     public void blackBishopNorthEast() {
         state.set(6, 0, whiteBishop);
         assertCheck();
+        assertCellCoords(6, 0);
     }
     
     @Test
     public void blackBishopNorthWest() {
         state.set(0, 0, whiteBishop);
         assertCheck();
+        assertCellCoords(0, 0);
     }
     
     @Test
     public void blackBishopSouthEast() {
         state.set(6, 6, whiteBishop);
         assertCheck();
+        assertCellCoords(6, 6);
     }
     
     @Test
     public void blackBishopSouthWest() {
         state.set(0, 6, whiteBishop);
         assertCheck();
+        assertCellCoords(0, 6);
     }
     
     @Test
     public void blockedBishopNorthEast() {
         state.set(6, 0, blackBishop);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blockedBishopNorthWest() {
         state.set(0, 0, blackBishop);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blockedBishopSouthEast() {
         state.set(6, 6, blackBishop);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blockedBishopSouthWest() {
         state.set(0, 6, blackBishop);
         assertNotCheck();
+        assertNoCell();
     }
         
     @Test
     public void blackPawnNorth() {
         state.set(3, 1, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnSouth() {
         state.set(3, 7, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnWest() {
         state.set(0, 3, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnEast() {
         state.set(6, 3, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnNorthEast() {
         state.set(6, 0, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnNorthWest() {
         state.set(0, 0, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnSouthEast() {
         state.set(6, 6, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnSouthWest() {
         state.set(0, 6, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
@@ -149,24 +168,28 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
     public void limitNorthWestRank() {
         state.set(3, 2, whitePawn);
         assertNotCheck(3, 2);
+        assertNoCell();
     }
     
     @Test
     public void limitNorthWestBoth() {
         state.set(2, 2, whitePawn);
         assertNotCheck(2, 2);
+        assertNoCell();
     }
     
     @Test
     public void limitNorthEastFile() {
         state.set(6, 3, whitePawn);
         assertNotCheck(6, 3);
+        assertNoCell();
     }
     
     @Test
     public void limitNorthEastRank() {
         state.set(3, 6, whiteBishop);
         assertNotCheck(3, 6);
+        assertNoCell();
     }
     
     @Test
@@ -174,6 +197,7 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
         // Don't match the black bishop:
         state.set(5, 5, whitePawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
@@ -181,6 +205,7 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
         // Don't match the black bishop:
         state.set(0, 0, whitePawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
@@ -188,6 +213,7 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
         // Don't match the black bishop:
         state.set(6, 0, whitePawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
@@ -195,6 +221,7 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
         // Don't match the black bishop:
         state.set(0, 6, whitePawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     private void assertNotCheck(final int file, 
@@ -209,5 +236,14 @@ public final class BlackUnderAttackCheckByWhiteBishopTest {
     
     private void assertNotCheck() {
         assertFalse(BISHOP_CHECK.check(state, 3, 3));
+    }
+    
+    private void assertCellCoords(final int file, final int rank) {
+        assertEquals(file, CELL_COORDS.file);
+        assertEquals(rank, CELL_COORDS.rank);
+    }
+    
+    private void assertNoCell() {
+        assertEquals(CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
     }
 }

@@ -1,9 +1,11 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
 import com.github.coderodde.game.chess.PieceType;
+import static com.github.coderodde.game.chess.PieceType.BISHOP;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
 /**
@@ -67,23 +69,30 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the counters are updated:
-            f--;
-            r--;
-            
             if (piece == null) {
+                f--;
+                r--;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.BISHOP;
+            if (piece.getPieceType() == BISHOP) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
+                return piece.getPieceType() == PieceType.BISHOP;
+            }
+            
+            f--;
+            r--;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -108,23 +117,30 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             final Piece piece = state.get(f, r);
             
-            // Make sure the indices are updated:
-            f++;
-            r--;
-            
             if (piece == null) {
+                f++;
+                r--;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.BISHOP;
+            if (piece.getPieceType() == BISHOP) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
+                return true;
+            }
+            
+            f++;
+            r--;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -149,23 +165,31 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the indices are updated:
-            f--;
-            r++;
             
             if (piece == null) {
+                f--;
+                r++;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by the piece of the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.BISHOP;
+            if (piece.getPieceType() == BISHOP) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
+                return true;
+            }
+            
+            f--;
+            r++;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -190,23 +214,30 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             final Piece piece = state.get(f, r);
             
-            // Make sure that the indices are updated:
-            f++;
-            r++;
-            
             if (piece == null) {
+                f++;
+                r++;
                 continue;
             }
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.BISHOP;
+            if (piece.getPieceType() == BISHOP) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = r;
+                return true;
+            }
+            
+            f++;
+            r++;
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
 }
