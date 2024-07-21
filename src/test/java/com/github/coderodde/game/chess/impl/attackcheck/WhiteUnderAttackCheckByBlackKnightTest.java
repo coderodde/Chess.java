@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
@@ -23,6 +24,9 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
     private static final UnderAttackCheck KNIGHT_CHECK = 
             new WhiteUnderAttackCheckByBlackKnight();
     
+    private static final CellCoordinates CELL_COORDS =
+            UnderAttackCheck.ATTACKER_COORDINATES;
+    
     @Before
     public void before() {
         state.clear();
@@ -31,6 +35,7 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
     @Test
     public void threatNorthLeft() {
         checkThreatImpl(3, 1);
+        assertCellCoords(4, 3);
     }
     
     @Test
@@ -258,5 +263,14 @@ public final class WhiteUnderAttackCheckByBlackKnightTest {
         assertFalse(KNIGHT_CHECK.check(state, 
                                        whitePieceFile, 
                                        whitePieceRank));
+    }
+    
+    private void assertCellCoords(final int file, final int rank) {
+        assertEquals(4, CELL_COORDS.file);
+        assertEquals(3, CELL_COORDS.rank);
+    }
+    
+    private void assertNoCell() {
+        assertEquals(CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
     }
 }
