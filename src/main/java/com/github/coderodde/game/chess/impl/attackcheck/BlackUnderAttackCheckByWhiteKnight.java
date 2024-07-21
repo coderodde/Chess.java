@@ -229,7 +229,7 @@ public final class BlackUnderAttackCheckByWhiteKnight
         
         if (piece.getPieceType() == KNIGHT) {
             ATTACKER_COORDINATES.file = file + 1;
-            ATTACKER_COORDINATES.file = rank + 2;
+            ATTACKER_COORDINATES.rank = rank + 2;
             return true;
         }
             
