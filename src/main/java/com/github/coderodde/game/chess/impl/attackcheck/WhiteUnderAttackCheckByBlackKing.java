@@ -131,7 +131,7 @@ public final class WhiteUnderAttackCheckByBlackKing
         
         if (piece.getPieceType() == KING) {
             ATTACKER_COORDINATES.file = file;
-            ATTACKER_COORDINATES.file = rank + 1;
+            ATTACKER_COORDINATES.rank = rank + 1;
             return true;
         }
         
