@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -60,13 +61,19 @@ public final class WhiteUnderAttackCheckByBlackRook
             
             if (piece.isWhite()) {
                 // Blocked by the same color piece (white):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.ROOK;
+            if (piece.getPieceType() == PieceType.ROOK) {
+                ATTACKER_COORDINATES.file = file;
+                ATTACKER_COORDINATES.rank = r;
+                return true;
+            }
         }
         
         // Once here, there is no black queen above the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -93,13 +100,19 @@ public final class WhiteUnderAttackCheckByBlackRook
             
             if (piece.isWhite()) {
                 // Blocked by the same color piece (white):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.ROOK;
+            if (piece.getPieceType() == PieceType.ROOK) {
+                ATTACKER_COORDINATES.file = file;
+                ATTACKER_COORDINATES.rank = r;
+                return true;
+            }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -126,13 +139,19 @@ public final class WhiteUnderAttackCheckByBlackRook
             
             if (piece.isWhite()) {
                 // Blocked by the same color piece (white):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.ROOK;
+            if (piece.getPieceType() == PieceType.ROOK) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = rank;
+                return  true;
+            }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -159,13 +178,19 @@ public final class WhiteUnderAttackCheckByBlackRook
             
             if (piece.isWhite()) {
                 // Blocked by the same color piece (white):
+                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
-            return piece.getPieceType() == PieceType.ROOK;
+            if (piece.getPieceType() == PieceType.ROOK) {
+                ATTACKER_COORDINATES.file = f;
+                ATTACKER_COORDINATES.rank = rank;
+                return true;
+            }
         }
         
         // Once here, there is no black queen below the piece:
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
 }

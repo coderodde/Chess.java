@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
@@ -25,6 +26,9 @@ public final class WhiteUnderAttackCheckByBlackRookTest {
     
     private final ChessBoardState state = new ChessBoardState();
     
+    private static final CellCoordinates CELL_COORDS =
+            UnderAttackCheck.ATTACKER_COORDINATES;
+    
     @Before
     public void before() {
         state.clear();
@@ -35,72 +39,84 @@ public final class WhiteUnderAttackCheckByBlackRookTest {
     public void blackRookNorth() {
         state.set(3, 1, blackRook);
         assertCheck();
+        assertCellCoords(3, 1);
     }
     
     @Test
     public void blackRookSouth() {
         state.set(3, 7, blackRook);
         assertCheck();
+        assertCellCoords(3, 7);
     }
     
     @Test
     public void blackRookWest() {
         state.set(0, 3, blackRook);
         assertCheck();
+        assertCellCoords(0, 3);
     }
     
     @Test
     public void blackRookEast() {
         state.set(6, 3, blackRook);
         assertCheck();
+        assertCellCoords(6, 3);
     }
     
     @Test
     public void whiteRookNorth() {
         state.set(3, 1, whiteRook);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void whiteRookSouth() {
         state.set(3, 7, whiteRook);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void whiteRookWest() {
         state.set(0, 3, whiteRook);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void whiteRookEast() {
         state.set(6, 3, whiteRook);
         assertNotCheck();
+        assertNoCell();
     }
         
     @Test
     public void blackPawnNorth() {
         state.set(3, 1, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnSouth() {
         state.set(3, 7, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnWest() {
         state.set(0, 3, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
     public void blackPawnEast() {
         state.set(6, 3, blackPawn);
         assertNotCheck();
+        assertNoCell();
     }
     
     @Test
@@ -122,5 +138,14 @@ public final class WhiteUnderAttackCheckByBlackRookTest {
     
     private void assertNotCheck() {
         assertFalse(ROOK_CHECK.check(state, 3, 3));
+    }
+    
+    private void assertCellCoords(final int file, final int rank) {
+        assertEquals(file, CELL_COORDS.file);
+        assertEquals(rank, CELL_COORDS.rank);
+    }
+    
+    private void assertNoCell() {
+        assertEquals(CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
     }
 }
