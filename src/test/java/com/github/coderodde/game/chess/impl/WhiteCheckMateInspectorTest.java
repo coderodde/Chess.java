@@ -344,8 +344,6 @@ public final class WhiteCheckMateInspectorTest {
         state.set(6, 4, whitePawn);
         state.set(2, 3, blackQueen);
         
-        System.out.println(state);
-        
         assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
     }
     

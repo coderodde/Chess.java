@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
@@ -24,6 +25,9 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
     private static final UnderAttackCheck PAWN_CHECK =
             new BlackUnderAttackCheckByWhitePawn();
     
+    private static final CellCoordinates CELL_COORDS =
+            UnderAttackCheck.ATTACKER_COORDINATES;
+    
     @Before
     public void before() {
         state.clear();
@@ -36,6 +40,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(2, 4, whitePawn);
         assertThreatens(3, 3);
+        assertCellCoords(2, 4);
     }
     
     @Test
@@ -43,6 +48,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(4, 4, whitePawn);
         assertThreatens(3, 3);
+        assertCellCoords(4, 4);
     }
     
     @Test
@@ -50,6 +56,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(0, 1, blackPawn);
         state.set(1, 2, whitePawn);
         assertThreatens(0, 1);
+        assertCellCoords(1, 2);
     }
     
     @Test
@@ -57,6 +64,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(2, 4, blackPawn);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
@@ -64,6 +72,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(2, 4, whiteRook);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
@@ -71,6 +80,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(4, 4, blackPawn);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
@@ -78,12 +88,14 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(4, 4, whiteRook);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
     public void cannotCaptureFromRigthFile7() {
         state.set(7, 1, blackPawn);
         assertNotThreatens(7, 1);
+        assertNoCell();
     }
     
     @Test
@@ -91,6 +103,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, whitePawn);
         state.set(2, 4, blackPawn);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
@@ -98,6 +111,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(2, 4, blackPawn);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
@@ -105,30 +119,35 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, 3, blackPawn);
         state.set(2, 4, blackKnight);
         assertNotThreatens(3, 3);
+        assertNoCell();
     }
     
     @Test
     public void northWestCornerNoThreat() {
         state.set(0, 1, blackPawn);
         assertNotThreatens(0, 1);
+        assertNoCell();
     }
     
     @Test
     public void nortEastCornerNoThreat() {
         state.set(7, 1, blackPawn);
         assertNotThreatens(7, 1);
+        assertNoCell();
     }
     
     @Test
     public void southWestCornerNoThreat() {
         state.set(0, 6, blackPawn);
         assertNotThreatens(0, 6);
+        assertNoCell();
     }
     
     @Test
     public void southEasttCornerNoThreat() {
         state.set(7, 6, blackPawn);
         assertNotThreatens(7, 6);
+        assertNoCell();
     }
     
     // En passant tests:
@@ -136,12 +155,14 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
     public void cannotEnPassantFromFile0() {
         state.set(0, EN_PASSANT_SOURCE_RANK, blackPawn);
         assertNotThreatens(0, EN_PASSANT_SOURCE_RANK);  
+        assertNoCell();
     } 
     
     @Test 
     public void cannotEnPassantFromFile7() {
         state.set(7, EN_PASSANT_SOURCE_RANK, blackPawn);
         assertNotThreatens(7, EN_PASSANT_SOURCE_RANK);  
+        assertNoCell();
     } 
     
     @Test
@@ -152,6 +173,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         assertThreatens(3, EN_PASSANT_SOURCE_RANK);
     }
     
+    // TODO: Add ATTACK_COORDINATES check?
     @Test
     public void enPassantToRight() {
         state.set(4, EN_PASSANT_SOURCE_RANK, whitePawn);
@@ -166,6 +188,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
         state.getBlackIsPreviouslyDoubleMoved()[3] = true;
         assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+        assertNoCell();
     }
     
     @Test
@@ -174,6 +197,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(5, EN_PASSANT_SOURCE_RANK, blackPawn);
         state.getBlackIsPreviouslyDoubleMoved()[5] = true;
         assertNotThreatens(5, EN_PASSANT_SOURCE_RANK);
+        assertNoCell();
     }
     
     @Test
@@ -182,6 +206,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
         state.getBlackIsPreviouslyDoubleMoved()[3] = true;
         assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+        assertNoCell();
     }
     
     @Test
@@ -190,6 +215,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(5, EN_PASSANT_SOURCE_RANK, blackPawn);
         state.getBlackIsPreviouslyDoubleMoved()[5] = true;
         assertNotThreatens(5, EN_PASSANT_SOURCE_RANK);
+        assertNoCell();
     }
     
     @Test
@@ -197,6 +223,7 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         state.set(3, EN_PASSANT_SOURCE_RANK, blackPawn);
         state.getBlackIsPreviouslyDoubleMoved()[3] = true;
         assertNotThreatens(3, EN_PASSANT_SOURCE_RANK);
+        assertNoCell();
     }
     
     private void assertThreatens(final int file, 
@@ -213,5 +240,14 @@ public final class BlackUnderAttackCheckByWhitePawnTest {
         assertFalse(PAWN_CHECK.check(state, 
                                      file, 
                                      rank));
+    }
+    
+    private void assertCellCoords(final int file, final int rank) {
+        assertEquals(file, CELL_COORDS.file);
+        assertEquals(rank, CELL_COORDS.rank);
+    }
+    
+    private void assertNoCell() {
+        assertEquals(CellCoordinates.NO_ATTACK_FILE, CELL_COORDS.file);
     }
 }

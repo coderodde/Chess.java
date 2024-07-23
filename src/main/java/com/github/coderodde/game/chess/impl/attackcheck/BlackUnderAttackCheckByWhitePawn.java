@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.Piece;
@@ -42,22 +43,32 @@ public final class BlackUnderAttackCheckByWhitePawn
                                       final int rank) {
         if (rank == N - 1) {
             // This branch is used in unit testing.
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == 0) {
             // Cannot capture from the left:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file - 1, rank + 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == PAWN;
+        if (piece.getPieceType() == PAWN) {
+            ATTACKER_COORDINATES.file = file - 1;
+            ATTACKER_COORDINATES.rank = rank + 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
     private boolean threatensFromRight(final ChessBoardState state,
@@ -66,24 +77,35 @@ public final class BlackUnderAttackCheckByWhitePawn
         
         if (rank == N - 1) {
             // This branch is used in unit testing.
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == N - 1) {
             // Cannot capture from right:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         final Piece piece = state.get(file + 1, rank + 1);
         
-        if (piece == null) {
+        if (piece == null || piece.isBlack()) {
             // Nothing to threat:
+            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
-        return piece.isWhite() && piece.getPieceType() == PAWN;
+        if (piece.getPieceType() == PAWN) {
+            ATTACKER_COORDINATES.file = file + 1;
+            ATTACKER_COORDINATES.rank = rank + 1;
+            return true;
+        }
+        
+        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        return false;
     }
     
+    // TODO: Do I need to set ATTACK_COORDINATES?
     private boolean threatensFromLeftEnPassant(final ChessBoardState state,
                                                final int file, 
                                                final int rank) {
@@ -113,6 +135,7 @@ public final class BlackUnderAttackCheckByWhitePawn
         return piece.isWhite() && piece.getPieceType() == PAWN;
     }
     
+    // TODO: Do I need to set ATTACK_COORDINATES?
     private boolean threatensFromRightEnPassant(final ChessBoardState state,
                                                 final int file, 
                                                 final int rank) {
