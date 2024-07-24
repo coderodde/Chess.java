@@ -7,7 +7,7 @@ package com.github.coderodde.game.chess;
  * @version 1.0.0 (Jul 20, 2024)
  * @since 1.0.0 (Jul 20, 2024)
  */
-public final class CellCoordinates {
+public final class CellCoordinates implements Comparable<CellCoordinates> {
    
     /**
      * Specifies that a piece is not under attack.
@@ -23,10 +23,19 @@ public final class CellCoordinates {
      * The rank of the attacking piece.
      */
     public int rank;
+    
+    public CellCoordinates() {
+        
+    }
 
     public CellCoordinates(final int file, final int rank) {
         this.file = file;
         this.rank = rank;
+    }
+    
+    public CellCoordinates(final CellCoordinates otherCellCoordinates) {
+        this.file = otherCellCoordinates.file;
+        this.rank = otherCellCoordinates.rank;
     }
 
     @Override
@@ -35,4 +44,15 @@ public final class CellCoordinates {
         return other.file == file &&
                other.rank == rank;
     } 
+
+    @Override
+    public int compareTo(final CellCoordinates otherCellCoordinates) {
+        int cmp = Integer.compare(file, otherCellCoordinates.file);
+        
+        if (cmp != 0) {
+            return cmp;
+        }
+        
+        return Integer.compare(rank, otherCellCoordinates.rank);
+    }
 }
