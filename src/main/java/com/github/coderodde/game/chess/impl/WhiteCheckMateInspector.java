@@ -22,9 +22,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     private static final CellCoordinates[] ATTACKER_CELLS = 
             new CellCoordinates[ATTACKER_CELLS_LENGTH];
     
-    private static final CellCoordinates PREVIOUS_CELL_COORDINATES = 
-            new CellCoordinates();
-    
     private static final UnderAttackCheck WHITE_PIECE_UNDER_ATTACK_CHECKER = 
             new WhiteUnderAttackCheck();
     
@@ -62,9 +59,9 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         attackerCellsSize = 0;
-//      
-        final boolean cannotHide =  
-                   cannotHideWest      (state, kingFile, kingRank) 
+
+        final boolean canHide =  
+                   canHideWest      (state, kingFile, kingRank) 
                 && cannotHideEast      (state, kingFile, kingRank)
                 && cannotHideNorth     (state, kingFile, kingRank)
                 && cannotHideNorthWest (state, kingFile, kingRank) 
@@ -73,13 +70,13 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 && cannotHideSouthWest (state, kingFile, kingRank) 
                 && cannotHideSouthEast (state, kingFile, kingRank);
         
-        if (cannotHide) {
+        if (canHide) {
             // The white king is threatend and cannot move to a safe location:
-            return true;
+            return false;
         }
         
         if (attackerCellsSize == 0) {
-            return true;
+            return false;
         }
         
         Arrays.sort(ATTACKER_CELLS, 0, attackerCellsSize);
@@ -133,7 +130,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -173,7 +170,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             } 
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -192,17 +189,18 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the west.
      */
-    private boolean cannotHideWest(final ChessBoardState state, 
+    private boolean canHideWest(final ChessBoardState state, 
                                    final int kingFile, 
                                    final int kingRank) {
         if (kingFile == 0) {
-            return true;
+            return false;
         }
         
         final Piece westPiece = state.get(kingFile - 1, kingRank);
         
         if (westPiece == null || westPiece.isBlack()) {
-            // Can hide only if not under attack:
+            // Once here, the west slot is either empty or is occupied by a
+            // black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
                                                    kingFile - 1, 
                                                    kingRank);
@@ -210,15 +208,19 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             if (WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES.file == 
                     CellCoordinates.NO_ATTACK_FILE) {
                 
-                return false;
+                // It is safe to move to the west:
+                return true;
             }
             
-            copyCoordinateCells(
+            // Once here, we have a west offender:
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
-            return true;
+            // ..., that is, we cannot hide:
+            return false;
         }
         
+        // Once here, westPiece is a white piece. King is blocked:
         return false;
     }
     
@@ -252,7 +254,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -296,7 +298,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -341,7 +343,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -386,7 +388,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -431,7 +433,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 return false;
             }
             
-            copyCoordinateCells(
+            addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
             
             return true;
@@ -440,7 +442,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         return false;
     }
     
-    private void copyCoordinateCells(final CellCoordinates cellCoordinates) {
+    private void addCopyCoordinateCells(final CellCoordinates cellCoordinates) {
         ATTACKER_CELLS[attackerCellsSize].file = cellCoordinates.file;
         ATTACKER_CELLS[attackerCellsSize].rank = cellCoordinates.rank;
         attackerCellsSize++;
