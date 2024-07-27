@@ -59,19 +59,36 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         attackerCellsSize = 0;
-
-        final boolean canHide =  
-                   canHideWest      (state, kingFile, kingRank) 
-                && canHideEast      (state, kingFile, kingRank)
-                && canHideNorth     (state, kingFile, kingRank)
-                && canHideNorthWest (state, kingFile, kingRank) 
-                && canHideNorthEast (state, kingFile, kingRank)
-                && cannotHideSouth     (state, kingFile, kingRank)
-                && canHideSouthWest (state, kingFile, kingRank) 
-                && canHideSouthEast (state, kingFile, kingRank);
         
-        if (canHide) {
-            // The white king is threatend and cannot move to a safe location:
+        if (canHideWest(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideEast(state, kingFile, kingRank)) {
+            return false;
+        }
+            
+        if (canHideNorth(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideNorthWest(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideNorthEast(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideSouth(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideSouthWest(state, kingFile, kingRank)) {
+            return false;
+        }
+        
+        if (canHideSouthEast(state, kingFile, kingRank)) {
             return false;
         }
         
@@ -85,16 +102,16 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return cannotDefend(state);
         }
         
-        // Once here, more than one offending black pieces. Since we can hope to 
-        // eliminate at most one of them, the game is lost for the white player
-        // and we have a checkmate:
+        // Once here, we have more than one offending black pieces. Since we can
+        // hope to eliminate at most one of them, the game is lost for the white
+        // player and we have a checkmate:
         return true;
     }
     
     private boolean cannotDefend(final ChessBoardState state) {
         final CellCoordinates attackerCellCoordinates = ATTACKER_CELLS[0];
         
-        return BLACK_PIECE_UNDER_ATTACK_CHECKER.check(
+        return !BLACK_PIECE_UNDER_ATTACK_CHECKER.check(
                 state, 
                 attackerCellCoordinates.file, 
                 attackerCellCoordinates.rank);
@@ -154,9 +171,9 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
      * @return {@code true} if and only if the white king cannot hide by moving
      *         to the south. 
      */
-    private boolean cannotHideSouth(final ChessBoardState state, 
-                                    final int kingFile, 
-                                    final int kingRank) {
+    private boolean canHideSouth(final ChessBoardState state, 
+                                 final int kingFile, 
+                                 final int kingRank) {
         if (kingRank == N - 1) {
             return false;
         }

@@ -256,6 +256,7 @@ public final class WhiteCheckMateInspectorTest {
     @Test
     public void northWestRank0() {
         prepareKing(1, 0);
+        
         state.set(0, 0, whitePawn);
         state.set(2, 0, whitePawn);
         state.set(0, 1, whitePawn);
