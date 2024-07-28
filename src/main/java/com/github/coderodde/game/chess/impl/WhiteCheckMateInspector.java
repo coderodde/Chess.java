@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * This class implements the API for checking for checkmate for the white king.
  * 
- * @version 1.0.0 (Jul 16, 2024)
+ * @version 1.0.1 (Jul 28, 2024)
  * @since 1.0.0 (Jul 16, 2024)
  */
 public final class WhiteCheckMateInspector implements CheckMateInspector {
@@ -322,7 +322,12 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece eastPiece = state.get(kingFile + 1, kingRank);
         final Piece savePiece = eastPiece;
         
-        state.set(kingFile + 1, kingRank, eastPiece);
+        state.set(kingFile + 1, 
+                  kingRank,
+                  state.get(kingFile, 
+                            kingRank));
+        
+        state.clear(kingFile, kingRank);
         
         if (eastPiece == null || eastPiece.isBlack()) { 
             // Once here, the east slot is either empty or is occupied by a
