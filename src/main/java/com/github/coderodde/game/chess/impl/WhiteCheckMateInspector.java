@@ -92,6 +92,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
+        if (attackerCellsSize == 0) {
+            throw new IllegalStateException("attackerCellsSize == 0");
+        }
+        
         Arrays.sort(ATTACKER_CELLS, 0, attackerCellsSize);
         
         if (ATTACKER_CELLS[0].equals(ATTACKER_CELLS[attackerCellsSize - 1])) {
@@ -104,7 +108,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         return true;
     }
     
-    private boolean cannotDefend(final ChessBoardState state) {
+    private static boolean cannotDefend(final ChessBoardState state) {
         final CellCoordinates attackerCellCoordinates = ATTACKER_CELLS[0];
         
         return !BLACK_PIECE_UNDER_ATTACK_CHECKER.check(
@@ -114,13 +118,14 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the north (towards smaller rank indices).
+     * Tries to hide the white king to the north (towards the smaller rank
+     * index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return the coordinates of the offending black piece.
+     * @return {@code true} if and only if the white king can hide to north.
      */
     private boolean canHideNorth(final ChessBoardState state, 
                                  final int kingFile, 
@@ -129,7 +134,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        final Piece northPiece = state.get(kingFile, kingRank - 1);
+        final Piece northPiece = state.get(kingFile,
+                                           kingRank - 1);
+        
+        final Piece savePiece = northPiece;
+        
+        state.set(kingFile, 
+                  kingRank - 1, 
+                  state.get(kingFile,
+                            kingRank));
         
         if (northPiece == null || northPiece.isBlack()) {
             // Once here, the north slot is either empty or is occupied by 
@@ -142,12 +155,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to north:
+                state.set(kingFile, 
+                          kingRank - 1,
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a north offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile, 
+                      kingRank - 1, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -158,14 +179,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the south (towards larger rank indices).
+     * Tries to hide the white king to the south (towards the larger rank
+     * index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the south. 
+     * @return {@code true} if and only if the white king can hide by moving to 
+     *         the south. 
      */
     private boolean canHideSouth(final ChessBoardState state, 
                                  final int kingFile, 
@@ -175,6 +197,12 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         final Piece southPiece = state.get(kingFile, kingRank + 1);
+        final Piece savePiece = southPiece;
+        
+        state.set(kingFile,
+                  kingRank + 1,
+                  state.get(kingFile, 
+                            kingRank));
         
         if (southPiece == null || southPiece.isBlack()) {
             // Once here, the south slot is either empty or is occupied by a
@@ -187,12 +215,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to south:
+                state.set(kingFile, 
+                          kingRank + 1,
+                          savePiece);
+                
                 return true;
             } 
             
             // Once here, we have a south offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile, 
+                      kingRank + 1,
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -203,14 +239,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the west (towards smaller file indices).
+     * Tries to hide the white king to the west (towards the smaller file 
+     * index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the west.
+     * @return {@code true} if and only if the white king can hide by moving to
+     *         the west.
      */
     private boolean canHideWest(final ChessBoardState state, 
                                 final int kingFile, 
@@ -219,7 +256,17 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        final Piece westPiece = state.get(kingFile - 1, kingRank);
+        final Piece westPiece = state.get(kingFile - 1, 
+                                          kingRank);
+        
+        final Piece savePiece = westPiece;
+        
+        state.set(kingFile - 1, 
+                  kingRank, 
+                  state.get(kingFile,
+                            kingRank));
+        
+        // TODO: Clear with state.clear(kingFile, kingRank)?
         
         if (westPiece == null || westPiece.isBlack()) {
             // Once here, the west slot is either empty or is occupied by a
@@ -232,12 +279,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to the west:
+                state.set(kingFile - 1,
+                          kingRank, 
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a west offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile - 1, 
+                      kingRank,
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -248,14 +303,14 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the east (towards larger file indices).
+     * Tries to hide the white king to the east (towards the larger file index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the east.
+     * @return {@code true} if and only if the white king can hide by moving to 
+     *         the east.
      */
     private boolean canHideEast(final ChessBoardState state, 
                                 final int kingFile, 
@@ -265,6 +320,9 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         final Piece eastPiece = state.get(kingFile + 1, kingRank);
+        final Piece savePiece = eastPiece;
+        
+        state.set(kingFile + 1, kingRank, eastPiece);
         
         if (eastPiece == null || eastPiece.isBlack()) { 
             // Once here, the east slot is either empty or is occupied by a
@@ -277,12 +335,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     == CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to the east:
+                state.set(kingFile + 1,
+                          kingRank, 
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have an east offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile + 1, 
+                      kingRank, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -293,15 +359,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the north west (towards smaller file and
-     * smaller rank indices).
+     * Tries to hide the white king to the north west (towards the smaller file 
+     * index and the smaller rank index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the north west.
+     * @return {@code true} if and only if the white king can hide by moving to 
+     *         the north west.
      */
     private boolean canHideNorthWest(final ChessBoardState state, 
                                      final int kingFile, 
@@ -317,6 +383,13 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece northWestPiece = state.get(kingFile - 1, 
                                                kingRank - 1);
         
+        final Piece savePiece = northWestPiece;
+        
+        state.set(kingFile - 1,
+                  kingRank - 1, 
+                  state.get(kingFile, 
+                            kingRank));
+        
         if (northWestPiece == null || northWestPiece.isBlack()) {
             // Once here, the north west slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
@@ -328,12 +401,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to the west:
+                state.set(kingFile - 1,
+                          kingRank - 1, 
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a north west offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile - 1,
+                      kingRank - 1, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -344,15 +425,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the east west (towards larger file and
-     * smaller rank indices).
+     * Tries to hide the white king to the east west (towards the larger file 
+     * index and the smaller rank index).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the north east.
+     * @return {@code true} if and only if the white king can hide by moving to
+     *         the north east.
      */
     private boolean canHideNorthEast(final ChessBoardState state, 
                                      final int kingFile, 
@@ -368,6 +449,13 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece northEastPiece = state.get(kingFile + 1, 
                                                kingRank - 1);
         
+        final Piece savePiece = northEastPiece;
+        
+        state.set(kingFile + 1, 
+                  kingRank - 1, 
+                  state.get(kingFile,
+                            kingRank));
+        
         if (northEastPiece == null || northEastPiece.isBlack()) {
             // Once here, the north east slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
@@ -379,12 +467,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to the west:
+                state.set(kingFile + 1, 
+                          kingRank - 1,
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a west offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile + 1, 
+                      kingRank - 1, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -395,14 +491,14 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the south west (towards smaller file and
-     * larger rank indices).
+     * Tries to hide the white king to the south west (towards the smaller file
+     * index and towards the larger rank index).'
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
+     * @return {@code true} if and only if the white king can hide by moving to
      *         to the south west.
      */
     private boolean canHideSouthWest(final ChessBoardState state, 
@@ -419,6 +515,13 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece southWestPiece = state.get(kingFile - 1, 
                                                kingRank + 1);
         
+        final Piece savePiece = southWestPiece;
+        
+        state.set(kingFile - 1, 
+                  kingRank + 1, 
+                  state.get(kingFile, 
+                            kingRank));
+        
         if (southWestPiece == null || southWestPiece.isBlack()) {
             // Once here, the south west slot is either empty or is occupied by
             // a black piece which can be possibly captured:
@@ -430,12 +533,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to the west:
+                state.set(kingFile - 1, 
+                          kingRank + 1,
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a west offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile - 1, 
+                      kingRank + 1, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -446,15 +557,15 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
     }
     
     /**
-     * Tries to hide the white king to the south east (towards larger file and
-     * larger rank indices).
+     * Tries to hide the white king to the south east (towards the larger file 
+     * and rank indices).
      * 
      * @param state    the state to investigate.
      * @param kingFile the file of the white king.
-     * @param kingRank the rank of the black king.
+     * @param kingRank the rank of the white king.
      * 
-     * @return {@code true} if and only if the white king cannot hide by moving
-     *         to the south east.
+     * @return {@code true} if and only if the white king can hide by moving to
+     *         the south east.
      */
     private boolean canHideSouthEast(final ChessBoardState state, 
                                      final int kingFile, 
@@ -470,22 +581,38 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece southEastPiece = state.get(kingFile + 1,
                                                kingRank + 1);
         
+        final Piece savePiece = southEastPiece;
+        
+        state.set(kingFile + 1,
+                  kingRank + 1, 
+                  state.get(kingFile, 
+                            kingRank));
+        
         if (southEastPiece == null || southEastPiece.isBlack()) {
             // Once here, the south east slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
                                                    kingFile + 1, 
                                                    kingRank + 1);
+            
             if (WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES.file == 
                     CellCoordinates.NO_ATTACK_FILE) {
                 
                 // It is safe to move to south east:
+                state.set(kingFile + 1,
+                          kingRank + 1, 
+                          savePiece);
+                
                 return true;
             }
             
             // Once here, we have a west offender:
             addCopyCoordinateCells(
                     WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES);
+            
+            state.set(kingFile + 1,
+                      kingRank + 1, 
+                      savePiece);
             
             // ..., that is, we cannot hide:
             return false;
