@@ -65,10 +65,10 @@ public final class WhiteUnderAttackCheckByBlackQueen
     
     /**
      * Checks that a white piece is under attack by a black queen on top of the
-     * piece.
+     * queen.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -108,8 +108,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * Checks that a white piece is under attack by a black queen below the
      * piece.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -147,8 +147,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
     /**
      * Checks that a white piece is under attack by a black queen on the left.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -187,8 +187,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
     /**
      * Checks that a white piece is under attack by a black queen on the right.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -228,8 +228,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * Checks that a white piece is under attack by a black queen on the top
      * left.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -277,8 +277,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * Checks that a white piece is under attack by a black queen on the top
      * right.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -326,8 +326,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * Checks that a white piece is under attack by a black queen on the bottom
      * left.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */
@@ -375,8 +375,8 @@ public final class WhiteUnderAttackCheckByBlackQueen
      * Checks that a white piece is under attack by a black queen on the bottom
      * right.
      * 
-     * @param file the file of the piece to test for.
-     * @param rank the rank of the piece to test for.
+     * @param file the file of the black queen to test for.
+     * @param rank the rank of the black queen to test for.
      * 
      * @return {@code true} if and only if the white piece is under attack. 
      */

@@ -358,6 +358,39 @@ public final class WhiteCheckMateInspectorTest {
         assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
     }
     
+    @Test
+    public void blockedWithoutOffender() {
+        prepareKing(2, 2);
+        
+        state.set(1, 1, whitePawn);
+        state.set(2, 1, whitePawn);
+        state.set(3, 1, whitePawn);
+        
+        state.set(1, 3, whitePawn);
+        state.set(2, 3, whitePawn);
+        state.set(3, 3, whitePawn);
+        
+        state.set(1, 2, whitePawn);
+        state.set(3, 2, whitePawn);
+        
+        state.set(5, 5, blackQueen);
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void threatenedEverywhere() {
+        prepareKing(4, 5);
+        
+        state.set(1, 4, blackQueen);
+        state.set(1, 5, blackQueen);
+        state.set(1, 6, blackQueen);
+        
+        System.out.println(state);
+        
+        assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
     private static void prepareKing(final int file, final int rank) {
         state.setWhiteKingFile(file);
         state.setWhiteKingRank(rank);

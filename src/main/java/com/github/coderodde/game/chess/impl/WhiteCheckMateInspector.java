@@ -92,10 +92,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        if (attackerCellsSize == 0) {
-            return false;
-        }
-        
         Arrays.sort(ATTACKER_CELLS, 0, attackerCellsSize);
         
         if (ATTACKER_CELLS[0].equals(ATTACKER_CELLS[attackerCellsSize - 1])) {
