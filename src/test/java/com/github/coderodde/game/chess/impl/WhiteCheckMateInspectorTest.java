@@ -19,6 +19,7 @@ public final class WhiteCheckMateInspectorTest {
     private static final ChessBoardState state = new ChessBoardState();
     private static final Piece whiteKing = new Piece(WHITE, KING);
     private static final Piece whitePawn = new Piece(WHITE, PAWN);
+    private static final Piece whiteRook = new Piece(WHITE, ROOK);
     private static final Piece blackRook = new Piece(BLACK, ROOK);
     private static final Piece blackQueen = new Piece(BLACK, QUEEN);
     private static final CheckMateInspector CHECKMATE_INSPECTOR = 
@@ -386,9 +387,27 @@ public final class WhiteCheckMateInspectorTest {
         state.set(1, 5, blackQueen);
         state.set(1, 6, blackQueen);
         
-        System.out.println(state);
-        
         assertTrue(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
+    @Test
+    public void canCaptureOffendingBlackQueen() {
+        prepareKing(3, 3);
+        
+        state.set(2, 2, whitePawn);
+        state.set(3, 2, whitePawn);
+        state.set(4, 2, whitePawn);
+        
+        state.set(2, 3, whitePawn);
+        state.set(4, 3, whitePawn);
+        
+        state.set(2, 4, whitePawn);
+        state.set(4, 4, whitePawn);
+        
+        state.set(3, 7, blackQueen);
+        state.set(7, 7, whiteRook); // White rook can capture the only offender.
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
     }
     
     private static void prepareKing(final int file, final int rank) {

@@ -92,10 +92,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             return false;
         }
         
-        if (attackerCellsSize == 0) {
-            throw new IllegalStateException("attackerCellsSize == 0");
-        }
-        
         Arrays.sort(ATTACKER_CELLS, 0, attackerCellsSize);
         
         if (ATTACKER_CELLS[0].equals(ATTACKER_CELLS[attackerCellsSize - 1])) {
@@ -137,14 +133,18 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece northPiece = state.get(kingFile,
                                            kingRank - 1);
         
-        final Piece savePiece = northPiece;
-        
-        state.set(kingFile, 
-                  kingRank - 1, 
-                  state.get(kingFile,
-                            kingRank));
-        
         if (northPiece == null || northPiece.isBlack()) {
+            final Piece savePiece = northPiece;
+            final Piece kingPiece = state.get(kingFile, 
+                                              kingRank);
+
+            state.set(kingFile, 
+                      kingRank - 1, 
+                      kingPiece);
+            
+            state.clear(kingFile, 
+                        kingRank);
+
             // Once here, the north slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -159,6 +159,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank - 1,
                           savePiece);
                 
+                state.set(kingFile, 
+                          kingRank,
+                          kingPiece);
+                
                 return true;
             }
             
@@ -169,6 +173,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile, 
                       kingRank - 1, 
                       savePiece);
+
+            state.set(kingFile, 
+                      kingRank,
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -197,14 +205,19 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         final Piece southPiece = state.get(kingFile, kingRank + 1);
-        final Piece savePiece = southPiece;
-        
-        state.set(kingFile,
-                  kingRank + 1,
-                  state.get(kingFile, 
-                            kingRank));
         
         if (southPiece == null || southPiece.isBlack()) {
+            
+            final Piece savePiece = southPiece;
+            final Piece kingPiece = state.get(kingFile, kingRank);
+
+            state.set(kingFile,
+                      kingRank + 1,
+                      state.get(kingFile, 
+                                kingRank));
+
+            state.clear(kingFile, kingRank);
+
             // Once here, the south slot is either empty or is occupied by a
             // black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state,
@@ -219,6 +232,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank + 1,
                           savePiece);
                 
+                state.set(kingFile,
+                          kingRank, 
+                          kingPiece);
+                
                 return true;
             } 
             
@@ -229,6 +246,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile, 
                       kingRank + 1,
                       savePiece);
+            
+            state.set(kingFile,
+                      kingRank, 
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -259,16 +280,18 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece westPiece = state.get(kingFile - 1, 
                                           kingRank);
         
-        final Piece savePiece = westPiece;
-        
-        state.set(kingFile - 1, 
-                  kingRank, 
-                  state.get(kingFile,
-                            kingRank));
-        
-        // TODO: Clear with state.clear(kingFile, kingRank)?
-        
         if (westPiece == null || westPiece.isBlack()) {
+
+            final Piece savePiece = westPiece;
+            final Piece kingPiece = state.get(kingFile,
+                                              kingRank);
+            state.set(kingFile - 1, 
+                      kingRank, 
+                      kingPiece);
+
+            state.clear(kingFile,
+                        kingRank);
+            
             // Once here, the west slot is either empty or is occupied by a
             // black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -278,11 +301,17 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             if (WHITE_PIECE_UNDER_ATTACK_CHECKER.ATTACKER_COORDINATES.file == 
                     CellCoordinates.NO_ATTACK_FILE) {
                 
-                // It is safe to move to the west:
+                // Once here, it is safe to move to the west.
+                // First, undo the king move:
                 state.set(kingFile - 1,
                           kingRank, 
                           savePiece);
                 
+                state.set(kingFile,
+                          kingRank, 
+                          kingPiece);
+                
+                // King move undone!
                 return true;
             }
             
@@ -293,6 +322,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile - 1, 
                       kingRank,
                       savePiece);
+            
+            state.set(kingFile,
+                      kingRank, 
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -320,16 +353,19 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         }
         
         final Piece eastPiece = state.get(kingFile + 1, kingRank);
-        final Piece savePiece = eastPiece;
-        
-        state.set(kingFile + 1, 
-                  kingRank,
-                  state.get(kingFile, 
-                            kingRank));
-        
-        state.clear(kingFile, kingRank);
         
         if (eastPiece == null || eastPiece.isBlack()) { 
+            
+            final Piece savePiece = eastPiece;
+            final Piece kingPiece = state.get(kingFile, kingRank);
+
+            state.set(kingFile + 1, 
+                      kingRank,
+                      state.get(kingFile, 
+                                kingRank));
+
+            state.clear(kingFile, kingRank);
+            
             // Once here, the east slot is either empty or is occupied by a
             // black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -344,6 +380,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank, 
                           savePiece);
                 
+                state.set(kingFile, 
+                          kingRank, 
+                          kingPiece);
+                
                 return true;
             }
             
@@ -354,6 +394,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile + 1, 
                       kingRank, 
                       savePiece);
+            
+            state.set(kingFile, 
+                      kingRank, 
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -388,14 +432,19 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece northWestPiece = state.get(kingFile - 1, 
                                                kingRank - 1);
         
-        final Piece savePiece = northWestPiece;
-        
-        state.set(kingFile - 1,
-                  kingRank - 1, 
-                  state.get(kingFile, 
-                            kingRank));
         
         if (northWestPiece == null || northWestPiece.isBlack()) {
+            
+            final Piece savePiece = northWestPiece;
+            final Piece kingPiece = state.get(kingFile, 
+                                              kingRank);
+            state.set(kingFile - 1,
+                      kingRank - 1, 
+                      kingPiece);
+
+            state.clear(kingFile, 
+                        kingRank);
+            
             // Once here, the north west slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -410,6 +459,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank - 1, 
                           savePiece);
                 
+                state.set(kingFile,
+                          kingRank,
+                          kingPiece);
+                
                 return true;
             }
             
@@ -420,6 +473,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile - 1,
                       kingRank - 1, 
                       savePiece);
+            
+            state.set(kingFile,
+                      kingRank,
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -454,14 +511,19 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece northEastPiece = state.get(kingFile + 1, 
                                                kingRank - 1);
         
-        final Piece savePiece = northEastPiece;
-        
-        state.set(kingFile + 1, 
-                  kingRank - 1, 
-                  state.get(kingFile,
-                            kingRank));
-        
         if (northEastPiece == null || northEastPiece.isBlack()) {
+
+            final Piece savePiece = northEastPiece;
+            final Piece kingPiece = state.get(kingFile,
+                                              kingRank);
+
+            state.set(kingFile + 1, 
+                      kingRank - 1,
+                      kingPiece);
+
+            state.clear(kingFile, 
+                        kingRank);
+            
             // Once here, the north east slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -476,6 +538,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank - 1,
                           savePiece);
                 
+                state.set(kingFile,
+                          kingRank,
+                          kingPiece);
+                
                 return true;
             }
             
@@ -486,6 +552,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile + 1, 
                       kingRank - 1, 
                       savePiece);
+
+            state.set(kingFile,
+                      kingRank,
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -520,14 +590,20 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece southWestPiece = state.get(kingFile - 1, 
                                                kingRank + 1);
         
-        final Piece savePiece = southWestPiece;
-        
-        state.set(kingFile - 1, 
-                  kingRank + 1, 
-                  state.get(kingFile, 
-                            kingRank));
         
         if (southWestPiece == null || southWestPiece.isBlack()) {
+            
+            final Piece savePiece = southWestPiece;
+            final Piece kingPiece = state.get(kingFile,
+                                              kingRank);
+
+            state.set(kingFile - 1, 
+                      kingRank + 1, 
+                      kingPiece);
+
+            state.clear(kingFile,
+                        kingRank);
+            
             // Once here, the south west slot is either empty or is occupied by
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -542,6 +618,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank + 1,
                           savePiece);
                 
+                state.set(kingFile, 
+                          kingRank, 
+                          kingPiece);
+                
                 return true;
             }
             
@@ -552,6 +632,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile - 1, 
                       kingRank + 1, 
                       savePiece);
+
+            state.set(kingFile, 
+                      kingRank, 
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;
@@ -586,14 +670,18 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         final Piece southEastPiece = state.get(kingFile + 1,
                                                kingRank + 1);
         
-        final Piece savePiece = southEastPiece;
-        
-        state.set(kingFile + 1,
-                  kingRank + 1, 
-                  state.get(kingFile, 
-                            kingRank));
-        
         if (southEastPiece == null || southEastPiece.isBlack()) {
+
+            final Piece savePiece = southEastPiece;
+            final Piece kingPiece = state.get(kingFile, 
+                                              kingRank);
+            state.set(kingFile + 1,
+                      kingRank + 1, 
+                      kingPiece);
+
+            state.clear(kingFile,
+                        kingRank);
+            
             // Once here, the south east slot is either empty or is occupied by 
             // a black piece which can be possibly captured:
             WHITE_PIECE_UNDER_ATTACK_CHECKER.check(state, 
@@ -608,6 +696,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                           kingRank + 1, 
                           savePiece);
                 
+                state.set(kingFile,
+                          kingRank, 
+                          kingPiece);
+                
                 return true;
             }
             
@@ -618,6 +710,10 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             state.set(kingFile + 1,
                       kingRank + 1, 
                       savePiece);
+            
+            state.set(kingFile,
+                      kingRank, 
+                      kingPiece);
             
             // ..., that is, we cannot hide:
             return false;

@@ -219,8 +219,6 @@ public final class BlackUnderAttackCheckByWhiteQueenTest {
         state.set(7, 3, whiteQueen);
         
         assertTrue(QUEEN_CHECK.check(state, 3, 3));
-        
-        System.out.println(WhiteUnderAttackCheck.ATTACKER_COORDINATES.file + " : " + WhiteUnderAttackCheck.ATTACKER_COORDINATES.rank);
     }
     
     @Test
