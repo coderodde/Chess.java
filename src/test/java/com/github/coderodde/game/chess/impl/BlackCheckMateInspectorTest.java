@@ -22,7 +22,7 @@ public final class BlackCheckMateInspectorTest {
     private static final Piece blackRook = new Piece(BLACK, ROOK);
     private static final Piece whiteRook = new Piece(WHITE, ROOK);
     private static final Piece whiteQueen = new Piece(WHITE, QUEEN);
-    private static final CheckMateInspector CHECKMATE_INSPECTOR = 
+    private static final CheckMateInspector CHECKMATE_INSPECTOR =
             new BlackCheckMateInspector();
     
     @Before

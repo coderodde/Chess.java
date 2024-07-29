@@ -102,9 +102,22 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                      int beta,
                                      final PlayerTurn playerTurn) {
         
-        if (depth == 0 || root.isCheckMate(playerTurn)) {
+        if (depth == 0) {
             return heuristicFunction.evaluate(root, depth);
         }
+        
+        if (playerTurn == PlayerTurn.WHITE) {
+            if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
+                return MAXIMUM_SCORE + depth;
+            }
+        } else {
+            // Here, playerTurn == PlayerTurn.BLACK:
+            if (BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
+                return MINIMUM_SCORE - depth;
+            }
+        }
+        
+        // TODO: Check for stalemate here?
         
         if (playerTurn == PlayerTurn.BLACK) {
             // The black player is the maximizing player:

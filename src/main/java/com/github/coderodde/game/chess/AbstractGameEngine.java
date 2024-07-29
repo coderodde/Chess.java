@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess;
 
+import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
 import java.util.Objects;
 
 /**
@@ -24,6 +25,18 @@ public abstract class AbstractGameEngine {
      * Holds the used heuristic function.
      */
     protected final HeuristicFunction heuristicFunction;
+    
+    /**
+     * Holds the check mate inspector for the white player.
+     */
+    protected static final CheckMateInspector WHITE_CHECK_MATE_INSPECTOR = 
+            new WhiteCheckMateInspector();
+    
+    /**
+     * Holds the check mate inspector for the black player.
+     */
+    protected static final CheckMateInspector BLACK_CHECK_MATE_INSPECTOR = 
+            new BlackCheckMateInspector();
     
     /**
      * Constructs an instance of this abstract class.
