@@ -1,6 +1,8 @@
 package com.github.coderodde.game.chess;
 
 import static com.github.coderodde.game.chess.PlayerTurn.WHITE;
+import com.github.coderodde.game.chess.impl.BlackCheckMateInspector;
+import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
 import com.github.coderodde.game.chess.impl.expanders.BlackBishopExpander;
 import com.github.coderodde.game.chess.impl.expanders.BlackKingExpander;
 import com.github.coderodde.game.chess.impl.expanders.BlackKnightExpander;
@@ -40,6 +42,12 @@ public final class ChessBoardState {
     private static final AbstractChessBoardStateExpander BLACK_PAWN_EXPANDER;
     private static final AbstractChessBoardStateExpander BLACK_QUEEN_EXPANDER;
     private static final AbstractChessBoardStateExpander BLACK_ROOK_EXPANDER;
+    
+    private static final CheckMateInspector WHITE_CHECK_MATE_INSPECTOR = 
+            new WhiteCheckMateInspector();
+    
+    private static final CheckMateInspector BLACK_CHECK_MATE_INSPECTOR = 
+            new BlackCheckMateInspector();
     
     static {
         WHITE_BISHOP_EXPANDER = new WhiteBishopExpander();
@@ -165,6 +173,12 @@ public final class ChessBoardState {
                              0, 
                              N);
         }
+        
+        whiteKingFile = copy.whiteKingFile;
+        whiteKingRank = copy.whiteKingRank;
+        blackKingFile = copy.blackKingFile;
+        blackKingRank = copy.blackKingRank;
+        
 //        for (int rank = 0; rank < N; rank++) {
 //            for (int file = 0; file < N; file++) {
 //                if (copy.state[rank][file] == null) {
@@ -454,19 +468,18 @@ public final class ChessBoardState {
     
     public boolean isCheckMate(final PlayerTurn playerTurn) {
         if (playerTurn == WHITE) {
-            return isCheckMateWhite();
+            return WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(this);
         } else {
-            return isCheckMateBlack();
+            return BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(this);
         }
     }
     
     private boolean isCheckMateWhite() {
-        
-        throw new UnsupportedOperationException();
+        return isCheckMate(PlayerTurn.WHITE);
     }
     
     private boolean isCheckMateBlack() {
-        throw new UnsupportedOperationException();
+        return isCheckMate(PlayerTurn.BLACK);
     }
     
     /**

@@ -54,6 +54,10 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             final List<ChessBoardState> children = 
                     root.expand(PlayerTurn.BLACK);
             
+            if (children.isEmpty()) {
+                throw new IllegalStateException();
+            }
+            
             for (final ChessBoardState child : children) {
                 value = Math.max(value, 
                                  alphaBetaPruningImpl(child, 
@@ -77,6 +81,10 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             
             final List<ChessBoardState> children = 
                     root.expand(PlayerTurn.WHITE);
+            
+            if (children.isEmpty()) {
+                throw new IllegalStateException();
+            }
             
             for (final ChessBoardState child : children) {
                 value = Math.min(value,
@@ -156,6 +164,7 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             final List<ChessBoardState> children = root.expand(playerTurn);
             
             if (children.isEmpty()) {
+                System.out.println("yeahhhh");
                 return MINIMUM_SCORE + depth;
             }
             

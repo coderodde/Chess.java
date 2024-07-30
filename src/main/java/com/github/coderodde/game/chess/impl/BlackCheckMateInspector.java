@@ -48,8 +48,8 @@ public final class BlackCheckMateInspector implements CheckMateInspector {
     @Override
     public boolean isInCheckMate(final ChessBoardState state) {
     
-        final int kingFile = state.getWhiteKingFile();
-        final int kingRank = state.getWhiteKingRank();
+        final int kingFile = state.getBlackKingFile();
+        final int kingRank = state.getBlackKingRank();
         
         if (BLACK_PIECE_UNDER_ATTACK_CHECKER.check(state, 
                                                    kingFile, 

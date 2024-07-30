@@ -411,8 +411,8 @@ public final class BlackCheckMateInspectorTest {
     }
     
     private static void prepareKing(final int file, final int rank) {
-        state.setWhiteKingFile(file);
-        state.setWhiteKingRank(rank);
+        state.setBlackKingFile(file);
+        state.setBlackKingRank(rank);
         state.set(file, 
                   rank,
                   blackKing);
