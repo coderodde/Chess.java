@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess;
 
+import com.github.coderodde.game.chess.impl.BlackCheckMateInspector;
 import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
 import java.util.Objects;
 

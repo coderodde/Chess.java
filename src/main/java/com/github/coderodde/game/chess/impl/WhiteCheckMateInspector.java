@@ -134,7 +134,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                                            kingRank - 1);
         
         if (northPiece == null || northPiece.isBlack()) {
-            final Piece savePiece = northPiece;
             final Piece kingPiece = state.get(kingFile, 
                                               kingRank);
 
@@ -157,7 +156,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to north:
                 state.set(kingFile, 
                           kingRank - 1,
-                          savePiece);
+                          northPiece);
                 
                 state.set(kingFile, 
                           kingRank,
@@ -172,7 +171,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile, 
                       kingRank - 1, 
-                      savePiece);
+                      northPiece);
 
             state.set(kingFile, 
                       kingRank,
@@ -208,7 +207,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (southPiece == null || southPiece.isBlack()) {
             
-            final Piece savePiece = southPiece;
             final Piece kingPiece = state.get(kingFile, kingRank);
 
             state.set(kingFile,
@@ -230,7 +228,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to south:
                 state.set(kingFile, 
                           kingRank + 1,
-                          savePiece);
+                          southPiece);
                 
                 state.set(kingFile,
                           kingRank, 
@@ -245,7 +243,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile, 
                       kingRank + 1,
-                      savePiece);
+                      southPiece);
             
             state.set(kingFile,
                       kingRank, 
@@ -282,7 +280,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (westPiece == null || westPiece.isBlack()) {
 
-            final Piece savePiece = westPiece;
             final Piece kingPiece = state.get(kingFile,
                                               kingRank);
             state.set(kingFile - 1, 
@@ -305,7 +302,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // First, undo the king move:
                 state.set(kingFile - 1,
                           kingRank, 
-                          savePiece);
+                          westPiece);
                 
                 state.set(kingFile,
                           kingRank, 
@@ -321,7 +318,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile - 1, 
                       kingRank,
-                      savePiece);
+                      westPiece);
             
             state.set(kingFile,
                       kingRank, 
@@ -356,7 +353,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (eastPiece == null || eastPiece.isBlack()) { 
             
-            final Piece savePiece = eastPiece;
             final Piece kingPiece = state.get(kingFile, kingRank);
 
             state.set(kingFile + 1, 
@@ -378,7 +374,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to the east:
                 state.set(kingFile + 1,
                           kingRank, 
-                          savePiece);
+                          eastPiece);
                 
                 state.set(kingFile, 
                           kingRank, 
@@ -393,7 +389,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile + 1, 
                       kingRank, 
-                      savePiece);
+                      eastPiece);
             
             state.set(kingFile, 
                       kingRank, 
@@ -435,7 +431,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (northWestPiece == null || northWestPiece.isBlack()) {
             
-            final Piece savePiece = northWestPiece;
             final Piece kingPiece = state.get(kingFile, 
                                               kingRank);
             state.set(kingFile - 1,
@@ -457,7 +452,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to the west:
                 state.set(kingFile - 1,
                           kingRank - 1, 
-                          savePiece);
+                          northWestPiece);
                 
                 state.set(kingFile,
                           kingRank,
@@ -472,7 +467,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile - 1,
                       kingRank - 1, 
-                      savePiece);
+                      northWestPiece);
             
             state.set(kingFile,
                       kingRank,
@@ -513,7 +508,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (northEastPiece == null || northEastPiece.isBlack()) {
 
-            final Piece savePiece = northEastPiece;
             final Piece kingPiece = state.get(kingFile,
                                               kingRank);
 
@@ -536,7 +530,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to the west:
                 state.set(kingFile + 1, 
                           kingRank - 1,
-                          savePiece);
+                          northEastPiece);
                 
                 state.set(kingFile,
                           kingRank,
@@ -551,7 +545,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile + 1, 
                       kingRank - 1, 
-                      savePiece);
+                      northEastPiece);
 
             state.set(kingFile,
                       kingRank,
@@ -593,7 +587,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (southWestPiece == null || southWestPiece.isBlack()) {
             
-            final Piece savePiece = southWestPiece;
             final Piece kingPiece = state.get(kingFile,
                                               kingRank);
 
@@ -616,7 +609,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to the west:
                 state.set(kingFile - 1, 
                           kingRank + 1,
-                          savePiece);
+                          southWestPiece);
                 
                 state.set(kingFile, 
                           kingRank, 
@@ -631,7 +624,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile - 1, 
                       kingRank + 1, 
-                      savePiece);
+                      southWestPiece);
 
             state.set(kingFile, 
                       kingRank, 
@@ -672,7 +665,6 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
         
         if (southEastPiece == null || southEastPiece.isBlack()) {
 
-            final Piece savePiece = southEastPiece;
             final Piece kingPiece = state.get(kingFile, 
                                               kingRank);
             state.set(kingFile + 1,
@@ -694,7 +686,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
                 // It is safe to move to south east:
                 state.set(kingFile + 1,
                           kingRank + 1, 
-                          savePiece);
+                          southEastPiece);
                 
                 state.set(kingFile,
                           kingRank, 
@@ -709,7 +701,7 @@ public final class WhiteCheckMateInspector implements CheckMateInspector {
             
             state.set(kingFile + 1,
                       kingRank + 1, 
-                      savePiece);
+                      southEastPiece);
             
             state.set(kingFile,
                       kingRank, 
