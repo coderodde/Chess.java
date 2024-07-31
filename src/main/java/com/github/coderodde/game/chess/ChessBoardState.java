@@ -218,6 +218,26 @@ public final class ChessBoardState {
         return Arrays.deepHashCode(state);
     }
     
+    public boolean strongEquals(final ChessBoardState otherState) {
+        if (!equals(otherState)) {
+            return false;
+        }
+        
+        if (!Arrays.equals(whiteIsPreviouslyDoubleMoved,
+                           otherState.whiteIsPreviouslyDoubleMoved)) {
+            return false;
+        }
+        
+        if (!Arrays.equals(blackIsPreviouslyDoubleMoved, 
+                           otherState.blackIsPreviouslyDoubleMoved)) {
+            return false;
+        }
+        
+        // TODO: (1) Check castling flags, (2) king coordinates and the (3) en 
+        // passant flags.
+        return true;
+    }
+    
     public void clearBlackInitialDoubleMoveFlags() {
         Arrays.fill(this.blackIsPreviouslyDoubleMoved, false);
     }

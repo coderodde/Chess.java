@@ -4,6 +4,7 @@ import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.PlayerTurn;
 import com.github.coderodde.game.chess.AbstractGameEngine;
 import com.github.coderodde.game.chess.HeuristicFunction;
+import com.github.coderodde.game.chess.ThreeFoldRepetionRuleDrawException;
 import java.util.List;
 
 /**
@@ -31,12 +32,27 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
     @Override
     public ChessBoardState search(final ChessBoardState root, 
                                   final int depth, 
-                                  final PlayerTurn playerTurn) {
+                                  final PlayerTurn playerTurn)
+            
+    throws ThreeFoldRepetionRuleDrawException {
+        
         bestMoveState = null;
         
         alphaBetaPruningRootImpl(root, 
                                  depth,
                                  playerTurn);
+        
+        playerMoveFrequencyMap.put(
+                bestMoveState, 
+                playerMoveFrequencyMap.getOrDefault(
+                        bestMoveState, 
+                        0) + 1);
+        
+        if (playerMoveFrequencyMap.get(bestMoveState) == 3) {
+            // Once here, the state 'bestMoveState' was visited three times.
+            // End the game with a draw due to three-fold repetition rule.
+            throw new ThreeFoldRepetionRuleDrawException();
+        }
         
         return bestMoveState;
     }

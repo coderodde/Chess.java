@@ -2,6 +2,8 @@ package com.github.coderodde.game.chess;
 
 import com.github.coderodde.game.chess.impl.BlackCheckMateInspector;
 import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -26,6 +28,12 @@ public abstract class AbstractGameEngine {
      * Holds the used heuristic function.
      */
     protected final HeuristicFunction heuristicFunction;
+    
+    /**
+     * Maps each unique board state to the number it occurred during the game.
+     */
+    protected final Map<ChessBoardState, Integer> playerMoveFrequencyMap = 
+            new HashMap<>();
     
     /**
      * Holds the check mate inspector for the white player.
@@ -59,8 +67,11 @@ public abstract class AbstractGameEngine {
      * @param playerTurn the player turn enumeration flag.
      * 
      * @return the next best move.
+     * @throws com.github.coderodde.game.chess.ThreeFoldRepetionRuleDrawException
+     *         is thrown when the three-fold repetition rule is broken.
      */
     public abstract ChessBoardState search(final ChessBoardState root, 
                                            final int depth,
-                                           final PlayerTurn playerTurn);
+                                           final PlayerTurn playerTurn)
+            throws ThreeFoldRepetionRuleDrawException;
 }
