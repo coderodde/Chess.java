@@ -1,5 +1,6 @@
 package com.github.coderodde.game.chess.impl.attackcheck;
 
+import com.github.coderodde.game.chess.CellCoordinates;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.UnderAttackCheck;
 
@@ -33,15 +34,18 @@ public final class BlackUnderAttackCheck extends UnderAttackCheck {
     @Override
     public boolean check(final ChessBoardState state, 
                          final int file,
-                         final int rank) {
+                         final int rank, 
+                         final CellCoordinates attackerCellCoordinates) {
         
         return BLACK_UNDER_ATTACK_BY_BLACK_QUEEN.check(state, 
                                                        file, 
-                                                       rank)
+                                                       rank,
+                                                       attackerCellCoordinates)
                 ||
                 BLACK_UNDER_ATTACK_BY_BLACK_ROOK.check(state, 
                                                        file,
-                                                       rank)
+                                                       rank,
+                                                       attackerCellCoordinates)
                 ||
                 BLACK_UNDER_ATTACK_BY_BLACK_BISHOP.check(state, 
                                                          file, 

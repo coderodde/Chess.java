@@ -31,36 +31,77 @@ public final class BlackUnderAttackCheckByWhiteKing
     @Override
     public boolean check(final ChessBoardState state,
                          final int file, 
-                         final int rank) {
-        if (blackPieceUnderAttackByWhiteKingNorth(state, file, rank)) {
+                         final int rank,
+                         final CellCoordinates attackerCellCoordinates) {
+        
+        if (blackPieceUnderAttackByWhiteKingNorth(
+                state, 
+                file,
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingSouth(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingSouth(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingWest(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingWest(
+                state, 
+                file,
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingEast(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingEast(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingNorthEast(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingNorthEast(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingSouthEast(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingSouthEast(
+                state,
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceUnderAttackByWhiteKingSouthWest(state, file, rank)) {
+        if (blackPieceUnderAttackByWhiteKingSouthWest(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        return blackPieceUnderAttackByWhiteKingNorthWest(state, file, rank);
+        return blackPieceUnderAttackByWhiteKingNorthWest(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates);
     }
     
     /**
@@ -76,10 +117,11 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingNorth(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -87,17 +129,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file;
-            ATTACKER_COORDINATES.rank = rank - 1;
+            attackerCellCoordinates.file = file;
+            attackerCellCoordinates.rank = rank - 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -114,10 +156,11 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingSouth(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -125,17 +168,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file;
-            ATTACKER_COORDINATES.rank = rank + 1;
+            attackerCellCoordinates.file = file;
+            attackerCellCoordinates.rank = rank + 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -152,10 +195,11 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingWest(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (file == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -163,17 +207,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file - 1;
-            ATTACKER_COORDINATES.rank = rank;
+            attackerCellCoordinates.file = file - 1;
+            attackerCellCoordinates.rank = rank;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -190,10 +234,11 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingEast(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (file == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -201,17 +246,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file + 1;
-            ATTACKER_COORDINATES.rank = rank;
+            attackerCellCoordinates.file = file + 1;
+            attackerCellCoordinates.rank = rank;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -228,15 +273,16 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingNorthEast(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -244,17 +290,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file + 1;
-            ATTACKER_COORDINATES.rank = rank - 1;
+            attackerCellCoordinates.file = file + 1;
+            attackerCellCoordinates.rank = rank - 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -271,15 +317,16 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingSouthEast(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -287,17 +334,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file + 1;
-            ATTACKER_COORDINATES.rank = rank + 1;
+            attackerCellCoordinates.file = file + 1;
+            attackerCellCoordinates.rank = rank + 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -314,15 +361,16 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingSouthWest(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == N - 1) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -330,17 +378,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file - 1;
-            ATTACKER_COORDINATES.rank = rank + 1;
+            attackerCellCoordinates.file = file - 1;
+            attackerCellCoordinates.rank = rank + 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -357,15 +405,16 @@ public final class BlackUnderAttackCheckByWhiteKing
     private boolean blackPieceUnderAttackByWhiteKingNorthWest(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         if (rank == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (file == 0) {
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
@@ -373,17 +422,17 @@ public final class BlackUnderAttackCheckByWhiteKing
         
         if (piece == null || piece.isBlack()) {
             // Nothing to threat:
-            ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+            attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
             return false;
         }
         
         if (piece.getPieceType() == KING) {
-            ATTACKER_COORDINATES.file = file - 1;
-            ATTACKER_COORDINATES.rank = rank - 1;
+            attackerCellCoordinates.file = file - 1;
+            attackerCellCoordinates.rank = rank - 1;
             return true;
         }
         
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
 }

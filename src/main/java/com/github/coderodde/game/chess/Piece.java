@@ -179,6 +179,17 @@ public final class Piece {
         
         final List<ChessBoardState> children = new ArrayList<>();
         
+        if (expander == null) {
+            final StackTraceElement[] stackTrace = 
+                    Thread.currentThread().getStackTrace();
+            
+            for (final StackTraceElement s : stackTrace) {
+                System.out.println(s);
+            }
+            
+            System.exit(1);
+        }
+        
         expander.expand(state, 
                         this, 
                         file, 

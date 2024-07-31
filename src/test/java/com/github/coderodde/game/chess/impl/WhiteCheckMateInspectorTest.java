@@ -410,6 +410,16 @@ public final class WhiteCheckMateInspectorTest {
         assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
     }
     
+//    @Test
+    public void noThreatAtAll() {
+        prepareKing(4, 0);
+        
+        state.set(0, 0, whiteKing);
+        state.set(5, 1, blackQueen);
+        
+        assertFalse(CHECKMATE_INSPECTOR.isInCheckMate(state));
+    }
+    
     private static void prepareKing(final int file, final int rank) {
         state.setWhiteKingFile(file);
         state.setWhiteKingRank(rank);

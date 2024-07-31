@@ -20,13 +20,23 @@ public final class BlackUnderAttackCheckByWhiteKnight
     @Override
     public boolean check(final ChessBoardState state, 
                          final int file, 
-                         final int rank) {
+                         final int rank,
+                         final CellCoordinates attackerCellCoordinates) {
         
-        if (blackPieceIsUnderAttackByWhiteKnightNorthLeft(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightNorthLeft(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackPieceIsUnderAttackByWhiteKnightNorthRight(state, file, rank)) {
+        if (blackPieceIsUnderAttackByWhiteKnightNorthRight(
+                state,
+                file,
+                rank,
+                )) {
             return true;
         }
         

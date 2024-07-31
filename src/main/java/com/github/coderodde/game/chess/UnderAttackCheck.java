@@ -10,24 +10,19 @@ package com.github.coderodde.game.chess;
 public abstract class UnderAttackCheck {
     
     /**
-     * This field holds the coordinates of the attacking piece. If the piece is
-     * not threatened, {@code ATTACKER_COORDINATES.file} is set to 
-     * {@link com.github.coderodde.game.chess.CellCoordinates#NO_ATTACK_FILE}.
-     */
-    public static final CellCoordinates ATTACKER_COORDINATES = 
-            new CellCoordinates(CellCoordinates.NO_ATTACK_FILE, 0);
-    
-    /**
      * Returns {@code true} if and only if a piece at file {@code file} and rank
      * {@code rank} in state {@code state} is under attack.
      * 
-     * @param state the state to check.
-     * @param file  the file of the piece to check.
-     * @param rank  the rank of the piece to check.
+     * @param state                   the state to check.
+     * @param file                    the file of the piece to check.
+     * @param rank                    the rank of the piece to check.
+     * @param attackerCellCoordinates the attacker cell coordinates.
      * 
      * @return {@code true} if and only if the specified piece is under attack.
      */
-    public abstract boolean check(final ChessBoardState state, 
-                                  final int file,
-                                  final int rank);
+    public abstract boolean check(
+            final ChessBoardState state, 
+            final int file,
+            final int rank,
+            final CellCoordinates attackerCellCoordinates);
 }

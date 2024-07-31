@@ -24,27 +24,48 @@ public class BlackUnderAttackCheckByWhiteBishop
      * @param state the board state to consider.
      * @param file  the file of the possibly threatened piece.
      * @param rank  the rank of the possibly threatened piece.
+     * @param attackerCellCoordinates the coordinate object of an attacker.
      * 
      * @return {@code true} if and only if the piece in question is threatened.
      */
     @Override
     public boolean check(final ChessBoardState state, 
                          final int file, 
-                         final int rank) {
+                         final int rank,
+                         final CellCoordinates attackerCellCoordinates) {
     
-        if (blackCellIsUnderAttackByWhiteBishopNorthWest(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopNorthWest(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteBishopNorthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopNorthEast(
+                state, 
+                file,
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        if (blackCellIsUnderAttackByWhiteBishopSouthEast(state, file, rank)) {
+        if (blackCellIsUnderAttackByWhiteBishopSouthEast(
+                state, 
+                file,
+                rank,
+                attackerCellCoordinates)) {
+            
             return true;
         }
         
-        return blackCellIsUnderAttackByWhiteBishopSouthWest(state, file, rank);
+        return blackCellIsUnderAttackByWhiteBishopSouthWest(
+                state, 
+                file, 
+                rank,
+                attackerCellCoordinates);
     }
     
     /**
@@ -59,7 +80,8 @@ public class BlackUnderAttackCheckByWhiteBishop
     private boolean blackCellIsUnderAttackByWhiteBishopNorthWest(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         int f = file - 1;
         int r = rank - 1;
@@ -76,13 +98,13 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
-                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+                attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == BISHOP) {
-                ATTACKER_COORDINATES.file = f;
-                ATTACKER_COORDINATES.rank = r;
+                attackerCellCoordinates.file = f;
+                attackerCellCoordinates.rank = r;
                 return true;
             }
             
@@ -91,7 +113,7 @@ public class BlackUnderAttackCheckByWhiteBishop
         }
         
         // Once here, there is no black queen below the piece:
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -107,7 +129,8 @@ public class BlackUnderAttackCheckByWhiteBishop
     private boolean blackCellIsUnderAttackByWhiteBishopNorthEast(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         int f = file + 1;
         int r = rank - 1;
@@ -124,13 +147,13 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
-                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+                attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == BISHOP) {
-                ATTACKER_COORDINATES.file = f;
-                ATTACKER_COORDINATES.rank = r;
+                attackerCellCoordinates.file = f;
+                attackerCellCoordinates.rank = r;
                 return true;
             }
             
@@ -139,7 +162,7 @@ public class BlackUnderAttackCheckByWhiteBishop
         }
         
         // Once here, there is no black queen below the piece:
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -155,7 +178,8 @@ public class BlackUnderAttackCheckByWhiteBishop
     private boolean blackCellIsUnderAttackByWhiteBishopSouthWest(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         int f = file - 1;
         int r = rank + 1;
@@ -173,13 +197,13 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             if (piece.isBlack()) {
                 // Blocked by the piece of the same color (black):
-                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+                attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == BISHOP) {
-                ATTACKER_COORDINATES.file = f;
-                ATTACKER_COORDINATES.rank = r;
+                attackerCellCoordinates.file = f;
+                attackerCellCoordinates.rank = r;
                 return true;
             }
             
@@ -188,7 +212,7 @@ public class BlackUnderAttackCheckByWhiteBishop
         }
         
         // Once here, there is no black queen below the piece:
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
     
@@ -204,7 +228,8 @@ public class BlackUnderAttackCheckByWhiteBishop
     private boolean blackCellIsUnderAttackByWhiteBishopSouthEast(
             final ChessBoardState state,
             final int file, 
-            final int rank) {
+            final int rank,
+            final CellCoordinates attackerCellCoordinates) {
         
         int f = file + 1;
         int r = rank + 1;
@@ -221,13 +246,13 @@ public class BlackUnderAttackCheckByWhiteBishop
             
             if (piece.isBlack()) {
                 // Blocked by a piece with the same color (black):
-                ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+                attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
                 return false;
             }
             
             if (piece.getPieceType() == BISHOP) {
-                ATTACKER_COORDINATES.file = f;
-                ATTACKER_COORDINATES.rank = r;
+                attackerCellCoordinates.file = f;
+                attackerCellCoordinates.rank = r;
                 return true;
             }
             
@@ -236,7 +261,7 @@ public class BlackUnderAttackCheckByWhiteBishop
         }
         
         // Once here, there is no black queen below the piece:
-        ATTACKER_COORDINATES.file = CellCoordinates.NO_ATTACK_FILE;
+        attackerCellCoordinates.file = CellCoordinates.NO_ATTACK_FILE;
         return false;
     }
 }
