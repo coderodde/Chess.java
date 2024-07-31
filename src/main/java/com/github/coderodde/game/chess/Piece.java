@@ -45,7 +45,7 @@ public final class Piece {
     public Piece(final Piece other) {
         this(other.pieceColor,
              other.pieceType,
-             null);
+             other.expander);
     }
     
     /**

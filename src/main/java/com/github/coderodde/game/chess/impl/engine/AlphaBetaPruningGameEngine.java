@@ -130,13 +130,14 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             return heuristicFunction.evaluate(root, depth);
         }
         
-        if (playerTurn == PlayerTurn.WHITE) {
+        if (playerTurn == PlayerTurn.BLACK) {
             if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
                 return MAXIMUM_SCORE + depth;
             }
         } else {
             // Here, playerTurn == PlayerTurn.BLACK:
             if (BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
+//                BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root);
                 return MINIMUM_SCORE - depth;
             }
         }

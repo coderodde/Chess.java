@@ -25,6 +25,8 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
     public static final int PROMOTION_SOURCE_RANK = 1;
     public static final int PROMOTION_TARGET_RANK = 0;
     
+    // TODO: In promotion, need to set correct expanders!
+    
     @Override
     public void expand(final ChessBoardState root, 
                        final Piece piece,
