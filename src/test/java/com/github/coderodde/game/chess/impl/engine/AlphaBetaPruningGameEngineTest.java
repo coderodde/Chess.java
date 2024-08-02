@@ -24,7 +24,7 @@ public final class AlphaBetaPruningGameEngineTest {
     private final AbstractGameEngine engine = 
             new AlphaBetaPruningGameEngine(new DefaultHeuristicFunction());
     
-//    @Test
+    @Test
     public void debug1() {
         final ChessBoardState root = new ChessBoardState();
         
@@ -93,3 +93,4 @@ public final class AlphaBetaPruningGameEngineTest {
         System.out.println(nextState);
     }
 }
+

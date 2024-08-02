@@ -40,6 +40,8 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
         
         alphaBetaPruningRootImpl(root, 
                                  depth,
+                                 MINIMUM_SCORE,
+                                 MAXIMUM_SCORE,
                                  playerTurn);
         
         playerMoveFrequencyMap.put(
@@ -59,11 +61,12 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
         
     private void alphaBetaPruningRootImpl(final ChessBoardState root,
                                          final int depth,
+                                         int alpha,
+                                         int beta,
                                          final PlayerTurn playerTurn) {
         
         if (playerTurn == PlayerTurn.BLACK) {
             // Black is the maximizing player!
-            int alpha = MINIMUM_SCORE;
             int value = MINIMUM_SCORE;
             int tentativeValue = MINIMUM_SCORE;
             
@@ -79,19 +82,24 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                  alphaBetaPruningImpl(child, 
                                                       depth - 1, 
                                                       alpha, 
-                                                      MAXIMUM_SCORE, 
+                                                      beta, 
                                                       PlayerTurn.WHITE));
-
+                
+                System.out.println("Black " + value);
+                
+                if (value > beta) {
+                    break;
+                }
+                
                 if (tentativeValue < value) {
                     tentativeValue = value;
                     bestMoveState = new ChessBoardState(child);
                 }
-
+                
                 alpha = Math.max(alpha, value);
             }
         } else {
             // Once here, 'playerTurn' is 'WHITE': a minimizing player!
-            int beta = MAXIMUM_SCORE;
             int value = MAXIMUM_SCORE;
             int tentativeValue = MAXIMUM_SCORE;
             
@@ -106,10 +114,15 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                 value = Math.min(value,
                                  alphaBetaPruningImpl(child,
                                                       depth - 1,
-                                                      MINIMUM_SCORE,
+                                                      alpha,
                                                       beta,
                                                       PlayerTurn.BLACK));
 
+                System.out.println("White " + value);
+                if (value < alpha) {
+                    break;
+                }
+                
                 if (tentativeValue > value) {
                     tentativeValue = value;
                     bestMoveState = new ChessBoardState(child);
@@ -125,22 +138,24 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                      int alpha,
                                      int beta,
                                      final PlayerTurn playerTurn) {
-        
         if (depth == 0) {
             return heuristicFunction.evaluate(root, depth);
         }
         
-        if (playerTurn == PlayerTurn.BLACK) {
+        if (playerTurn == PlayerTurn.WHITE) {
             if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
                 return MAXIMUM_SCORE + depth;
             }
         } else {
-            // Here, playerTurn == PlayerTurn.BLACK:
             if (BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
 //                BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root);
                 return MINIMUM_SCORE - depth;
             }
         }
+        
+//        if (depth == 0) {
+//            return heuristicFunction.evaluate(root, depth);
+//        }
         
         // TODO: Check for stalemate here?
         

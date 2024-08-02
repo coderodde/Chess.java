@@ -38,13 +38,13 @@ public abstract class AbstractGameEngine {
     /**
      * Holds the check mate inspector for the white player.
      */
-    protected static final CheckMateInspector WHITE_CHECK_MATE_INSPECTOR = 
+    protected final CheckMateInspector WHITE_CHECK_MATE_INSPECTOR = 
             new WhiteCheckMateInspector();
     
     /**
      * Holds the check mate inspector for the black player.
      */
-    protected static final CheckMateInspector BLACK_CHECK_MATE_INSPECTOR = 
+    protected final CheckMateInspector BLACK_CHECK_MATE_INSPECTOR = 
             new BlackCheckMateInspector();
     
     /**
