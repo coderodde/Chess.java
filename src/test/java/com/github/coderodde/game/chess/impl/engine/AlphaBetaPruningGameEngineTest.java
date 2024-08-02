@@ -24,7 +24,7 @@ public final class AlphaBetaPruningGameEngineTest {
     private final AbstractGameEngine engine = 
             new AlphaBetaPruningGameEngine(new DefaultHeuristicFunction());
     
-    @Test
+//    @Test
     public void debug1() {
         final ChessBoardState root = new ChessBoardState();
         
@@ -49,7 +49,7 @@ public final class AlphaBetaPruningGameEngineTest {
         
     }
     
-    @Test
+//    @Test
     public void debugNoStateTransition()
             throws ThreeFoldRepetionRuleDrawException {
             
@@ -71,7 +71,7 @@ public final class AlphaBetaPruningGameEngineTest {
         System.out.println(nextState);
     }
     
-    @Test
+//    @Test
     public void debugNoStateTransition2()
             throws ThreeFoldRepetionRuleDrawException {
             
@@ -91,6 +91,54 @@ public final class AlphaBetaPruningGameEngineTest {
             
         System.out.println("Next state:");
         System.out.println(nextState);
+    }
+    
+//    @Test
+    public void debugReturnNullOnDepth4() {
+        final ChessBoardState state = new ChessBoardState();
+        state.set(3, 4, state.get(3, 6));
+        state.clear(3, 6);
+        
+        try {
+            final ChessBoardState next = engine.search(state, 4, PlayerTurn.BLACK);
+            
+            System.out.println("next:\n" + next);
+        } catch (ThreeFoldRepetionRuleDrawException ex) {
+            ex.printStackTrace();
+        }
+        
+        System.out.println("yewfdsa");
+        System.out.println(state);
+    }
+    
+    @Test
+    public void debug10() {
+        final ChessBoardState root = new ChessBoardState();
+        
+        // Move white queen:
+        root.move(3, 7, 1, 5);
+        
+        // Move white pawn:
+        root.move(2, 6, 2, 5);
+        
+        // Move white king:
+        root.move(4, 7, 3, 7);
+        
+        System.out.println("HELLO");
+        System.out.println(root);
+        
+        try {
+            final ChessBoardState next = 
+                    engine.search(
+                            root,
+                            4,
+                            PlayerTurn.BLACK);
+            
+            System.out.println("NEXT:");
+            System.out.println(next);
+        } catch (ThreeFoldRepetionRuleDrawException ex) {
+            ex.printStackTrace();
+        }
     }
 }
 

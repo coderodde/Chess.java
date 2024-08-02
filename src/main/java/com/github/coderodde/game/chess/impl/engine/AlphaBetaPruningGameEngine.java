@@ -85,11 +85,11 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                                       beta, 
                                                       PlayerTurn.WHITE));
                 
-                System.out.println("Black " + value);
+//                System.out.println("Black " + value);
                 
-                if (value > beta) {
-                    break;
-                }
+//                if (value > beta) {
+//                    break;
+//                }
                 
                 if (tentativeValue < value) {
                     tentativeValue = value;
@@ -118,10 +118,9 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                                       beta,
                                                       PlayerTurn.BLACK));
 
-                System.out.println("White " + value);
-                if (value < alpha) {
-                    break;
-                }
+//                if (value < alpha) {
+//                    break;
+//                }
                 
                 if (tentativeValue > value) {
                     tentativeValue = value;
@@ -138,11 +137,8 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                      int alpha,
                                      int beta,
                                      final PlayerTurn playerTurn) {
-        if (depth == 0) {
-            return heuristicFunction.evaluate(root, depth);
-        }
         
-        if (playerTurn == PlayerTurn.WHITE) {
+        if (playerTurn == PlayerTurn.BLACK) {
             if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
                 return MAXIMUM_SCORE + depth;
             }
@@ -153,6 +149,9 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             }
         }
         
+        if (depth == 0) {
+            return heuristicFunction.evaluate(root, depth);
+        }
 //        if (depth == 0) {
 //            return heuristicFunction.evaluate(root, depth);
 //        }

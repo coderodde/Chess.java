@@ -332,6 +332,22 @@ public final class ChessBoardState {
         state[rank][file] = piece;
     }
     
+    public void move(final int sourceFile,
+                     final int sourceRank,
+                     final int targetFile,
+                     final int targetRank) {
+        
+        final Piece piece = get(sourceFile, 
+                                sourceRank);
+        
+        set(targetFile,
+            targetRank,
+            piece);
+        
+        clear(sourceFile,
+              sourceRank);
+    }
+    
     /**
      * Clears the position at rank {@code rank} and file {@code file}. Used in 
      * unit testing.
