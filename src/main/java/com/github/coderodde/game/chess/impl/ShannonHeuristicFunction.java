@@ -45,16 +45,6 @@ public final class ShannonHeuristicFunction extends AbstractHeuristicFunction {
     
     @Override
     public double evaluate(final ChessBoardState state, final int depth) {
-        
-        if (stateFrequencyMap.containsKey(state) && 
-            stateFrequencyMap.get(state) == 2) {
-            
-            System.out.println("Avoiding TFRR breakage...");
-            // Try to postpone the breakage of the three-fold repetion rule as 
-            // long as possible:
-            return 0.0;
-        }
-        
         double score = 0;
         
         for (int rank = 0; rank < N; rank++) {
@@ -68,20 +58,20 @@ public final class ShannonHeuristicFunction extends AbstractHeuristicFunction {
                 if (piece.isWhite()) {
                     score -= piece.getPresenceScore();
                     
-                    if (WHITE_CHECK.check(state, file, rank)) {
-                        score += piece.getVulnerabilityScore();
-                    }
+//                    if (WHITE_CHECK.check(state, file, rank)) {
+//                        score += piece.getVulnerabilityScore();
+//                    }
                 } else {
                     score += piece.getPresenceScore();
                     
-                    if (BLACK_CHECK.check(state, file, rank)) {
-                        score -= piece.getVulnerabilityScore();
-                    }
+//                    if (BLACK_CHECK.check(state, file, rank)) {
+//                        score -= piece.getVulnerabilityScore();
+//                    }
                 }
             }
         }
         
-        return score + pawnMaterial(state) + mobility(state); 
+        return score - pawnMaterial(state) + mobility(state); 
     }
     
     private double pawnMaterial(final ChessBoardState state) {

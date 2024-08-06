@@ -193,51 +193,75 @@ public final class ChessBoardState {
                 
                 switch (pieceCharacter) {
                     case 'p':
-                        set(file, rank, new Piece(BLACK, PAWN));
+                        set(file, rank, new Piece(BLACK, 
+                                                  PAWN, 
+                                                  BLACK_PAWN_EXPANDER));
                         break;
                         
                     case 'n':
-                        set(file, rank, new Piece(BLACK, KNIGHT));
+                        set(file, rank, new Piece(BLACK,
+                                                  KNIGHT, 
+                                                  BLACK_KNIGHT_EXPANDER));
                         break;
                         
                     case 'b':
-                        set(file, rank, new Piece(BLACK, BISHOP));
+                        set(file, rank, new Piece(BLACK, 
+                                                  BISHOP, 
+                                                  BLACK_BISHOP_EXPANDER));
                         break;
                         
                     case 'r':
-                        set(file, rank, new Piece(BLACK, ROOK));
+                        set(file, rank, new Piece(BLACK,
+                                                  ROOK,
+                                                  BLACK_ROOK_EXPANDER));
                         break;
                         
                     case 'q':
-                        set(file, rank, new Piece(BLACK, QUEEN));
+                        set(file, rank, new Piece(BLACK,
+                                                  QUEEN, 
+                                                  BLACK_QUEEN_EXPANDER));
                         break;
                         
                     case 'k':
-                        set(file, rank, new Piece(BLACK, KING));
+                        set(file, rank, new Piece(BLACK, 
+                                                  KING, 
+                                                  BLACK_KING_EXPANDER));
                         break;
                         
                     case 'P':
-                        set(file, rank, new Piece(WHITE, PAWN));
+                        set(file, rank, new Piece(WHITE, 
+                                                  PAWN, 
+                                                  WHITE_PAWN_EXPANDER));
                         break;
                         
                     case 'N':
-                        set(file, rank, new Piece(WHITE, KNIGHT));
+                        set(file, rank, new Piece(WHITE, 
+                                                  KNIGHT, 
+                                                  WHITE_KNIGHT_EXPANDER));
                         break;
                         
                     case 'B':
-                        set(file, rank, new Piece(WHITE, BISHOP));
+                        set(file, rank, new Piece(WHITE, 
+                                                  BISHOP, 
+                                                  WHITE_BISHOP_EXPANDER));
                         break;
                         
                     case 'R':
-                        set(file, rank, new Piece(WHITE, ROOK));
+                        set(file, rank, new Piece(WHITE, 
+                                                  ROOK, 
+                                                  WHITE_ROOK_EXPANDER));
                         break;
                         
                     case 'Q':
-                        set(file, rank, new Piece(WHITE, QUEEN));
+                        set(file, rank, new Piece(WHITE,
+                                                  QUEEN,
+                                                  WHITE_QUEEN_EXPANDER));
                         break;
                         
                     case 'K':
-                        set(file, rank, new Piece(WHITE, KING));
+                        set(file, rank, new Piece(WHITE,
+                                                  KING,
+                                                  WHITE_KING_EXPANDER));
                         break;
                         
                     default:

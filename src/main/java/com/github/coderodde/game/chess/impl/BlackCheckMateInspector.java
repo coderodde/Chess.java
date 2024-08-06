@@ -34,6 +34,9 @@ public final class BlackCheckMateInspector implements CheckMateInspector {
         }
     }
     
+    private int attackerFile;
+    private int attackerRank;
+    
     private int attackerCellsSize;
     
     /**

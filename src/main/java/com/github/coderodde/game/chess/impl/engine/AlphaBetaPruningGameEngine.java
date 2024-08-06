@@ -88,13 +88,6 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                                       alpha, 
                                                       beta, 
                                                       PlayerTurn.WHITE));
-                
-//                System.out.println("Black " + value);
-                
-//                if (value > beta) {
-//                    break;
-//                }
-                
                 if (tentativeValue < value) {
                     tentativeValue = value;
                     bestMoveState = new ChessBoardState(child);
@@ -121,11 +114,6 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                                       alpha,
                                                       beta,
                                                       PlayerTurn.BLACK));
-
-//                if (value < alpha) {
-//                    break;
-//                }
-                
                 if (tentativeValue > value) {
                     tentativeValue = value;
                     bestMoveState = new ChessBoardState(child);
@@ -141,26 +129,9 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                         double alpha,
                                         double beta,
                                         final PlayerTurn playerTurn) {
-        
-        if (playerTurn == PlayerTurn.BLACK) {
-            if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
-                return MAXIMUM_SCORE + depth;
-            }
-        } else {
-            if (BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
-//                BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(root);
-                return MINIMUM_SCORE - depth;
-            }
-        }
-        
         if (depth == 0) {
             return heuristicFunction.evaluate(root, depth);
         }
-//        if (depth == 0) {
-//            return heuristicFunction.evaluate(root, depth);
-//        }
-        
-        // TODO: Check for stalemate here?
         
         if (playerTurn == PlayerTurn.BLACK) {
             // The black player is the maximizing player:
