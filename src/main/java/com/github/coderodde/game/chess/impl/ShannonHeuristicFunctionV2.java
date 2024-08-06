@@ -5,6 +5,8 @@ import static com.github.coderodde.game.chess.ChessBoardState.N;
 import com.github.coderodde.game.chess.AbstractHeuristicFunction;
 import com.github.coderodde.game.chess.Piece;
 import com.github.coderodde.game.chess.PieceColor;
+import static com.github.coderodde.game.chess.PieceColor.BLACK;
+import static com.github.coderodde.game.chess.PieceColor.WHITE;
 import static com.github.coderodde.game.chess.PieceType.PAWN;
 import com.github.coderodde.game.chess.impl.attackcheck.BlackUnderAttackCheck;
 import com.github.coderodde.game.chess.impl.attackcheck.WhiteUnderAttackCheck;
@@ -175,8 +177,8 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
         return blockedPawnCount;
     }
     
-    private double countDoubledPawnsWhite(final ChessBoardState state,
-                                          final int file) {
+    int countDoubledPawnsWhite(final ChessBoardState state,
+                               final int file) {
         int count = -1;
         
         for (int rank = 1; rank < N - 1; rank++) {
@@ -199,8 +201,8 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
         return Math.max(0, count);
     }
     
-    private double countDoubledPawnsBlack(final ChessBoardState state,
-                                          final int file) {
+    int countDoubledPawnsBlack(final ChessBoardState state,
+                               final int file) {
         int count = -1;
         
         for (int rank = 1; rank < N - 1; rank++) {
@@ -292,12 +294,12 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
         return true;
     }
     
-    double countIsolatedPawnsWhite(final ChessBoardState state, 
-                                   final int file) {
-        
+    private int countIsolatedPawnsImpl(final ChessBoardState state,
+                                       final int file,
+                                       final PieceColor pieceColor) {
         int count = 0;
         
-        final boolean[] openFlags = getOpenFileFlags(PieceColor.WHITE, state);
+        final boolean[] openFlags = getOpenFileFlags(pieceColor, state);
         
         if (file == 0) {
             for (int rank = 0; rank < N; rank++) {
@@ -311,15 +313,13 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
                     continue;
                 }
                 
-                if (piece.isWhite()) {
+                if (piece.getPieceColor() == pieceColor) {
                     if (openFlags[1]) {
                         count++;
                     }
                 }
             }
-        }
-        
-        if (file == N - 1) {
+        } else if (file == N - 1) {
             for (int rank = 0; rank < N; rank++) {
                 final Piece piece = state.get(N - 1, rank);
                 
@@ -331,104 +331,50 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
                     continue;
                 }
                 
-                if (piece.isWhite()) {
+                if (piece.getPieceColor() == pieceColor) {
                     if (openFlags[1]) {
                         count++;
                     }
                 }
             }
-        }
-        
-        for (int f = 1; f < N - 1; f++) {
-            for (int rank = 0; rank < N; rank++) {
-                final Piece piece = state.get(N - 1, rank);
-                
-                if (piece == null) {
-                    continue;
-                }
-                
-                if (piece.getPieceType() != PAWN) {
-                    continue;
-                }
-                
-                if (piece.isWhite()) {
-                    if (openFlags[f - 1] && openFlags[f + 1]) {
-                        count++;
+        } else {
+            for (int f = 1; f < N - 1; f++) {
+                for (int rank = 0; rank < N; rank++) {
+                    final Piece piece = state.get(N - 1, rank);
+
+                    if (piece == null) {
+                        continue;
+                    }
+
+                    if (piece.getPieceType() != PAWN) {
+                        continue;
+                    }
+
+                    if (piece.getPieceColor() == pieceColor) {
+                        if (openFlags[f - 1] && openFlags[f + 1]) {
+                            count++;
+                        }
                     }
                 }
             }
         }
         
-        return 0.5 * count;
+        return count;
     }
     
-    double countIsolatedPawnsBlack(final ChessBoardState state, 
-                                   final int file) {
+    int countIsolatedPawnsWhite(final ChessBoardState state, 
+                                final int file) {
         
-        int count = 0;
+        return countIsolatedPawnsImpl(state,
+                                      file, 
+                                      WHITE);
+    }
+    
+    int countIsolatedPawnsBlack(final ChessBoardState state, 
+                                final int file) {
         
-        final boolean[] openFlags = getOpenFileFlags(PieceColor.BLACK, state);
-        
-        if (file == 0) {
-            for (int rank = 0; rank < N; rank++) {
-                final Piece piece = state.get(0, rank);
-                
-                if (piece == null) {
-                    continue;
-                }
-                
-                if (piece.getPieceType() != PAWN) {
-                    continue;
-                }
-                
-                if (piece.isBlack()) {
-                    if (openFlags[1]) {
-                        count++;
-                    }
-                }
-            }
-        }
-        
-        if (file == N - 1) {
-            for (int rank = 0; rank < N; rank++) {
-                final Piece piece = state.get(N - 1, rank);
-                
-                if (piece == null) {
-                    continue;
-                }
-                
-                if (piece.getPieceType() != PAWN) {
-                    continue;
-                }
-                
-                if (piece.isBlack()) {
-                    if (openFlags[1]) {
-                        count++;
-                    }
-                }
-            }
-        }
-        
-        for (int f = 1; f < N - 1; f++) {
-            for (int rank = 0; rank < N; rank++) {
-                final Piece piece = state.get(N - 1, rank);
-                
-                if (piece == null) {
-                    continue;
-                }
-                
-                if (piece.getPieceType() != PAWN) {
-                    continue;
-                }
-                
-                if (piece.isBlack()) {
-                    if (openFlags[f - 1] && openFlags[f + 1]) {
-                        count++;
-                    }
-                }
-            }
-        }
-        
-        return 0.5 * count;
+        return countIsolatedPawnsImpl(state, 
+                                      file,
+                                      BLACK);
     }
 }

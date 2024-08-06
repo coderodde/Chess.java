@@ -78,4 +78,46 @@ public final class ShannonHeuristicFunctionV2Test {
         assertEquals(2, heuristicFunction.countBlockedPawnBlack(state, 3));
         assertEquals(3, heuristicFunction.countBlockedPawnBlack(state, 1));
     }
+    
+    @Test
+    public void countDoubledPawnsWhiteNoDoublePawns() {
+        state.set(2, 2, whitePawn);
+        
+        assertEquals(0, heuristicFunction.countDoubledPawnsWhite(state, 2));
+        assertEquals(0, heuristicFunction.countDoubledPawnsWhite(state, 1));
+        assertEquals(0, heuristicFunction.countDoubledPawnsWhite(state, 3));
+    }
+    
+    @Test
+    public void countDoubledPawnsBlackNoDoublePawns() {
+        state.set(2, 2, blackPawn);
+        
+        assertEquals(0, heuristicFunction.countDoubledPawnsBlack(state, 2));
+        assertEquals(0, heuristicFunction.countDoubledPawnsBlack(state, 1));
+        assertEquals(0, heuristicFunction.countDoubledPawnsBlack(state, 3));
+    }
+    
+    @Test
+    public void countIsolatedPawnsWhiteFile0() {
+        state.set(0, 3, whitePawn);
+        
+        assertEquals(1, heuristicFunction.countIsolatedPawnsWhite(state, 0));
+    }
+    
+    @Test
+    public void countIsolatedPawnsWhiteFile7() {
+        state.set(7, 3, whitePawn);
+        
+        assertEquals(1, heuristicFunction.countIsolatedPawnsWhite(state, 7));
+    }
+    
+    @Test
+    public void countIsolatedPawnsWhiteFile0OnEmpty() {
+        assertEquals(0, heuristicFunction.countIsolatedPawnsWhite(state, 0));
+    }
+    
+    @Test
+    public void countIsolatedPawnsWhiteFile7OnEmpty() {
+        assertEquals(0, heuristicFunction.countIsolatedPawnsWhite(state, 7));
+    }
 }
