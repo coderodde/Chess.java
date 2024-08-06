@@ -258,7 +258,7 @@ public final class ShannonHeuristicFunctionV2 extends AbstractHeuristicFunction 
             }
         }
         
-        return 0.1 * (mobilityBlack - mobilityWhite);      
+        return 0.1 * (mobilityBlack - mobilityWhite);       
     }
     
     private boolean[] getOpenFileFlags(final PieceColor color,
