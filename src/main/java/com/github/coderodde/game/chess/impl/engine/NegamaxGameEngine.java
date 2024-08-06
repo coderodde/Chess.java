@@ -2,7 +2,7 @@ package com.github.coderodde.game.chess.impl.engine;
 
 import com.github.coderodde.game.chess.AbstractGameEngine;
 import com.github.coderodde.game.chess.ChessBoardState;
-import com.github.coderodde.game.chess.HeuristicFunction;
+import com.github.coderodde.game.chess.AbstractHeuristicFunction;
 import com.github.coderodde.game.chess.PlayerTurn;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class NegamaxGameEngine extends AbstractGameEngine {
      * 
      * @param heuristicFunction the heuristic function to use.
      */
-    public NegamaxGameEngine(final HeuristicFunction heuristicFunction) {
+    public NegamaxGameEngine(final AbstractHeuristicFunction heuristicFunction) {
         
         super(heuristicFunction);
     }
@@ -54,21 +54,21 @@ public final class NegamaxGameEngine extends AbstractGameEngine {
         final List<ChessBoardState> children = root.expand(colorToPlayerTurn(color));
         
         for (final ChessBoardState child : children) {
-            final int score = -negamaxImpl(child,
-                                           depth - 1,
-                                           -beta,
-                                           -alpha,
-                                           -color);
+            final double score = -negamaxImpl(child,
+                                              depth - 1,
+                                              -beta,
+                                              -alpha,
+                                              -color);
             
             
         }
     }
     
-    private int negamaxImpl(final ChessBoardState root,
-                            final int depth,
-                            int alpha,
-                            int beta,
-                            final int color) {
+    private double negamaxImpl(final ChessBoardState root,
+                               final int depth,
+                               double alpha,
+                               double beta,
+                               final int color) {
         if (depth == 0) {
             return color * heuristicFunction.evaluate(root, depth);
         }
@@ -101,7 +101,7 @@ public final class NegamaxGameEngine extends AbstractGameEngine {
             }
         }
         
-        int value = MINIMUM_SCORE;
+        double value = MINIMUM_SCORE;
         
         for (final ChessBoardState child : children) {
             value = Math.max(value,

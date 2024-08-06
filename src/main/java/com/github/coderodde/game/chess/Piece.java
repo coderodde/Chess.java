@@ -39,8 +39,8 @@ public final class Piece {
     private final PieceColor pieceColor;
     private final PieceType pieceType;
     private final AbstractChessBoardStateExpander expander;
-    private int presenceScore;
-    private int vulnerabilityScore;
+    private double presenceScore;
+    private double vulnerabilityScore;
     
     public Piece(final Piece other) {
         this(other.pieceColor,
@@ -71,33 +71,33 @@ public final class Piece {
         
         switch (pieceType) {
             case PAWN -> {
-                this.presenceScore = 2;
-                this.vulnerabilityScore = 1;
+                this.presenceScore = 1.0;
+                this.vulnerabilityScore = 0.5;
             }
                 
             case ROOK -> {
-                this.presenceScore = 10;
-                this.vulnerabilityScore = 5;
+                this.presenceScore = 5.0;
+                this.vulnerabilityScore = 2.5;
             }
                 
             case BISHOP -> {
-                this.presenceScore = 6;
-                this.vulnerabilityScore = 3;
+                this.presenceScore = 3.0;
+                this.vulnerabilityScore = 1.5;
             }
                 
             case KNIGHT -> {
-                this.presenceScore = 6;
-                this.vulnerabilityScore = 3;
+                this.presenceScore = 3.0;
+                this.vulnerabilityScore = 1.5;
             }
                 
             case QUEEN -> {
-                this.presenceScore = 18;
-                this.vulnerabilityScore = 9;
+                this.presenceScore = 9.0;
+                this.vulnerabilityScore = 4.5;
             }
                 
             case KING -> {
-                this.presenceScore = 2_000_000;
-                this.vulnerabilityScore = 1_000_000;
+                this.presenceScore = 500.0;
+                this.vulnerabilityScore = 250.0;
             }
                 
             default -> {
@@ -116,11 +116,11 @@ public final class Piece {
         this.expander = expander;
     }
     
-    public int getPresenceScore() {
+    public double getPresenceScore() {
         return presenceScore;
     }
     
-    public int getVulnerabilityScore() {
+    public double getVulnerabilityScore() {
         return vulnerabilityScore;
     }
     

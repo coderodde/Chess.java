@@ -2,8 +2,6 @@ package com.github.coderodde.game.chess;
 
 import com.github.coderodde.game.chess.impl.BlackCheckMateInspector;
 import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -27,13 +25,7 @@ public abstract class AbstractGameEngine {
     /**
      * Holds the used heuristic function.
      */
-    protected final HeuristicFunction heuristicFunction;
-    
-    /**
-     * Maps each unique board state to the number it occurred during the game.
-     */
-    protected final Map<ChessBoardState, Integer> playerMoveFrequencyMap = 
-            new HashMap<>();
+    protected final AbstractHeuristicFunction heuristicFunction;
     
     /**
      * Holds the check mate inspector for the white player.
@@ -52,7 +44,9 @@ public abstract class AbstractGameEngine {
      * 
      * @param heuristicFunction the heuristic function.
      */
-    public AbstractGameEngine(final HeuristicFunction heuristicFunction) {
+    public AbstractGameEngine(
+            final AbstractHeuristicFunction heuristicFunction) {
+        
         this.heuristicFunction = 
                 Objects.requireNonNull(
                         heuristicFunction,
@@ -74,4 +68,11 @@ public abstract class AbstractGameEngine {
                                            final int depth,
                                            final PlayerTurn playerTurn)
             throws ThreeFoldRepetionRuleDrawException;
+    
+    /**
+     * Clears the state frequency map.
+     */
+    public void clearSearchState() {
+        heuristicFunction.clearStateFrequencyMap();
+    }
 }

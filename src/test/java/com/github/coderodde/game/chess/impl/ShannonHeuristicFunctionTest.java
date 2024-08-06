@@ -1,7 +1,7 @@
 package com.github.coderodde.game.chess.impl;
 
+import com.github.coderodde.game.chess.AbstractHeuristicFunction;
 import com.github.coderodde.game.chess.ChessBoardState;
-import com.github.coderodde.game.chess.HeuristicFunction;
 import com.github.coderodde.game.chess.Piece;
 import static com.github.coderodde.game.chess.PieceColor.BLACK;
 import static com.github.coderodde.game.chess.PieceColor.WHITE;
@@ -12,11 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public final class DefaultHeuristicFunctionTest {
+public final class ShannonHeuristicFunctionTest {
     
     private static final ChessBoardState state = new ChessBoardState();
-    private static final HeuristicFunction heuristicFunction = 
-            new DefaultHeuristicFunction();
+
+    private final AbstractHeuristicFunction heuristicFunction = 
+            null;
     
     @Before
     public void before() {

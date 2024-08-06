@@ -3,9 +3,10 @@ package com.github.coderodde.game.chess.impl.engine;
 import com.github.coderodde.game.chess.ChessBoardState;
 import com.github.coderodde.game.chess.PlayerTurn;
 import com.github.coderodde.game.chess.AbstractGameEngine;
-import com.github.coderodde.game.chess.HeuristicFunction;
+import com.github.coderodde.game.chess.AbstractHeuristicFunction;
 import com.github.coderodde.game.chess.ThreeFoldRepetionRuleDrawException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class implements an Alpha-beta pruning game engine.
@@ -14,14 +15,14 @@ import java.util.List;
  * @since 1.0.0 (Jul 18, 2024)
  */
 public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
-
+    
     /**
      * Constructs this alpha-beta pruning game engine.
      * 
      * @param heuristicFunction the heuristic function to use.
      */
     public AlphaBetaPruningGameEngine(
-            final HeuristicFunction heuristicFunction) {
+            final AbstractHeuristicFunction heuristicFunction) {
         
         super(heuristicFunction);
     }
@@ -44,13 +45,16 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                  MAXIMUM_SCORE,
                                  playerTurn);
         
-        playerMoveFrequencyMap.put(
+        Map<ChessBoardState, Integer> boardStateFrequencyMap = 
+                heuristicFunction.getStateFrequencyMap();
+        
+        boardStateFrequencyMap.put(
                 bestMoveState, 
-                playerMoveFrequencyMap.getOrDefault(
+                boardStateFrequencyMap.getOrDefault(
                         bestMoveState, 
                         0) + 1);
         
-        if (playerMoveFrequencyMap.get(bestMoveState) == 3) {
+        if (boardStateFrequencyMap.get(bestMoveState) == 3) {
             // Once here, the state 'bestMoveState' was visited three times.
             // End the game with a draw due to three-fold repetition rule.
             throw new ThreeFoldRepetionRuleDrawException();
@@ -61,14 +65,14 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
         
     private void alphaBetaPruningRootImpl(final ChessBoardState root,
                                          final int depth,
-                                         int alpha,
-                                         int beta,
+                                         double alpha,
+                                         double beta,
                                          final PlayerTurn playerTurn) {
         
         if (playerTurn == PlayerTurn.BLACK) {
             // Black is the maximizing player!
-            int value = MINIMUM_SCORE;
-            int tentativeValue = MINIMUM_SCORE;
+            double value = MINIMUM_SCORE;
+            double tentativeValue = MINIMUM_SCORE;
             
             final List<ChessBoardState> children = 
                     root.expand(PlayerTurn.BLACK);
@@ -100,8 +104,8 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             }
         } else {
             // Once here, 'playerTurn' is 'WHITE': a minimizing player!
-            int value = MAXIMUM_SCORE;
-            int tentativeValue = MAXIMUM_SCORE;
+            double value = MAXIMUM_SCORE;
+            double tentativeValue = MAXIMUM_SCORE;
             
             final List<ChessBoardState> children = 
                     root.expand(PlayerTurn.WHITE);
@@ -132,11 +136,11 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
         }
     }
     
-    private int alphaBetaPruningImpl(final ChessBoardState root,
-                                     final int depth,
-                                     int alpha,
-                                     int beta,
-                                     final PlayerTurn playerTurn) {
+    private double alphaBetaPruningImpl(final ChessBoardState root,
+                                        final int depth,
+                                        double alpha,
+                                        double beta,
+                                        final PlayerTurn playerTurn) {
         
         if (playerTurn == PlayerTurn.BLACK) {
             if (WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(root)) {
@@ -160,7 +164,7 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
         
         if (playerTurn == PlayerTurn.BLACK) {
             // The black player is the maximizing player:
-            int value = MINIMUM_SCORE;
+            double value = MINIMUM_SCORE;
             
             final List<ChessBoardState> children = root.expand(playerTurn);
             
@@ -190,7 +194,7 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
             
         } else {
             // Here, 'playerTurn == PlayerTurn.WHITE', the minimizing player:
-            int value = MAXIMUM_SCORE;
+            double value = MAXIMUM_SCORE;
             
             final List<ChessBoardState> children = root.expand(playerTurn);
             
