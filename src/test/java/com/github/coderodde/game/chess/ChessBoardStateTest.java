@@ -49,7 +49,7 @@ public final class ChessBoardStateTest {
             // Must eat the white knight with a black pawn:
             final ChessBoardState nextState = 
                     engine.search(naughtyState, 
-                                  2,
+                                  3,
                                   PlayerTurn.BLACK);
             
             System.out.println("Next state:\n" + nextState);
@@ -61,5 +61,16 @@ public final class ChessBoardStateTest {
         } catch (final ThreeFoldRepetionRuleDrawException ex) {
             fail("Should not get here.");
         }
+        
+        final ChessBoardState expectedState = new ChessBoardState(naughtyState);
+        
+        expectedState.move(4, 1, 3, 2);
+        
+        System.out.println("Expected state:");
+        System.out.println(expectedState);
+        
+        System.out.println(
+                "Score of the expected state: " + 
+                        heuristicFunction.evaluate(expectedState, 2));
     }
 }
