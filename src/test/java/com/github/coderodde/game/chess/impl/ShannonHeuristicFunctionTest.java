@@ -170,4 +170,9 @@ public final class ShannonHeuristicFunctionTest {
         
         assertEquals(2, heuristicFunction.countBlockedPawnBlack(state, 4));
     }
+    
+    @Test
+    public void evaluate() {
+        assertEquals(0.0, heuristicFunction.evaluate(state, 0), EPSILON);
+    }
 }

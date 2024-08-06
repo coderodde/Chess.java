@@ -1,6 +1,13 @@
 package com.github.coderodde.game.chess;
 
-import static com.github.coderodde.game.chess.PlayerTurn.WHITE;
+import static com.github.coderodde.game.chess.PieceColor.BLACK;
+import static com.github.coderodde.game.chess.PieceColor.WHITE;
+import static com.github.coderodde.game.chess.PieceType.BISHOP;
+import static com.github.coderodde.game.chess.PieceType.KING;
+import static com.github.coderodde.game.chess.PieceType.KNIGHT;
+import static com.github.coderodde.game.chess.PieceType.PAWN;
+import static com.github.coderodde.game.chess.PieceType.QUEEN;
+import static com.github.coderodde.game.chess.PieceType.ROOK;
 import com.github.coderodde.game.chess.impl.BlackCheckMateInspector;
 import com.github.coderodde.game.chess.impl.WhiteCheckMateInspector;
 import com.github.coderodde.game.chess.impl.expanders.BlackBishopExpander;
@@ -159,6 +166,87 @@ public final class ChessBoardState {
             state[6][file] = new Piece(PieceColor.WHITE,
                                        PieceType.PAWN,
                                        WHITE_PAWN_EXPANDER);
+        }
+    }
+     
+    public ChessBoardState(final String[] description) {
+        this();
+        clear();
+        
+        for (int rank = 0; rank < N; rank++) {
+            final String rowDescription = description[rank];
+            
+            if (rowDescription.length() != N) {
+                throw new IllegalArgumentException(
+                        String.format(
+                                "Bad state description \"%s\" at rank %d. ",
+                                rowDescription, 
+                                rank));
+            }
+            
+            for (int file = 0; file < N; file++) {
+                final char pieceCharacter = rowDescription.charAt(file);
+                
+                if (pieceCharacter == '.' || pieceCharacter == '#') {
+                    continue;
+                }
+                
+                switch (pieceCharacter) {
+                    case 'p':
+                        set(file, rank, new Piece(BLACK, PAWN));
+                        break;
+                        
+                    case 'n':
+                        set(file, rank, new Piece(BLACK, KNIGHT));
+                        break;
+                        
+                    case 'b':
+                        set(file, rank, new Piece(BLACK, BISHOP));
+                        break;
+                        
+                    case 'r':
+                        set(file, rank, new Piece(BLACK, ROOK));
+                        break;
+                        
+                    case 'q':
+                        set(file, rank, new Piece(BLACK, QUEEN));
+                        break;
+                        
+                    case 'k':
+                        set(file, rank, new Piece(BLACK, KING));
+                        break;
+                        
+                    case 'P':
+                        set(file, rank, new Piece(WHITE, PAWN));
+                        break;
+                        
+                    case 'N':
+                        set(file, rank, new Piece(WHITE, KNIGHT));
+                        break;
+                        
+                    case 'B':
+                        set(file, rank, new Piece(WHITE, BISHOP));
+                        break;
+                        
+                    case 'R':
+                        set(file, rank, new Piece(WHITE, ROOK));
+                        break;
+                        
+                    case 'Q':
+                        set(file, rank, new Piece(WHITE, QUEEN));
+                        break;
+                        
+                    case 'K':
+                        set(file, rank, new Piece(WHITE, KING));
+                        break;
+                        
+                    default:
+                        throw new IllegalStateException(
+                                String.format(
+                                        "Unknown piece character: %c.", 
+                                        pieceCharacter));
+                }
+            }
         }
     }
     
@@ -469,7 +557,7 @@ public final class ChessBoardState {
         
         final List<ChessBoardState> children = new ArrayList<>();
         
-        if (playerTurn == WHITE) {
+        if (playerTurn == PlayerTurn.WHITE) {
             for (int rank = 0; rank < N; rank++) {
                 for (int file = 0; file < N; file++) {
                     final CellType cellType = getCellType(file, rank);
@@ -503,7 +591,7 @@ public final class ChessBoardState {
     }
     
     public boolean isCheckMate(final PlayerTurn playerTurn) {
-        if (playerTurn == WHITE) {
+        if (playerTurn == PlayerTurn.WHITE) {
             return WHITE_CHECK_MATE_INSPECTOR.isInCheckMate(this);
         } else {
             return BLACK_CHECK_MATE_INSPECTOR.isInCheckMate(this);
