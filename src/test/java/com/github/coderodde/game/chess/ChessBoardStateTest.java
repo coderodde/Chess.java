@@ -49,7 +49,7 @@ public final class ChessBoardStateTest {
             // Must eat the white knight with a black pawn:
             final ChessBoardState nextState = 
                     engine.search(naughtyState, 
-                                  3,
+                                  1,
                                   PlayerTurn.BLACK);
             
             System.out.println("Next state:\n" + nextState);

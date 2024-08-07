@@ -52,7 +52,6 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                 file, 
                                 rank, 
                                 piece);
-            return;
             
         } else if (rank == EN_PASSANT_SOURCE_RANK) {
             

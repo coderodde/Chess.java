@@ -51,7 +51,6 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
                                 file, 
                                 rank, 
                                 piece);
-            return;
             
         } else if (rank == EN_PASSANT_SOURCE_RANK) {
             
@@ -149,7 +148,7 @@ public final class BlackPawnExpander extends AbstractChessBoardStateExpander {
                     children.add(child);
                 }
             }
-            
+            // TODO: Check here!
             return;
         }
         

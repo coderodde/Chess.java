@@ -58,15 +58,15 @@ public final class ShannonHeuristicFunction extends AbstractHeuristicFunction {
                 if (piece.isWhite()) {
                     score -= piece.getPresenceScore();
                     
-//                    if (WHITE_CHECK.check(state, file, rank)) {
-//                        score += piece.getVulnerabilityScore();
-//                    }
+                    if (WHITE_CHECK.check(state, file, rank)) {
+                        score += piece.getVulnerabilityScore();
+                    }
                 } else {
                     score += piece.getPresenceScore();
                     
-//                    if (BLACK_CHECK.check(state, file, rank)) {
-//                        score -= piece.getVulnerabilityScore();
-//                    }
+                    if (BLACK_CHECK.check(state, file, rank)) {
+                        score -= piece.getVulnerabilityScore();
+                    }
                 }
             }
         }
