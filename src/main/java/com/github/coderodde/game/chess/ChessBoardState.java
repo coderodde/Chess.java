@@ -496,8 +496,7 @@ public final class ChessBoardState {
      */
     @Override
     public String toString() {
-        final StringBuilder stringBuilder =
-                new StringBuilder((N + 3) * (N + 2));
+        final StringBuilder stringBuilder = new StringBuilder();
         
         int rankNumber = 8;
         
@@ -510,15 +509,15 @@ public final class ChessBoardState {
                     
                     stringBuilder.append(
                             (piece == null ? 
-                                    ((file + rank) % 2 == 0 ? "." : "#") :
-                                    piece));
+                                    ((file + rank) % 2 == 0 ? " . " : " # ") :
+                                    String.format(" %s ", piece.toString())));
                 }
             }
             
             stringBuilder.append('\n');
         }
         
-        stringBuilder.append("\n  abcdefgh");
+        stringBuilder.append("\n   a  b  c  d  e  f  g  h");
         return stringBuilder.toString();
     }
     

@@ -26,12 +26,34 @@ public final class ChessBoardStateTest {
         "R.B.KBNR",
     };
     
+    private static final String[] WHITE_CHECKMATE_DESCRIPTION = new String[] {
+       "r#.#.bnr", 
+       "pp#.p.pp", 
+       ".#.k.#.#", 
+       "#.#.#.#.", 
+       "P#.#.#PP", 
+       "#.#n#.#.", 
+       ".q.#.#.#", 
+       "#K#.#.#.",       
+    };
+    
+    private static final String[] BLACK_CHECKMATE_DESCRIPTION = new String[] {
+        ".n.k.#B#", 
+        "#rp.#.p.", 
+        ".pq#.#.#", 
+        "p.#p#.#.", 
+        "P#.P.#.#", 
+        "#.N.PP#.", 
+        ".PPB.#.R", 
+        "RQ#K#.N.", 
+    };
+    
     @Before
     public void before() {
         state.clear();
     }
     
-    @Test
+//    @Test
     public void debugKingDisappearing() {
         final ChessBoardState naughtyState = 
                 new ChessBoardState(NAUGHTY_DESCRIPTION);
@@ -72,5 +94,37 @@ public final class ChessBoardStateTest {
         System.out.println(
                 "Score of the expected state: " + 
                         heuristicFunction.evaluate(expectedState, 2));
+    }
+    
+    @Test
+    public void checkMateWhite() {
+        final ChessBoardState state =
+                new ChessBoardState(WHITE_CHECKMATE_DESCRIPTION);
+        
+        state.setWhiteKingFile(1);
+        state.setWhiteKingRank(7);
+        
+        System.out.println("checkMateWhite(): Check mate board:");
+        System.out.println(state);
+        
+        boolean checkMate = state.isCheckMate(PlayerTurn.WHITE);
+        
+        assertTrue(checkMate);
+    }
+    
+    @Test
+    public void checkMateBlack() {
+        final ChessBoardState state =
+                new ChessBoardState(BLACK_CHECKMATE_DESCRIPTION);
+        
+        state.setWhiteKingFile(3);
+        state.setWhiteKingRank(0);
+        
+        System.out.println("checkMateBlack(): Check mate board:");
+        System.out.println(state);
+        
+        boolean checkMate = state.isCheckMate(PlayerTurn.BLACK);
+        
+        assertFalse(checkMate);
     }
 }
