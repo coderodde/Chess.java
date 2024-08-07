@@ -1,7 +1,5 @@
 package com.github.coderodde.game.chess.impl.expanders;
 
-import com.github.coderodde.game.chess.impl.expanders.TestDummyExpander;
-import com.github.coderodde.game.chess.impl.expanders.BlackPawnExpander;
 import com.github.coderodde.game.chess.AbstractChessBoardStateExpander;
 import com.github.coderodde.game.chess.ChessBoardState;
 import static com.github.coderodde.game.chess.ChessBoardState.N;
@@ -211,10 +209,14 @@ public final class BlackPawnExpanderTest {
     
     @Test
     public void moveBlackPawnInitialDoubleMove() {
-        state.set(0, INITIAL_BLACK_PAWN_RANK, new Piece(WHITE, PAWN, expander));
+        state.set(0, 
+                  INITIAL_BLACK_PAWN_RANK, 
+                  new Piece(WHITE, PAWN, expander));
+        
+//        System.out.println("YEAH:\n" + state);
         
         final List<ChessBoardState> children = state.expand(PlayerTurn.WHITE);
-        
+        children.forEach(System.out::println);
         assertEquals(2, children.size());
         
         final ChessBoardState move1 = new ChessBoardState();

@@ -88,10 +88,6 @@ public final class AlphaBetaPruningGameEngine extends AbstractGameEngine {
                                                       alpha, 
                                                       beta, 
                                                       PlayerTurn.WHITE));
-                System.out.println("Value = " + value);
-                System.out.println("Estimate = " + heuristicFunction.evaluate(child, 1));
-                System.out.println(child);
-                
                 if (tentativeValue < value) {
                     tentativeValue = value;
                     bestMoveState = new ChessBoardState(child);

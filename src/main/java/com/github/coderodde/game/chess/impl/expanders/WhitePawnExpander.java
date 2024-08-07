@@ -53,6 +53,20 @@ public final class WhitePawnExpander extends AbstractChessBoardStateExpander {
                                 rank, 
                                 piece);
             
+            tryCaptureLeft(root,
+                           children, 
+                           file,
+                           rank,
+                           piece);
+            
+            tryCaptureRight(root, 
+                            children,
+                            file,
+                            rank,
+                            piece);
+            
+            return;
+            
         } else if (rank == EN_PASSANT_SOURCE_RANK) {
             
             if (file > 0) {
